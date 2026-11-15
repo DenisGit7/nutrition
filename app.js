@@ -60,7 +60,7 @@ install:"התקנת האפליקציה",installIos:"לחץ על כפתור הש�
 switchHh:"מעבר למשק בית אחר",rename:"שינוי שם",you:"את/ה",demoNote:"מצב הדגמה: חבר את Supabase בקובץ config.js כדי לסנכרן בין מכשירים.",
 version:"גרסה"}
 };
-const VERSION = "1.0.0";
+const VERSION = "1.0.1";
 
 /* =================== small utils =================== */
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},
