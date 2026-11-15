@@ -6,8 +6,12 @@
 //   GEMINI_API_KEY   required — from https://aistudio.google.com/apikey
 //   GEMINI_MODEL     optional — override the model, e.g. "gemini-3.6-flash"
 //
-// Request  (POST, JSON): { url?: string, text?: string, images?: [{mime, data(base64)}], lang?: "en"|"he" }
-// Response (JSON):       { recipe } or { error, message }
+// Requests (POST, JSON), all with lang: "en" | "he":
+//   { mode:"recipe",    url?, text?, images?: [{mime,data(base64)}], audio?: {mime,data} }  -> { recipe }
+//   { mode:"translate", recipe: {name, ingredients, steps, notes, tags} }                      -> { recipe }
+//   { mode:"product",   images?, text? }  (photo of a package / nutrition label)               -> { product }
+//   { mode:"off_search", q }  /  { mode:"off_barcode", code }   (Open Food Facts lookup)       -> { products }
+// Errors: { error, message }
 
 const CORS = {
   "Access-Control-Allow-Origin": "*",
@@ -27,7 +31,8 @@ const MODELS = [
 ].filter(Boolean) as string[];
 const GEMINI_BASE = Deno.env.get("GEMINI_BASE_URL") || "https://generativelanguage.googleapis.com/v1beta";
 
-const MAX_IMAGES = 4;
+const MAX_IMAGES = 12;          // screenshots or frames taken from a video
+const MAX_AUDIO_B64 = 6_000_000; // ~4.5 MB of audio
 const MAX_TEXT = 12000;
 
 // ---------- auth: only signed-in users of this project may call it ----------
@@ -127,7 +132,7 @@ async function fetchPage(url: string): Promise<{ ok: boolean; info: string }> {
 // ---------- Gemini ----------
 function prompt(lang: string, hasYoutube: boolean): string {
   const language = lang === "he" ? "Hebrew" : "English";
-  return `You extract a cooking recipe from the material provided (post caption, web page data, screenshots${hasYoutube ? ", and the YouTube video — watch it and listen to it" : ""}).
+  return `You extract a cooking recipe from the material provided (post caption, web page data, screenshots or frames from a video, the video's soundtrack${hasYoutube ? ", and the YouTube video — watch it and listen to it" : ""}). Combine everything: text shown on screen, what the cook says, and the caption.
 
 Reply with ONLY a JSON object, no markdown, in exactly this shape:
 {
@@ -150,6 +155,77 @@ Rules:
 - Steps: short and clear, one action each, at most 10 steps.
 - 1 to 4 short tags (meal type, main ingredient, diet).
 - If there is no recipe in the material, reply {"found": false, "reason": "one short sentence in ${language} saying what is missing"}.`;
+}
+
+function translatePrompt(lang: string, recipe: unknown): string {
+  const language = lang === "he" ? "Hebrew" : "English";
+  return `Translate this recipe into natural ${language} as used in home cooking. Keep the exact JSON structure and keys, keep all numbers and units (translate unit words, e.g. "cup" -> "כוס", "tbsp" -> "כף"), keep "kcal" values unchanged. Do not add or remove items. Reply with ONLY the JSON.
+
+${JSON.stringify(recipe)}`;
+}
+
+function productPrompt(lang: string): string {
+  const language = lang === "he" ? "Hebrew" : "English";
+  return `The images/text show a food product (package front, nutrition facts label, or both). Read the label carefully.
+Reply with ONLY a JSON object:
+{
+  "found": true,
+  "name": "product name as a shopper would say it, in ${language} (keep the brand's own product name if that is what people use)",
+  "brand": "brand or empty",
+  "barcode": "digits under the barcode if visible, else empty",
+  "category": "short category in ${language}, e.g. dairy, bread, snack",
+  "unit": "g" or "ml",
+  "serving_g": grams or ml in one serving / piece if printed (number) or null,
+  "serving_name": "serving word in ${language} (e.g. slice, cup, bar) or empty",
+  "per100": {"kcal": number, "protein": number, "carbs": number, "fat": number, "sugar": number or null, "fiber": number or null}
+}
+Rules: values are per 100 g (or 100 ml). If the label only gives values per serving, convert to per 100 using the serving size. If energy is only in kJ, divide by 4.184.
+If there is no nutrition label, estimate typical values for this kind of product and add "estimated": true.
+If the picture is not a food product, reply {"found": false, "reason": "short sentence in ${language}"}.`;
+}
+
+// ---------- Open Food Facts (free product database) ----------
+const OFF_UA = "NutritionFamilyApp/1.2 (github.com/DenisGit7/nutrition)";
+function offProduct(p: any, lang: string) {
+  const n = p?.nutriments || {};
+  const num = (v: any) => (v === undefined || v === null || v === "" || isNaN(Number(v)) ? null : Math.round(Number(v) * 10) / 10);
+  let kcal = num(n["energy-kcal_100g"] ?? n["energy_kcal_100g"]);
+  if (kcal == null && n["energy_100g"] != null) kcal = num(Number(n["energy_100g"]) / 4.184);
+  const names = [lang === "he" ? p.product_name_he : p.product_name_en, p.product_name, p.product_name_he, p.product_name_en, p.generic_name];
+  const name = names.map((x: any) => (Array.isArray(x) ? x[0] : x)).find((x: any) => x && String(x).trim());
+  const brand = Array.isArray(p.brands) ? p.brands.join(", ") : (p.brands || "");
+  const servingMatch = String(p.serving_size || "").match(/([\d.,]+)\s*(g|ml)/i);
+  return {
+    name: name ? String(name).trim() : "", brand: String(brand).split(",")[0].trim(), barcode: String(p.code || ""),
+    unit: /ml|l\b/i.test(String(p.quantity || "")) && !/g\b/i.test(String(p.quantity || "")) ? "ml" : "g",
+    serving_g: servingMatch ? Number(servingMatch[1].replace(",", ".")) : null, serving_name: "",
+    kcal, protein: num(n.proteins_100g), carbs: num(n.carbohydrates_100g), fat: num(n.fat_100g),
+    sugar: num(n.sugars_100g), fiber: num(n.fiber_100g), source: "openfoodfacts",
+  };
+}
+async function offFetch(url: string): Promise<any> {
+  const ctrl = new AbortController(); const timer = setTimeout(() => ctrl.abort(), 12000);
+  try { const r = await fetch(url, { headers: { "User-Agent": OFF_UA }, signal: ctrl.signal }); return r.ok ? await r.json() : null; }
+  catch { return null; } finally { clearTimeout(timer); }
+}
+const OFF_FIELDS = "code,product_name,product_name_he,product_name_en,generic_name,brands,nutriments,serving_size,quantity";
+const OFF_SEARCH = Deno.env.get("OFF_SEARCH_URL") || "https://search.openfoodfacts.org/search";
+const OFF_WORLD = Deno.env.get("OFF_WORLD_URL") || "https://world.openfoodfacts.org";
+async function offSearch(q: string, lang: string) {
+  let list: any[] = [];
+  const a = await offFetch(`${OFF_SEARCH}?q=${encodeURIComponent(q)}&page_size=25&langs=${lang},en&fields=${OFF_FIELDS}`);
+  if (a && Array.isArray(a.hits)) list = a.hits;
+  if (!list.length) {
+    const b = await offFetch(`${OFF_WORLD}/cgi/search.pl?search_terms=${encodeURIComponent(q)}&search_simple=1&action=process&json=1&page_size=25&fields=${OFF_FIELDS}`);
+    if (b && Array.isArray(b.products)) list = b.products;
+  }
+  return list.map((p) => offProduct(p, lang)).filter((p) => p.name && p.kcal != null).slice(0, 20);
+}
+async function offBarcode(code: string, lang: string) {
+  const d = await offFetch(`${OFF_WORLD}/api/v2/product/${encodeURIComponent(code)}.json?fields=${OFF_FIELDS}`);
+  if (!d || !d.product) return [];
+  const p = offProduct({ code, ...d.product }, lang);
+  return p.name ? [p] : [];
 }
 
 async function callGemini(key: string, parts: unknown[]): Promise<any> {
@@ -186,11 +262,40 @@ export async function handle(req: Request): Promise<Response> {
   if (req.method !== "POST") return json({ error: "method", message: "Use POST" }, 405);
   if (!(await signedIn(req))) return json({ error: "auth", message: "Please sign in again." }, 401);
   const key = Deno.env.get("GEMINI_API_KEY");
-  if (!key) return json({ error: "config", message: "GEMINI_API_KEY secret is missing in Supabase." }, 500);
-
   let body: any;
   try { body = await req.json(); } catch { return json({ error: "input", message: "Bad request" }, 400); }
   const lang = body.lang === "he" ? "he" : "en";
+  const mode = String(body.mode || "recipe");
+
+  // --- product database lookups (no AI key needed) ---
+  if (mode === "off_search" || mode === "off_barcode") {
+    const q = String(body.q || body.code || "").trim().slice(0, 100);
+    if (!q) return json({ products: [] });
+    const products = mode === "off_barcode" ? await offBarcode(q.replace(/\D/g, ""), lang) : await offSearch(q, lang);
+    return json({ products });
+  }
+  if (!key) return json({ error: "config", message: "GEMINI_API_KEY secret is missing in Supabase." }, 500);
+
+  // --- translate a saved recipe ---
+  if (mode === "translate") {
+    const r = body.recipe || {};
+    const src = {
+      name: String(r.name || ""), tags: Array.isArray(r.tags) ? r.tags : [], notes: String(r.notes || ""),
+      ingredients: (Array.isArray(r.ingredients) ? r.ingredients : []).map((i: any) => ({ name: String(i?.name || ""), amount: String(i?.amount || "") })),
+      steps: Array.isArray(r.steps) ? r.steps.map(String) : [],
+    };
+    try {
+      const out = await callGemini(key, [{ text: translatePrompt(lang, src) }]);
+      const ings = Array.isArray(out.ingredients) ? out.ingredients : [];
+      return json({ recipe: {
+        name: String(out.name || src.name), notes: String(out.notes ?? src.notes),
+        tags: Array.isArray(out.tags) ? out.tags.map(String) : src.tags,
+        steps: Array.isArray(out.steps) && out.steps.length ? out.steps.map(String) : src.steps,
+        ingredients: src.ingredients.map((i: any, k: number) => ({ name: String(ings[k]?.name || i.name), amount: String(ings[k]?.amount ?? i.amount) })),
+      } });
+    } catch (e) { return aiError(e); }
+  }
+
   const text = String(body.text || "").slice(0, MAX_TEXT).trim();
   const images = Array.isArray(body.images) ? body.images.slice(0, MAX_IMAGES) : [];
   let url = String(body.url || "").trim();
@@ -212,6 +317,30 @@ export async function handle(req: Request): Promise<Response> {
   if (text) parts.push({ text: `Text pasted by the user (e.g. the post caption):\n${text}` });
   for (const im of images) {
     if (im && typeof im.data === "string" && /^image\//.test(im.mime || "")) parts.push({ inline_data: { mime_type: im.mime, data: im.data } });
+  }
+  const audio = body.audio;
+  if (audio && typeof audio.data === "string" && /^audio\//.test(audio.mime || "") && audio.data.length <= MAX_AUDIO_B64) {
+    parts.push({ text: "Soundtrack of the video (what the cook says):" });
+    parts.push({ inline_data: { mime_type: audio.mime, data: audio.data } });
+  }
+
+  // --- product from a photo of the package / label ---
+  if (mode === "product") {
+    if (!parts.length) return json({ error: "empty", message: "Add a photo of the product or its nutrition label." }, 422);
+    parts.push({ text: productPrompt(lang) });
+    try {
+      const out = await callGemini(key, parts);
+      if (!out || out.found === false || !out.name) return json({ error: "no_product", message: (out && out.reason) || "Couldn't read a product in this photo." }, 422);
+      const p100 = out.per100 || {};
+      const n = (v: any) => (v === undefined || v === null || v === "" || isNaN(Number(v)) ? null : Math.round(Number(v) * 10) / 10);
+      return json({ product: {
+        name: String(out.name).slice(0, 200), brand: String(out.brand || ""), barcode: String(out.barcode || "").replace(/\D/g, ""),
+        category: String(out.category || ""), unit: out.unit === "ml" ? "ml" : "g",
+        serving_g: n(out.serving_g), serving_name: String(out.serving_name || ""),
+        kcal: n(p100.kcal), protein: n(p100.protein), carbs: n(p100.carbs), fat: n(p100.fat), sugar: n(p100.sugar), fiber: n(p100.fiber),
+        estimated: !!out.estimated, source: "ai",
+      } });
+    } catch (e) { return aiError(e); }
   }
   if (!parts.length) {
     return json({ error: linkNote || "empty", message: linkNote
@@ -240,13 +369,15 @@ export async function handle(req: Request): Promise<Response> {
       source: url || "",
     };
     return json({ recipe, linkNote });
-  } catch (e) {
-    const msg = String((e as Error).message || e);
-    const quota = /429|quota|RESOURCE_EXHAUSTED/i.test(msg);
-    return json({ error: quota ? "quota" : "ai", message: quota
-      ? "The free AI limit is used up for now. Try again in a few minutes."
-      : "The AI could not read this. " + msg.slice(0, 300) }, quota ? 429 : 502);
-  }
+  } catch (e) { return aiError(e); }
+}
+
+function aiError(e: unknown): Response {
+  const msg = String((e as Error)?.message || e);
+  const quota = /429|quota|RESOURCE_EXHAUSTED/i.test(msg);
+  return json({ error: quota ? "quota" : "ai", message: quota
+    ? "The free AI limit is used up for now. Try again in a few minutes."
+    : "The AI could not read this. " + msg.slice(0, 300) }, quota ? 429 : 502);
 }
 
 Deno.serve(handle);

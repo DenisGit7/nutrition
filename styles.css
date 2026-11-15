@@ -202,3 +202,20 @@ nav.tabs .badge{position:absolute;top:3px;inset-inline-start:calc(50% + 6px);min
 .thumb .x{position:absolute;top:0;inset-inline-end:0;background:rgba(0,0,0,.55);color:#fff;font-size:16px;width:24px;height:24px;border-radius:0 0 0 10px;padding:0}
 .spin{display:inline-block;width:16px;height:16px;border:2.5px solid currentColor;border-right-color:transparent;border-radius:50%;animation:rot .8s linear infinite;margin-inline-end:8px;vertical-align:-3px}
 @keyframes rot{to{transform:rotate(360deg)}}
+/* products & autocomplete (v1.2) */
+.ingrow{position:relative}
+.ingrow.auto .in-kcal{color:var(--accent);font-weight:600;border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
+.suggest{position:absolute;inset-inline:0;top:100%;z-index:6;margin-top:4px;background:var(--card);border:1px solid var(--line);border-radius:14px;
+  box-shadow:0 12px 30px rgba(0,0,0,.18);overflow:hidden;max-height:300px;overflow-y:auto}
+.suggest button{display:flex;align-items:center;gap:8px;width:100%;text-align:start;border:0;background:transparent;padding:11px 12px;border-bottom:1px solid var(--line);cursor:pointer}
+.suggest button:last-child{border-bottom:0}
+.suggest button:active{background:var(--soft)}
+.suggest .mine{color:var(--kcal);font-size:12px}
+.pcard{display:flex;align-items:center;gap:10px;padding:11px 2px;border-bottom:1px solid var(--line);cursor:pointer}
+.pcard:last-child{border-bottom:0}
+.pname{font-weight:600}
+.pmac{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:12.5px;color:var(--muted);margin-top:2px}
+.pmac .kc{color:var(--kcal);font-weight:700}
+.vbadge{position:absolute;bottom:3px;inset-inline-start:3px;background:rgba(0,0,0,.6);color:#fff;border-radius:7px;padding:1px 5px;font-size:11px;display:flex;align-items:center;gap:3px}
+.vbadge svg{width:12px;height:12px}
+nav.tabs button span{white-space:nowrap}

@@ -5,7 +5,17 @@ const CLOUD = !!(CFG.SUPABASE_URL && CFG.SUPABASE_ANON_KEY);
 
 /* =================== i18n =================== */
 const T = {
-en:{app:"Nutrition",today:"Today",recipes:"Recipes",shopping:"Shopping",settings:"Settings",search:"Search recipes or ingredients…",
+en:{app:"Nutrition",products:"Products",myProducts:"My products",commonFoods:"Common foods",onlineRes:"Open Food Facts",searchProducts:"Search products…",
+searchOnline:"Search online",noProducts:"No saved products yet. Add one with a photo, search online, or use the common foods below.",
+addProduct:"Add product",editProduct:"Edit product",fromPhoto:"Fill from photo (AI)",fromPhotoHint:"Photo of the package front and/or the nutrition label",
+brand:"Brand",barcode:"Barcode",lookup:"Look up",unit:"Unit",per100:"Per 100",servingSize:"Serving size",servingName:"Serving name",
+sugar:"Sugar",fiber:"Fiber",saveToMine:"Save to my products",savedToMine:"Saved to my products",notFound:"Nothing found",
+searching:"Searching…",reading:"Reading the photo…",estimated:"Values are estimated — check the label",needPhoto:"Add a photo first",
+needOnline:"Online search needs the synced version",offNote:"Data from Open Food Facts (community database) — check values",
+translateTo:"Translate to English",translating:"Translating…",translated:"Translated",amountHint:"e.g. 150 g, 2, 1 cup",
+autoCalc:"calculated",video:"Add video (screen recording)",videoHint:"Record your screen while the reel plays, then add the recording here",
+preparingVideo:"Preparing video…",videoReady:"Video ready",videoNoAudio:"no sound found — using pictures only",videoFail:"Couldn't read this video — try screenshots",
+grams:"g",commonHint:"{n} common foods are built in — type above to search them",today:"Today",recipes:"Recipes",shopping:"Shopping",settings:"Settings",search:"Search recipes or ingredients…",
 noRecipes:"No recipes yet. Tap + to add one, or import a recipe Claude made for you.",noMatch:"No recipes match your search.",
 kcal:"kcal",perServing:"per serving",servings:"Servings",protein:"Protein",carbs:"Carbs",fat:"Fat",time:"Time (min)",min:"min",
 ingredients:"Ingredients",steps:"Steps",notes:"Notes",source:"Source",edit:"Edit",del:"Delete",delAgain:"Tap again to delete",
@@ -37,7 +47,17 @@ aiText:"Caption or recipe text (optional)",aiTextHint:"Tip: in Instagram tap •
 aiAddShots:"Add screenshots",aiGo:"Create recipe",aiWorking:"Reading the recipe… (10–30 seconds)",aiCheck:"Check the recipe and tap Save",
 aiNeedInput:"Paste a link, the caption text or add screenshots.",aiDemo:"AI import needs the synced version (Supabase).",
 aiSetup:"AI import isn't set up yet in Supabase (see README, step 6).",aiLinkWarn:"Couldn't open the link itself — the recipe was made from the text/screenshots.",aiLinkOnly:"This site only shared the title, not the recipe. Copy the post text (See more → copy) into the box above, or add screenshots of the ingredients, then tap Create recipe again."},
-he:{app:"תזונה",today:"היום",recipes:"מתכונים",shopping:"קניות",settings:"הגדרות",search:"חיפוש מתכון או מצרך…",
+he:{app:"תזונה",products:"מוצרים",myProducts:"המוצרים שלי",commonFoods:"מזונות נפוצים",onlineRes:"Open Food Facts",searchProducts:"חיפוש מוצר…",
+searchOnline:"חיפוש ברשת",noProducts:"אין עדיין מוצרים שמורים. הוסף בצילום, חפש ברשת, או השתמש במזונות הנפוצים למטה.",
+addProduct:"הוספת מוצר",editProduct:"עריכת מוצר",fromPhoto:"מילוי מצילום (AI)",fromPhotoHint:"צילום של חזית האריזה ו/או הטבלה התזונתית",
+brand:"מותג",barcode:"ברקוד",lookup:"חיפוש",unit:"יחידה",per100:"ל-100",servingSize:"גודל מנה",servingName:"שם המנה",
+sugar:"סוכר",fiber:"סיבים",saveToMine:"שמירה למוצרים שלי",savedToMine:"נשמר למוצרים שלי",notFound:"לא נמצא",
+searching:"מחפש…",reading:"קורא את הצילום…",estimated:"הערכים משוערים — בדוק מול התווית",needPhoto:"הוסף קודם צילום",
+needOnline:"חיפוש ברשת זמין רק בגרסה המסונכרנת",offNote:"נתונים מ-Open Food Facts (מאגר קהילתי) — בדוק את הערכים",
+translateTo:"תרגום לעברית",translating:"מתרגם…",translated:"תורגם",amountHint:"למשל 150 גרם, 2, כוס",
+autoCalc:"מחושב",video:"הוספת סרטון (הקלטת מסך)",videoHint:"הקלט את המסך בזמן שהסרטון מתנגן, והוסף את ההקלטה כאן",
+preparingVideo:"מכין את הסרטון…",videoReady:"הסרטון מוכן",videoNoAudio:"לא נמצא קול — משתמש בתמונות בלבד",videoFail:"לא הצלחתי לקרוא את הסרטון — נסה צילומי מסך",
+grams:"גרם",commonHint:"{n} מזונות נפוצים כבר מובנים — הקלד למעלה כדי לחפש",today:"היום",recipes:"מתכונים",shopping:"קניות",settings:"הגדרות",search:"חיפוש מתכון או מצרך…",
 noRecipes:"אין עדיין מתכונים. לחץ + כדי להוסיף, או ייבא מתכון ש-Claude הכין לך.",noMatch:"לא נמצאו מתכונים.",
 kcal:"קק״ל",perServing:"למנה",servings:"מנות",protein:"חלבון",carbs:"פחמימות",fat:"שומן",time:"זמן (דק׳)",min:"דק׳",
 ingredients:"מצרכים",steps:"אופן הכנה",notes:"הערות",source:"מקור",edit:"עריכה",del:"מחיקה",delAgain:"לחץ שוב למחיקה",
@@ -70,7 +90,7 @@ aiAddShots:"הוספת צילומי מסך",aiGo:"יצירת מתכון",aiWorki
 aiNeedInput:"הדבק קישור, טקסט או הוסף צילומי מסך.",aiDemo:"ייבוא עם AI זמין רק בגרסה המסונכרנת (Supabase).",
 aiSetup:"ייבוא עם AI עדיין לא הוגדר ב-Supabase (ראה README, שלב 6).",aiLinkWarn:"לא הצלחתי לפתוח את הקישור עצמו — המתכון נוצר מהטקסט/צילומי המסך.",aiLinkOnly:"האתר שיתף רק את הכותרת, בלי המתכון. העתק את טקסט הפוסט (עוד → העתקה) לתיבה למעלה, או הוסף צילומי מסך של המצרכים, ואז לחץ שוב על יצירת מתכון."}
 };
-const VERSION = "1.1.1";
+const VERSION = "1.2.0";
 
 /* =================== small utils =================== */
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},
@@ -102,6 +122,11 @@ const ICON={
   upload:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 21V9M7 14l5-5 5 5M4 3h16"/></svg>',
   phone:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg>',
   sparkle:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>',
+  box:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg>',
+  camera:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>',
+  globe:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>',
+  search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>',
+  film:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 4v16M17 4v16M3 9h4M3 15h4M17 9h4M17 15h4"/></svg>',
   image:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>',
   wifi:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 2l20 20M8.5 16.5a5 5 0 0 1 7 0M5 13a10 10 0 0 1 5.2-2.8M19 13a10 10 0 0 0-2.3-1.6M2 8.8a15 15 0 0 1 4.2-2.6M22 8.8A15 15 0 0 0 11 5M12 20h.01"/></svg>'
 };
@@ -117,10 +142,18 @@ function recipeFromRow(r){return {id:r.id,name:r.name,servings:num(r.servings)||
   kcalPerServing:r.kcal_per_serving,protein:r.protein,carbs:r.carbs,fat:r.fat,steps:r.steps||[],tags:r.tags||[],
   notes:r.notes||"",source:r.source||"",createdAt:r.created_at,updatedAt:r.updated_at}}
 function recipeToRow(r,hid){return {id:r.id,household_id:hid,name:r.name,servings:num(r.servings)||1,time_min:numOrNull(r.time),
-  ingredients:(r.ingredients||[]).map(i=>({name:i.name||"",amount:i.amount||"",kcal:numOrNull(i.kcal)})),
+  ingredients:(r.ingredients||[]).map(i=>{const o={name:i.name||"",amount:i.amount||"",kcal:numOrNull(i.kcal)};
+    if(i.protein!=null)o.protein=numOrNull(i.protein);if(i.carbs!=null)o.carbs=numOrNull(i.carbs);if(i.fat!=null)o.fat=numOrNull(i.fat);
+    if(i.food)o.food=i.food;return o}),
   kcal_per_serving:numOrNull(r.kcalPerServing),protein:numOrNull(r.protein),carbs:numOrNull(r.carbs),fat:numOrNull(r.fat),
   steps:r.steps||[],tags:r.tags||[],notes:r.notes||null,source:r.source||null}}
 const shopFromRow=r=>({id:r.id,name:r.name,amount:r.amount||"",done:!!r.done,recipes:r.recipes||[],createdAt:r.created_at});
+const prodFromRow=r=>({id:r.id,name:r.name,brand:r.brand||"",barcode:r.barcode||"",category:r.category||"",unit:r.unit||"g",
+  serving_g:r.serving_g==null?null:num(r.serving_g),serving_name:r.serving_name||"",kcal:numOrNull(r.kcal),protein:numOrNull(r.protein),
+  carbs:numOrNull(r.carbs),fat:numOrNull(r.fat),sugar:numOrNull(r.sugar),fiber:numOrNull(r.fiber),source:r.source||""});
+const prodToRow=(p,hid)=>({id:p.id,household_id:hid,name:p.name,brand:p.brand||null,barcode:p.barcode||null,category:p.category||null,unit:p.unit==="ml"?"ml":"g",
+  serving_g:numOrNull(p.serving_g),serving_name:p.serving_name||null,kcal:numOrNull(p.kcal),protein:numOrNull(p.protein),carbs:numOrNull(p.carbs),
+  fat:numOrNull(p.fat),sugar:numOrNull(p.sugar),fiber:numOrNull(p.fiber),source:p.source||null});
 const logFromRow=r=>({id:r.id,day:r.day,name:r.name,recipeId:r.recipe_id,servings:num(r.servings),kcal:num(r.kcal),protein:num(r.protein),carbs:num(r.carbs),fat:num(r.fat),createdAt:r.created_at});
 
 /* =================== backends =================== */
@@ -142,6 +175,10 @@ const LocalBackend={
   async listLog(day){return LS.get("nt2.log."+day,[])},
   async addLog(e){const a=LS.get("nt2.log."+e.day,[]);a.push(e);LS.set("nt2.log."+e.day,a);this._notify("log")},
   async deleteLog(day,id){LS.set("nt2.log."+day,LS.get("nt2.log."+day,[]).filter(x=>x.id!==id));this._notify("log")},
+  async listProducts(){return this._get("products")},
+  async saveProduct(p){const a=this._get("products");const i=a.findIndex(x=>x.id===p.id);if(i>=0)a[i]=p;else a.push(p);this._set("products",a);return p},
+  async deleteProduct(id){this._set("products",this._get("products").filter(x=>x.id!==id))},
+  async callFn(){const e=new Error(t("needOnline"));e.code="demo";throw e},
   async getSettings(){return LS.get("nt2.settings",{goal:2000})},
   async saveSettings(s){LS.set("nt2.settings",{...LS.get("nt2.settings",{goal:2000}),...s})},
   subscribe(cb){this.onChange=cb;window.addEventListener("storage",e=>{if(e.key&&e.key.startsWith("nt2."))cb("all")})},
@@ -189,6 +226,10 @@ const SupaBackend={
   async deleteLog(day,id){const {error}=await this.sb.from("food_log").delete().eq("id",id);if(error)throw error},
   async getSettings(){const {data}=await this.sb.from("settings").select("*").eq("user_id",this.user.id).maybeSingle();return {goal:2000,...(data||{})}},
   async saveSettings(s){const {error}=await this.sb.from("settings").upsert({user_id:this.user.id,...s});if(error)throw error},
+  async listProducts(){const {data,error}=await this.sb.from("products").select("*").eq("household_id",this.household.id);if(error){if(/products/.test(error.message||""))return [];throw error}return data.map(prodFromRow)},
+  async saveProduct(p){const {data,error}=await this.sb.from("products").upsert(prodToRow(p,this.household.id)).select().single();if(error)throw error;return prodFromRow(data)},
+  async deleteProduct(id){const {error}=await this.sb.from("products").delete().eq("id",id);if(error)throw error},
+  async callFn(body){return this.importAI(body)},
   async importAI(body){
     const {data,error}=await this.sb.functions.invoke("import-recipe",{body});
     if(error){let info=null;try{info=await error.context.json()}catch(_){}
@@ -202,23 +243,24 @@ const SupaBackend={
       .on("postgres_changes",{event:"*",schema:"public",table:"recipes",filter:"household_id=eq."+hid},()=>cb("recipes"))
       .on("postgres_changes",{event:"*",schema:"public",table:"shopping_items",filter:"household_id=eq."+hid},()=>cb("shop"))
       .on("postgres_changes",{event:"*",schema:"public",table:"food_log",filter:"user_id=eq."+uid},()=>cb("log"))
+      .on("postgres_changes",{event:"*",schema:"public",table:"products",filter:"household_id=eq."+hid},()=>cb("products"))
       .subscribe(st=>{S.live=(st==="SUBSCRIBED");setStatus()});
   }
 };
 
 /* =================== app state =================== */
-const S={api:null,phase:"boot",user:null,household:null,members:[],recipes:[],shop:[],log:{},settings:{goal:2000},
-  loaded:false,live:false,online:navigator.onLine,pending:{recipes:0,shop:0,log:0}};
+const S={api:null,phase:"boot",user:null,household:null,members:[],recipes:[],shop:[],products:[],log:{},settings:{goal:2000},
+  loaded:false,live:false,online:navigator.onLine,pending:{recipes:0,shop:0,log:0,products:0}};
 let route={tab:LS.get("nt.tab","recipes"),view:"list",id:null,prevTab:"recipes"};
 let query="",tagFilter="",curDate=dkey(new Date()),delArm=null,clearArm=false,authMode="in",authMsg="",authErr="";
 
 function cacheKey(k){return "nt2.cache."+(S.household&&S.household.id)+"."+k}
-function saveCache(){if(S.api&&S.api.mode==="cloud"){LS.set(cacheKey("recipes"),S.recipes);LS.set(cacheKey("shop"),S.shop)}}
-function loadCache(){S.recipes=LS.get(cacheKey("recipes"),[]);S.shop=LS.get(cacheKey("shop"),[])}
+function saveCache(){if(S.api&&S.api.mode==="cloud"){LS.set(cacheKey("recipes"),S.recipes);LS.set(cacheKey("shop"),S.shop);LS.set(cacheKey("products"),S.products)}}
+function loadCache(){S.recipes=LS.get(cacheKey("recipes"),[]);S.shop=LS.get(cacheKey("shop"),[]);S.products=LS.get(cacheKey("products"),[])}
 
 const refetchTimers={};
 function refetch(kind,delay=250){
-  if(kind==="all"){["recipes","shop","log"].forEach(k=>refetch(k,delay));return}
+  if(kind==="all"){["recipes","shop","log","products"].forEach(k=>refetch(k,delay));return}
   clearTimeout(refetchTimers[kind]);
   refetchTimers[kind]=setTimeout(async()=>{
     if(S.pending[kind]>0){refetch(kind,400);return}
@@ -226,6 +268,7 @@ function refetch(kind,delay=250){
       if(kind==="recipes")S.recipes=await S.api.listRecipes();
       else if(kind==="shop")S.shop=await S.api.listShop();
       else if(kind==="log")S.log[curDate]=await S.api.listLog(curDate);
+      else if(kind==="products")S.products=await S.api.listProducts();
       S.online=true;saveCache();rerender();
     }catch(e){console.warn(e);if(!navigator.onLine){S.online=false;setStatus()}}
   },delay);
@@ -280,8 +323,8 @@ async function enterHousehold(h){
 }
 async function loadAll(){
   try{
-    const [rec,shop,log,st]=await Promise.all([S.api.listRecipes(),S.api.listShop(),S.api.listLog(curDate),S.api.getSettings()]);
-    S.recipes=rec;S.shop=shop;S.log[curDate]=log;S.settings={goal:2000,...st};S.loaded=true;S.online=true;saveCache();
+    const [rec,shop,log,st,prods]=await Promise.all([S.api.listRecipes(),S.api.listShop(),S.api.listLog(curDate),S.api.getSettings(),S.api.listProducts().catch(()=>[])]);
+    S.recipes=rec;S.shop=shop;S.log[curDate]=log;S.products=prods;S.settings={goal:2000,...st};S.loaded=true;S.online=true;saveCache();
   }catch(e){console.warn(e);S.online=false}
   rerender();
 }
@@ -292,11 +335,59 @@ window.addEventListener("offline",()=>{S.online=false;setStatus()});
 
 /* =================== recipe math =================== */
 function perServing(r){
-  const sv=Math.max(1,num(r.servings)||1);
-  const ingK=(r.ingredients||[]).reduce((a,i)=>a+num(i.kcal),0);
+  const sv=Math.max(1,num(r.servings)||1),ings=r.ingredients||[];
+  const sum=k=>ings.reduce((a,i)=>a+num(i[k]),0),has=k=>ings.some(i=>i[k]!=null&&i[k]!=="");
+  const ingK=sum("kcal");
   const kcal=num(r.kcalPerServing)||(ingK?ingK/sv:0);
-  return {kcal,protein:num(r.protein),carbs:num(r.carbs),fat:num(r.fat)};
+  const m=k=>(r[k]!=null&&r[k]!=="")?num(r[k]):(has(k)?sum(k)/sv:0);
+  return {kcal,protein:m("protein"),carbs:m("carbs"),fat:m("fat")};
 }
+/* ---------- foods: my products + built-in common foods ---------- */
+function commonFoods(){
+  if(commonFoods._c&&commonFoods._l===lang)return commonFoods._c;
+  commonFoods._l=lang;
+  return commonFoods._c=(window.COMMON_FOODS||[]).map((f,i)=>({id:"c:"+i,common:true,name:lang==="he"?f[1]:f[0],alt:lang==="he"?f[0]:f[1],
+    kcal:f[2],protein:f[3],carbs:f[4],fat:f[5],serving_g:f[6]||null,serving_name:(lang==="he"?f[8]:f[7])||"",serving_alt:(lang==="he"?f[7]:f[8])||"",unit:f[9]||"g",brand:""}));
+}
+function searchFoods(q,limit=8,{mine=true,common=true}={}){
+  q=norm(q);if(q.length<1)return [];
+  const score=f=>{const n=norm(f.name),a=norm(f.alt||""),b=norm(f.brand||"");
+    if(n===q)return 0;if(n.startsWith(q)||a.startsWith(q))return 1;if(n.includes(q)||a.includes(q))return 2;if(b.includes(q))return 3;
+    const words=q.split(/\s+/);if(words.length>1&&words.every(w=>n.includes(w)||a.includes(w)))return 4;return 9};
+  const pool=[...(mine?S.products.map(p=>({...p,mine:true})):[]),...(common?commonFoods():[])];
+  return pool.map(f=>[score(f),f]).filter(x=>x[0]<9).sort((a,b)=>a[0]-b[0]||(b[1].mine?1:0)-(a[1].mine?1:0)).slice(0,limit).map(x=>x[1]);
+}
+const foodSnap=f=>({kcal:num(f.kcal),protein:num(f.protein),carbs:num(f.carbs),fat:num(f.fat),serving_g:f.serving_g||null,
+  serving_name:f.serving_name||"",serving_alt:f.serving_alt||"",unit:f.unit||"g"});
+/* amount text -> grams, using the food's serving size for "2", "1 slice", "2 eggs" */
+function amountToGrams(text,food){
+  let s=String(text||"").trim().toLowerCase().replace(",",".");if(!s)return null;
+  s=s.replace(/\bhalf\b|חצי/g,"0.5").replace(/\bquarter\b|רבע/g,"0.25");
+  const frac=s.match(/(\d+)\s*\/\s*(\d+)/);let n;
+  if(frac)n=num(frac[1])/num(frac[2]);else{const m=s.match(/\d+(\.\d+)?/);n=m?num(m[0]):(/^[^\d]+$/.test(s)?1:NaN)}
+  if(!isFinite(n)||n<=0)return null;
+  const unit=s.replace(/[\d.\/\s]+/g," ").trim(),u0=unit.split(/\s+/)[0].replace(/[.״"׳']/g,"");
+  const isU=list=>list.includes(u0);
+  if(isU(["kg","קג","קילו","kilo","kilogram"]))return n*1000;
+  if(isU(["l","liter","litre","ליטר"]))return n*1000;
+  if(isU(["g","gr","gram","grams","גרם","גר","ג","ml","מל","מיליליטר"]))return n;
+  if(isU(["tbsp","tablespoon","tablespoons","כף","כפות"]))return n*15;
+  if(isU(["tsp","teaspoon","teaspoons","כפית","כפיות"]))return n*5;
+  const sn=norm(food.serving_name).split(" ")[0],sa=norm(food.serving_alt).split(" ")[0];
+  const same=w=>w&&(u0===w||u0.startsWith(w)||w.startsWith(u0)||(w.length>=3&&u0.length>=3&&u0.slice(0,3)===w.slice(0,3)));
+  if(!unit||same(sn)||same(sa)||isU(["piece","pieces","pcs","unit","units","יחידה","יחידות"]))
+    return food.serving_g?n*food.serving_g:(unit?null:n);
+  if(isU(["cup","cups","כוס","כוסות"]))return n*240;
+  return null;
+}
+function foodNutrition(food,amount){
+  const g=amountToGrams(amount,food);if(g==null)return null;const k=g/100;
+  return {grams:Math.round(g),kcal:Math.round(num(food.kcal)*k),protein:r1(num(food.protein)*k),carbs:r1(num(food.carbs)*k),fat:r1(num(food.fat)*k)};
+}
+const defaultAmount=f=>f.serving_g&&f.serving_name?("1 "+f.serving_name):("100 "+(f.unit==="ml"?"ml":t("grams")));
+function suggestHTML(list){return list.length?`<div class="suggest">${list.map((f,i)=>`<button type="button" data-sug="${i}">
+  <span class="grow"><b>${esc(f.name)}</b>${f.brand?` <span class="muted small">${esc(f.brand)}</span>`:""}${f.mine?` <span class="mine">★</span>`:""}</span>
+  <span class="muted small">${r0(num(f.kcal))} ${t("kcal")}/100</span></button>`).join("")}</div>`:""}
 
 /* =================== chrome =================== */
 function setStatus(){const el=$("#status");if(!el)return;
@@ -317,7 +408,7 @@ function applyChrome(){
   const open=S.shop.filter(i=>!i.done).length,b=$("#shopBadge");b.textContent=open;b.classList.toggle("hidden",!open);
 }
 function go(r){route={...route,...r};delArm=null;clearArm=false;
-  if(r.tab&&["today","recipes","shopping"].includes(r.tab)){LS.set("nt.tab",r.tab);if(location.hash!=="#"+r.tab){try{history.replaceState(null,"","#"+r.tab)}catch(e){}}}
+  if(r.tab&&["today","recipes","shopping","products"].includes(r.tab)){LS.set("nt.tab",r.tab);if(location.hash!=="#"+r.tab){try{history.replaceState(null,"","#"+r.tab)}catch(e){}}}
   render();window.scrollTo(0,0)}
 function rerender(){ // re-render unless the user is typing in a form we'd destroy
   if(route.view==="edit"&&route.tab==="recipes"){applyChrome();setStatus();return}
@@ -329,10 +420,10 @@ function render(){
   const inApp=S.phase==="app";
   $("#tabs").classList.toggle("hidden",!inApp);
   $("#gearBtn").classList.toggle("hidden",!inApp||route.tab==="settings");
-  ["today","recipes","shopping"].forEach(k=>$("#tab"+k[0].toUpperCase()+k.slice(1)).classList.toggle("on",route.tab===k));
+  ["today","recipes","shopping","products"].forEach(k=>$("#tab"+k[0].toUpperCase()+k.slice(1)).classList.toggle("on",route.tab===k));
   const sub=inApp&&((route.tab==="recipes"&&route.view!=="list")||route.tab==="settings");
   $("#backBtn").classList.toggle("hidden",!sub);
-  $("#fab").classList.toggle("hidden",!(inApp&&((route.tab==="recipes"&&route.view==="list")||route.tab==="today")));
+  $("#fab").classList.toggle("hidden",!(inApp&&((route.tab==="recipes"&&route.view==="list")||route.tab==="today"||route.tab==="products")));
   const v=$("#view");
   if(S.phase==="boot"||S.phase==="loading"){$("#title").textContent="";v.innerHTML=`<div class="empty" style="padding-top:28vh">${t("loading")}</div>`;return}
   if(S.phase==="error"){$("#title").textContent=t("app");v.innerHTML=`<div class="card empty"><div class="em">${ICON.wifi}</div>${esc(S.bootError||"")}<br><br>
@@ -341,6 +432,9 @@ function render(){
   if(S.phase==="onboard"){$("#title").textContent="";v.innerHTML=viewOnboard();return}
   if(route.tab==="settings"){$("#title").textContent=t("settings");v.innerHTML=viewSettings();return}
   if(route.tab==="today"){$("#title").textContent=t("today");v.innerHTML=viewToday();if(!(curDate in S.log))refetch("log",0);return}
+  if(route.tab==="products"){$("#title").textContent=t("products");
+    const a=document.activeElement,keep=a&&a.id==="pq"?[a.value,a.selectionStart]:null;
+    v.innerHTML=viewProducts();if(keep){const n=$("#pq");n.focus();try{n.setSelectionRange(keep[1],keep[1])}catch(_){}}return}
   if(route.tab==="shopping"){$("#title").textContent=t("shopping");
     const a=document.activeElement,keep=a&&a.id==="shopIn"?a.value:null;
     v.innerHTML=viewShop();if(keep!==null){const n=$("#shopIn");n.value=keep;n.focus()}return}
@@ -450,34 +544,36 @@ function viewDetail(r){
   ${steps.length?`<div class="card"><h2 class="sec">${t("steps")}</h2><ol class="steps">${steps.map(s=>`<li><span>${esc(s)}</span></li>`).join("")}</ol></div>`:""}
   ${r.notes?`<div class="card"><h2 class="sec">${t("notes")}</h2><div style="white-space:pre-wrap">${esc(r.notes)}</div></div>`:""}
   ${r.source?`<div class="small muted" style="text-align:center">${t("source")}: <a href="${esc(r.source)}" target="_blank" rel="noopener">${esc(String(r.source).replace(/^https?:\/\/(www\.)?/,"").slice(0,60))}</a></div>`:""}
+  <button class="btn ghost block" data-act="translate" ${CLOUD?"":"disabled"}>${ICON.globe}${t("translateTo")}</button>
   <div class="grid2"><button class="btn ghost" data-act="edit">${t("edit")}</button>
     <button class="btn danger" data-act="del">${delArm===r.id?t("delAgain"):t("del")}</button></div>
   </div>`;
 }
-function ingRow(i={}){return `<div class="ingrow">
-  <input type="text" dir="auto" class="in-name" placeholder="${t("ingName")}" value="${esc(i.name||"")}">
+const rowFood=new WeakMap();
+function ingRow(i={}){return `<div class="ingrow ${i.food?"auto":""}" data-ing='${esc(JSON.stringify({p:i.protein??null,c:i.carbs??null,f:i.fat??null,food:i.food||null}))}'>
+  <input type="text" dir="auto" class="in-name" placeholder="${t("ingName")}" value="${esc(i.name||"")}" autocomplete="off">
   <input type="text" dir="auto" class="in-amt" placeholder="${t("amount")}" value="${esc(i.amount||"")}">
-  <input type="number" inputmode="decimal" class="in-kcal" placeholder="${t("kcal")}" value="${esc(i.kcal??"")}">
+  <input type="number" step="any" inputmode="decimal" class="in-kcal" placeholder="${t("kcal")}" value="${esc(i.kcal??"")}">
   <button class="x" type="button" data-act="rmIng" aria-label="remove">×</button></div>`}
 function viewEdit(r){r=r||S.draft||{servings:1,ingredients:[{},{},{}],steps:[]};S.draft=null;
   return `<form id="editForm" class="stack fadein" autocomplete="off">
   <div class="card stack">
     <div><label class="f">${t("name")}</label><input type="text" dir="auto" name="rname" value="${esc(r.name||"")}" required></div>
     <div class="grid2">
-      <div><label class="f">${t("servings")}</label><input type="number" inputmode="decimal" name="servings" min="1" value="${esc(r.servings||1)}"></div>
-      <div><label class="f">${t("time")}</label><input type="number" inputmode="numeric" name="time" value="${esc(r.time??"")}"></div>
+      <div><label class="f">${t("servings")}</label><input type="number" step="any" inputmode="decimal" name="servings" min="1" value="${esc(r.servings||1)}"></div>
+      <div><label class="f">${t("time")}</label><input type="number" step="any" inputmode="numeric" name="time" value="${esc(r.time??"")}"></div>
     </div></div>
   <div class="card"><h2 class="sec">${t("ingredients")}</h2>
     <div id="ings">${(r.ingredients&&r.ingredients.length?r.ingredients:[{}]).map(ingRow).join("")}</div>
     <button type="button" class="btn block" data-act="addIng">${t("addIng")}</button>
     <div class="muted small" style="margin-top:8px" id="ingSum"></div></div>
   <div class="card"><h2 class="sec">${t("kcalServing")}</h2>
-    <input type="number" inputmode="decimal" name="kcalPerServing" value="${esc(r.kcalPerServing??"")}" id="kcalIn">
+    <input type="number" step="any" inputmode="decimal" name="kcalPerServing" value="${esc(r.kcalPerServing??"")}" id="kcalIn">
     <label class="f" style="margin-top:14px">${t("macrosServing")}</label>
     <div class="grid3">
-      <input type="number" inputmode="decimal" name="protein" placeholder="${t("protein")}" value="${esc(r.protein??"")}">
-      <input type="number" inputmode="decimal" name="carbs" placeholder="${t("carbs")}" value="${esc(r.carbs??"")}">
-      <input type="number" inputmode="decimal" name="fat" placeholder="${t("fat")}" value="${esc(r.fat??"")}"></div></div>
+      <input type="number" step="any" inputmode="decimal" name="protein" placeholder="${t("protein")}" value="${esc(r.protein??"")}">
+      <input type="number" step="any" inputmode="decimal" name="carbs" placeholder="${t("carbs")}" value="${esc(r.carbs??"")}">
+      <input type="number" step="any" inputmode="decimal" name="fat" placeholder="${t("fat")}" value="${esc(r.fat??"")}"></div></div>
   <div class="card"><h2 class="sec">${t("steps")} <span class="muted small" style="font-weight:400">· ${t("stepsHint")}</span></h2><textarea dir="auto" name="steps">${esc((r.steps||[]).join("\n"))}</textarea></div>
   <div class="card stack">
     <div><label class="f">${t("tags")}</label><input type="text" dir="auto" name="tags" value="${esc((r.tags||[]).join(", "))}"></div>
@@ -486,11 +582,22 @@ function viewEdit(r){r=r||S.draft||{servings:1,ingredients:[{},{},{}],steps:[]};
   <div class="grid2"><button type="button" class="btn ghost" data-act="cancel">${t("cancel")}</button>
     <button type="submit" class="btn primary">${t("save")}</button></div>
   </form>`}
+function rowState(row){if(!rowFood.has(row)){let d={};try{d=JSON.parse(row.dataset.ing||"{}")}catch(_){}rowFood.set(row,d)}return rowFood.get(row)}
+function recalcRow(row){const st=rowState(row);if(!st.food)return;
+  const n=foodNutrition(st.food,row.querySelector(".in-amt").value);
+  if(n){row.querySelector(".in-kcal").value=n.kcal;st.p=n.protein;st.c=n.carbs;st.f=n.fat;row.classList.add("auto")}}
+function closeSuggest(){document.querySelectorAll(".suggest").forEach(x=>x.remove())}
+function showSuggest(input,list,onPick){closeSuggest();if(!list.length)return;
+  input.insertAdjacentHTML("afterend",suggestHTML(list));const box=input.nextElementSibling;
+  box.addEventListener("pointerdown",e=>{const b=e.target.closest("[data-sug]");if(!b)return;e.preventDefault();onPick(list[+b.dataset.sug]);closeSuggest()})}
 function updIngSum(){const f=$("#editForm");if(!f)return;
   let s=0;f.querySelectorAll(".in-kcal").forEach(i=>s+=num(i.value));
   const sv=Math.max(1,num(f.servings.value)||1);
   $("#ingSum").textContent=s?`${t("total")}: ${r0(s)} ${t("kcal")} · ${r0(s/sv)} ${t("kcal")} ${t("perServing")}`:"";
   $("#kcalIn").placeholder=s?`${r0(s/sv)} — ${t("calcFromIng")}`:"";
+  const tot={protein:0,carbs:0,fat:0},have={};
+  f.querySelectorAll(".ingrow").forEach(row=>{const st=rowState(row);[["protein","p"],["carbs","c"],["fat","f"]].forEach(([k,a])=>{if(st[a]!=null){tot[k]+=num(st[a]);have[k]=1}})});
+  ["protein","carbs","fat"].forEach(k=>{const el=f.elements.namedItem(k);if(el)el.placeholder=have[k]?String(r1(tot[k]/sv)):t(k)});
 }
 
 /* =================== views: today =================== */
@@ -617,7 +724,7 @@ function sheetAddRecipe(r){
   const ps=perServing(r);
   openSheet(`<div class="stack"><h2 class="sec" style="font-size:19px">${esc(r.name)}</h2>
     <label class="f">${t("servings")}</label>
-    <div class="row"><button class="iconbtn" id="sm">−</button><input type="number" inputmode="decimal" id="sv" value="1" step="0.5" style="text-align:center;font-size:20px;font-weight:600">
+    <div class="row"><button class="iconbtn" id="sm">−</button><input type="number" step="any" inputmode="decimal" id="sv" value="1" step="0.5" style="text-align:center;font-size:20px;font-weight:600">
       <button class="iconbtn" id="sp">+</button></div>
     <div id="svk" style="text-align:center;font-size:22px;font-weight:700;color:var(--kcal)"></div>
     <div class="grid2"><button class="btn ghost" id="sc">${t("cancel")}</button><button class="btn primary" id="sa">${t("add")}</button></div></div>`,()=>{
@@ -664,20 +771,30 @@ function sheetQuick(){
   const opts=[...S.recipes].sort((a,b)=>(a.name||"").localeCompare(b.name||""));
   openSheet(`<form class="stack" id="qf"><h2 class="sec" style="font-size:19px">${t("quickAdd")}</h2>
     ${opts.length?`<div><label class="f">${t("fromRecipe")}</label><select id="qr"><option value="">—</option>${opts.map(r=>`<option value="${esc(r.id)}">${esc(r.name)}</option>`).join("")}</select></div>`:""}
-    <div><label class="f">${t("whatAte")}</label><input type="text" dir="auto" id="qn"></div>
-    <div class="grid2"><div><label class="f">${t("kcal")}</label><input type="number" inputmode="decimal" id="qk"></div>
-      <div><label class="f">${t("protein")} (g)</label><input type="number" inputmode="decimal" id="qp"></div></div>
+    <div style="position:relative"><label class="f">${t("whatAte")}</label><input type="text" dir="auto" id="qn" autocomplete="off" placeholder="${t("searchProducts")}"></div>
+    <div><label class="f">${t("amount")}</label><input type="text" dir="auto" id="qa" placeholder="${t("amountHint")}"></div>
+    <div class="grid2"><div><label class="f">${t("kcal")}</label><input type="number" step="any" inputmode="decimal" id="qk"></div>
+      <div><label class="f">${t("protein")} (g)</label><input type="number" step="any" inputmode="decimal" id="qp"></div></div>
     <div class="grid2"><button type="button" class="btn ghost" id="qc">${t("cancel")}</button><button class="btn primary">${t("add")}</button></div></form>`,()=>{
     $("#qc").onclick=closeSheet;
-    const qr=$("#qr");if(qr)qr.onchange=()=>{const r=S.recipes.find(x=>x.id===qr.value);if(r){const ps=perServing(r);$("#qn").value=r.name;$("#qk").value=r0(ps.kcal);$("#qp").value=r1(ps.protein)}};
+    let qfood=null,qmac={c:0,f:0};
+    const qcalc=()=>{if(!qfood)return;const n=foodNutrition(qfood,$("#qa").value);if(n){$("#qk").value=n.kcal;$("#qp").value=n.protein;qmac={c:n.carbs,f:n.fat}}};
+    $("#qn").oninput=e=>{qfood=null;showSuggest(e.target,searchFoods(e.target.value,6),food=>{qfood=foodSnap(food);$("#qn").value=food.name;
+      if(!$("#qa").value.trim())$("#qa").value=defaultAmount(food);qcalc();$("#qa").focus()})};
+    $("#qa").oninput=qcalc;
+    const qr=$("#qr");if(qr)qr.onchange=()=>{const r=S.recipes.find(x=>x.id===qr.value);if(r){qfood=null;const ps=perServing(r);$("#qn").value=r.name;$("#qa").value="1";$("#qk").value=r0(ps.kcal);$("#qp").value=r1(ps.protein);qmac={c:r1(ps.carbs),f:r1(ps.fat)}}};
+    $("#qa").addEventListener("input",()=>{const r=qr&&qr.value?S.recipes.find(x=>x.id===qr.value):null;if(r&&$("#qn").value===r.name){const ps=perServing(r),n=num($("#qa").value)||1;
+      $("#qk").value=r0(ps.kcal*n);$("#qp").value=r1(ps.protein*n)}});
     $("#qf").onsubmit=ev=>{ev.preventDefault();const name=$("#qn").value.trim();if(!name){toast(t("needName"));return}
       const r=qr&&qr.value?S.recipes.find(x=>x.id===qr.value):null,ps=r?perServing(r):null,same=ps&&r.name===name;
-      closeSheet();addEntry(curDate,{recipeId:r?r.id:null,name,servings:1,kcal:num($("#qk").value),protein:num($("#qp").value),carbs:same?r1(ps.carbs):0,fat:same?r1(ps.fat):0});toast(t("added"))};
+      const servings=r&&same?(num($("#qa").value)||1):1;
+      closeSheet();addEntry(curDate,{recipeId:r?r.id:null,name:qfood&&$("#qa").value.trim()?`${name} (${$("#qa").value.trim()})`:name,servings,kcal:num($("#qk").value),protein:num($("#qp").value),
+        carbs:same?r1(ps.carbs*servings):qmac.c,fat:same?r1(ps.fat*servings):qmac.f});toast(t("added"))};
   });
 }
 function sheetGoal(){
   openSheet(`<form class="stack" id="gf"><h2 class="sec" style="font-size:19px">${t("setGoal")}</h2>
-    <input type="number" inputmode="numeric" id="gv" value="${esc(S.settings.goal||2000)}" style="font-size:22px;font-weight:600;text-align:center">
+    <input type="number" step="any" inputmode="numeric" id="gv" value="${esc(S.settings.goal||2000)}" style="font-size:22px;font-weight:600;text-align:center">
     <div class="grid2"><button type="button" class="btn ghost" id="gc">${t("cancel")}</button><button class="btn primary">${t("save")}</button></div></form>`,()=>{
     $("#gc").onclick=closeSheet;
     $("#gf").onsubmit=ev=>{ev.preventDefault();const goal=num($("#gv").value)||2000;S.settings={...S.settings,goal};closeSheet();rerender();
@@ -691,6 +808,155 @@ function sheetNewPassword(){
     $("#npf").onsubmit=ev=>{ev.preventDefault();safe(async()=>{const {error}=await SupaBackend.sb.auth.updateUser({password:$("#np").value});if(error)throw error;closeSheet();toast(t("pwChanged"))})};
   });
 }
+/* =================== products =================== */
+let pq="",offHTML="";
+function prodCard(p,extra=""){return `<div class="pcard" ${p.mine?`data-act="openProd" data-id="${esc(p.id)}"`:""}>
+  <div class="grow"><div class="pname" dir="auto">${esc(p.name)}${p.brand?` <span class="muted small">· ${esc(p.brand)}</span>`:""}</div>
+    <div class="pmac"><span class="kc">${r0(num(p.kcal))} ${t("kcal")}</span><span>${t("protein")[0]} ${r1(num(p.protein))}</span><span>${t("carbs")[0]} ${r1(num(p.carbs))}</span><span>${t("fat")[0]} ${r1(num(p.fat))}</span>
+    <span class="muted">/ 100${p.unit==="ml"?"ml":"g"}</span></div></div>${extra}</div>`}
+function viewProducts(){
+  const q=norm(pq);
+  const mine=S.products.map(p=>({...p,mine:true})).filter(p=>!q||norm(p.name).includes(q)||norm(p.brand).includes(q)||String(p.barcode||"").includes(q))
+    .sort((a,b)=>a.name.localeCompare(b.name));
+  const common=q?searchFoods(q,12,{mine:false}):[];
+  return `<div class="stack fadein">
+  <div class="searchbox">${ICON.search}<input type="search" id="pq" placeholder="${t("searchProducts")}" value="${esc(pq)}" dir="auto"></div>
+  <div class="grid2"><button class="btn primary" data-act="prodPhoto">${ICON.camera}${t("fromPhoto").replace(" (AI)","")}</button>
+    <button class="btn ghost" data-act="offSearch" ${q.length>1?"":"disabled"}>${ICON.globe}${t("searchOnline")}</button></div>
+  <div id="offRes">${offHTML}</div>
+  <div class="card"><h2 class="sec">${t("myProducts")}<span class="n">${S.products.length}</span></h2>
+    ${mine.length?mine.map(p=>prodCard(p)).join(""):`<div class="muted small" style="padding:6px 0">${q?t("notFound"):t("noProducts")}</div>`}</div>
+  ${q?`<div class="card"><h2 class="sec">${t("commonFoods")}</h2>${common.length?common.map(f=>prodCard(f,`<button class="btn sm ghost" data-act="saveCommon" data-id="${f.id}" aria-label="${t("saveToMine")}">${ICON.plus}</button>`)).join(""):`<div class="muted small">${t("notFound")}</div>`}</div>`
+     :`<div class="muted small" style="text-align:center">${t("commonHint").replace("{n}",commonFoods().length)}</div>`}
+  </div>`;
+}
+document.addEventListener("input",e=>{if(e.target.id==="pq"){pq=e.target.value;window.__offRes=null;offHTML="";render()}});
+async function offSearchUI(){
+  const box=$("#offRes");if(!box||norm(pq).length<2)return;
+  box.innerHTML=offHTML=`<div class="card"><span class="spin"></span>${t("searching")}</div>`;
+  try{const isCode=/^\d{8,14}$/.test(pq.trim());
+    const res=await S.api.callFn({mode:isCode?"off_barcode":"off_search",q:pq.trim(),code:pq.trim(),lang});
+    const list=(res&&res.products)||[];window.__offRes=list;
+    offHTML=`<div class="card"><h2 class="sec">${t("onlineRes")}<span class="n">${list.length}</span></h2>
+      ${list.length?list.map((f,i)=>prodCard(f,`<button class="btn sm ghost" data-act="saveOff" data-i="${i}" aria-label="${t("saveToMine")}">${ICON.plus}</button>`)).join("")
+        +`<div class="muted small" style="margin-top:8px">${t("offNote")}</div>`:`<div class="muted small">${t("notFound")}</div>`}</div>`;
+    const b2=$("#offRes");if(b2)b2.innerHTML=offHTML;
+  }catch(e){offHTML="";box.innerHTML=`<div class="banner warn">${esc(e.code==="demo"?t("needOnline"):e.code==="setup"?t("aiSetup"):errMsg(e))}</div>`}
+}
+async function saveFoodToMine(f){
+  const p={id:uuid(),name:f.name,brand:f.brand||"",barcode:f.barcode||"",category:f.category||"",unit:f.unit||"g",serving_g:f.serving_g||null,
+    serving_name:f.serving_name||"",kcal:numOrNull(f.kcal),protein:numOrNull(f.protein),carbs:numOrNull(f.carbs),fat:numOrNull(f.fat),
+    sugar:numOrNull(f.sugar),fiber:numOrNull(f.fiber),source:f.source||(f.common?"common":"manual")};
+  S.products=[...S.products,p];saveCache();rerender();
+  const ok=await write("products",()=>S.api.saveProduct(p));if(ok)toast(t("savedToMine"));
+}
+function sheetProduct(p,opt={}){
+  const isNew=!p;p=p||{unit:"g"};const shots=[];let busy=false,armDel=false;
+  const fld=(id,label,val,type="number")=>`<div><label class="f">${label}</label><input type="${type}" ${type==="number"?'inputmode="decimal" step="any"':'dir="auto"'} id="${id}" value="${esc(val??"")}"></div>`;
+  openSheet(`<form class="stack" id="pf" autocomplete="off">
+    <h2 class="sec" style="font-size:19px;margin:0">${isNew?t("addProduct"):t("editProduct")}</h2>
+    ${CLOUD?`<div class="card stack" style="padding:12px;background:var(--bg)">
+      <div class="row"><span class="aiic">${ICON.camera}</span><div class="grow"><b>${t("fromPhoto")}</b><div class="muted small">${t("fromPhotoHint")}</div></div></div>
+      <div class="thumbs" id="pThumbs"></div>
+      <div class="grid2"><label class="btn ghost" style="cursor:pointer">${ICON.image}${t("aiAddShots").split(" ")[0]}<input type="file" id="pFile" accept="image/*" multiple class="hidden"></label>
+        <button type="button" class="btn primary" id="pAI">${ICON.sparkle}AI</button></div>
+      <div id="pMsg"></div></div>`:""}
+    ${fld("pName",t("name"),p.name,"text")}
+    <div class="grid2">${fld("pBrand",t("brand"),p.brand,"text")}
+      <div><label class="f">${t("barcode")}</label><div class="row" style="gap:6px"><input type="text" inputmode="numeric" id="pCode" value="${esc(p.barcode||"")}">
+        ${CLOUD?`<button type="button" class="btn sm ghost" id="pLook">${ICON.search}</button>`:""}</div></div></div>
+    <div class="row"><div class="grow"><label class="f">${t("unit")}</label><div class="seg" id="pUnit"><button type="button" data-u="g" class="${p.unit!=="ml"?"on":""}">g</button><button type="button" data-u="ml" class="${p.unit==="ml"?"on":""}">ml</button></div></div></div>
+    <div class="grid2">${fld("pSg",t("servingSize")+" (g/ml)",p.serving_g)}${fld("pSn",t("servingName"),p.serving_name,"text")}</div>
+    <label class="f" style="margin-bottom:-4px">${t("per100")} <span id="pU">${p.unit==="ml"?"ml":"g"}</span></label>
+    <div class="grid3">${fld("pK",t("kcal"),p.kcal)}${fld("pP",t("protein"),p.protein)}${fld("pC",t("carbs"),p.carbs)}</div>
+    <div class="grid3">${fld("pF",t("fat"),p.fat)}${fld("pSu",t("sugar"),p.sugar)}${fld("pFi",t("fiber"),p.fiber)}</div>
+    <div class="grid2"><button type="button" class="btn ghost" id="pc">${t("cancel")}</button><button class="btn primary">${t("save")}</button></div>
+    ${!isNew?`<button type="button" class="btn danger block" id="pDel">${t("del")}</button>`:""}
+  </form>`,()=>{
+    let unit=p.unit==="ml"?"ml":"g";
+    $("#pUnit").onclick=e=>{const b=e.target.closest("[data-u]");if(!b)return;unit=b.dataset.u;$("#pUnit").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));$("#pU").textContent=unit};
+    const fill=x=>{const set=(id,v)=>{if(v!=null&&v!=="")$("#"+id).value=v};
+      set("pName",x.name);set("pBrand",x.brand);set("pCode",x.barcode);set("pSg",x.serving_g);set("pSn",x.serving_name);
+      set("pK",x.kcal);set("pP",x.protein);set("pC",x.carbs);set("pF",x.fat);set("pSu",x.sugar);set("pFi",x.fiber);
+      if(x.unit){unit=x.unit;$("#pUnit").querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.u===unit));$("#pU").textContent=unit}};
+    const msg=(h,c="")=>{const m=$("#pMsg");if(m)m.innerHTML=h?`<div class="banner ${c}" style="margin-top:8px">${h}</div>`:""};
+    if(CLOUD){
+      const draw=()=>{$("#pThumbs").innerHTML=shots.map((s,i)=>`<div class="thumb"><img src="${s.preview}" alt=""><button type="button" class="x" data-rm="${i}">×</button></div>`).join("")};
+      $("#pThumbs").onclick=e=>{const b=e.target.closest("[data-rm]");if(b){shots.splice(+b.dataset.rm,1);draw()}};
+      const runAI=async()=>{if(busy)return;if(!shots.length){msg(esc(t("needPhoto")),"warn");return}
+        busy=true;$("#pAI").disabled=true;msg(`<span class="spin"></span>${esc(t("reading"))}`);
+        try{const res=await S.api.callFn({mode:"product",lang,images:shots.map(({mime,data})=>({mime,data}))});
+          fill(res.product);p.source="ai";msg(res.product.estimated?esc(t("estimated")):"",res.product.estimated?"warn":"")}
+        catch(e){msg(esc(e.code==="setup"?t("aiSetup"):errMsg(e)),"warn")}finally{busy=false;const b=$("#pAI");if(b)b.disabled=false}};
+      $("#pFile").onchange=async e=>{for(const f of [...e.target.files].slice(0,3-shots.length)){try{shots.push(await shrinkImage(f))}catch(_){}}e.target.value="";draw();if(shots.length)runAI()};
+      $("#pAI").onclick=runAI;
+      $("#pLook").onclick=async()=>{const code=$("#pCode").value.replace(/\D/g,"");if(!code)return;msg(`<span class="spin"></span>${esc(t("searching"))}`);
+        try{const res=await S.api.callFn({mode:"off_barcode",code,lang});const f=(res.products||[])[0];
+          if(f){fill(f);p.source="openfoodfacts";msg(esc(t("offNote")))}else msg(esc(t("notFound")),"warn")}catch(e){msg(esc(errMsg(e)),"warn")}};
+      if(opt.photo)setTimeout(()=>$("#pFile").click(),50);
+    }
+    $("#pc").onclick=closeSheet;
+    if($("#pDel"))$("#pDel").onclick=()=>{if(!armDel){armDel=true;$("#pDel").textContent=t("delAgain");return}
+      closeSheet();S.products=S.products.filter(x=>x.id!==p.id);saveCache();rerender();write("products",()=>S.api.deleteProduct(p.id)).then(ok=>ok&&toast(t("deleted")))};
+    $("#pf").onsubmit=ev=>{ev.preventDefault();const name=$("#pName").value.trim();if(!name){toast(t("needName"));return}
+      const v=id=>numOrNull($("#"+id).value);
+      const rec={id:p.id||uuid(),name,brand:$("#pBrand").value.trim(),barcode:$("#pCode").value.replace(/\D/g,""),category:p.category||"",unit,
+        serving_g:v("pSg"),serving_name:$("#pSn").value.trim(),kcal:v("pK"),protein:v("pP"),carbs:v("pC"),fat:v("pF"),sugar:v("pSu"),fiber:v("pFi"),source:p.source||"manual"};
+      const i=S.products.findIndex(x=>x.id===rec.id);if(i>=0)S.products[i]=rec;else S.products.push(rec);saveCache();closeSheet();rerender();
+      write("products",()=>S.api.saveProduct(rec)).then(ok=>ok&&toast(t("saved")))};
+  });
+}
+/* translate a recipe into the app language */
+async function translateRecipe(r,btn){
+  btn.disabled=true;const old=btn.innerHTML;btn.innerHTML=`<span class="spin"></span>${t("translating")}`;
+  try{const res=await S.api.callFn({mode:"translate",lang,recipe:{name:r.name,ingredients:r.ingredients,steps:r.steps,notes:r.notes,tags:r.tags}});
+    const tr=res.recipe||{};
+    const rec={...r,name:tr.name||r.name,notes:tr.notes??r.notes,tags:tr.tags||r.tags,steps:tr.steps||r.steps,
+      ingredients:(r.ingredients||[]).map((i,k)=>({...i,name:(tr.ingredients&&tr.ingredients[k]&&tr.ingredients[k].name)||i.name,amount:(tr.ingredients&&tr.ingredients[k]&&tr.ingredients[k].amount!=null)?tr.ingredients[k].amount:i.amount}))};
+    const i=S.recipes.findIndex(x=>x.id===r.id);if(i>=0)S.recipes[i]=rec;saveCache();rerender();
+    const ok=await write("recipes",()=>S.api.saveRecipe(rec));if(ok)toast(t("translated"));
+  }catch(e){toast(e.code==="setup"?t("aiSetup"):errMsg(e));btn.disabled=false;btn.innerHTML=old}
+}
+
+/* =================== video (screen recording) -> frames + soundtrack =================== */
+function wait(ms){return new Promise(r=>setTimeout(r,ms))}
+async function videoFrames(file,max=10){
+  const url=URL.createObjectURL(file);const v=document.createElement("video");
+  v.muted=true;v.playsInline=true;v.setAttribute("playsinline","");v.preload="auto";v.src=url;
+  try{
+    await new Promise((ok,bad)=>{v.onloadedmetadata=ok;v.onerror=()=>bad(new Error("video"));setTimeout(()=>bad(new Error("timeout")),15000)});
+    try{await v.play();v.pause()}catch(_){}
+    let dur=v.duration;if(!isFinite(dur)||dur<=0)dur=30;
+    const n=Math.max(3,Math.min(max,Math.round(dur/5)));const out=[];
+    const w=Math.min(720,v.videoWidth||720),h=Math.round((v.videoHeight||1280)*(w/(v.videoWidth||720)));
+    const c=document.createElement("canvas");c.width=w;c.height=h;const ctx=c.getContext("2d");
+    for(let i=0;i<n;i++){
+      const tt=Math.min(dur-0.2,0.6+(dur-1)*(i/(n-1||1)));
+      await new Promise(ok=>{let done=false;const fin=()=>{if(!done){done=true;ok()}};v.onseeked=fin;setTimeout(fin,3000);v.currentTime=Math.max(0,tt)});
+      await wait(60);ctx.drawImage(v,0,0,w,h);const d=c.toDataURL("image/jpeg",0.72);out.push({mime:"image/jpeg",data:d.split(",")[1],preview:d});
+    }
+    return {frames:out,duration:dur};
+  }finally{URL.revokeObjectURL(url)}
+}
+async function videoAudio(file,maxSec=120,rate=12000){
+  if(file.size>250e6)return null;
+  const AC=window.AudioContext||window.webkitAudioContext,OAC=window.OfflineAudioContext||window.webkitOfflineAudioContext;if(!AC||!OAC)return null;
+  const ctx=new AC();
+  try{const buf=await file.arrayBuffer();
+    const dec=await new Promise((ok,bad)=>{const p=ctx.decodeAudioData(buf,ok,bad);if(p&&p.then)p.then(ok,bad)});
+    const len=Math.ceil(Math.min(dec.duration,maxSec)*rate);if(len<rate)return null;
+    const off=new OAC(1,len,rate);const src=off.createBufferSource();src.buffer=dec;src.connect(off.destination);src.start(0);
+    const out=await off.startRendering();const ch=out.getChannelData(0);
+    let peak=0;for(let i=0;i<ch.length;i+=50)peak=Math.max(peak,Math.abs(ch[i]));if(peak<0.01)return null;
+    const bytes=new Uint8Array(44+ch.length*2),dv=new DataView(bytes.buffer),wr=(o,s)=>{for(let i=0;i<s.length;i++)bytes[o+i]=s.charCodeAt(i)};
+    wr(0,"RIFF");dv.setUint32(4,36+ch.length*2,true);wr(8,"WAVE");wr(12,"fmt ");dv.setUint32(16,16,true);dv.setUint16(20,1,true);dv.setUint16(22,1,true);
+    dv.setUint32(24,rate,true);dv.setUint32(28,rate*2,true);dv.setUint16(32,2,true);dv.setUint16(34,16,true);wr(36,"data");dv.setUint32(40,ch.length*2,true);
+    for(let i=0;i<ch.length;i++){const x=Math.max(-1,Math.min(1,ch[i]/Math.max(peak,0.3)));dv.setInt16(44+i*2,x<0?x*0x8000:x*0x7fff,true)}
+    let bin="";for(let i=0;i<bytes.length;i+=0x8000)bin+=String.fromCharCode.apply(null,bytes.subarray(i,i+0x8000));
+    return {mime:"audio/wav",data:btoa(bin)};
+  }catch(_){return null}finally{try{ctx.close()}catch(_){}}
+}
+
 /* AI import */
 async function shrinkImage(file){ // -> {mime,data(base64)} max 1280px JPEG
   const url=URL.createObjectURL(file);
@@ -702,18 +968,28 @@ async function shrinkImage(file){ // -> {mime,data(base64)} max 1280px JPEG
 }
 function sheetAI(pre={}){
   if(!CLOUD){toast(t("aiDemo"));return}
-  const shots=[];let busy=false;
+  const shots=[];let busy=false,vid=null;
   openSheet(`<form class="stack" id="aif" autocomplete="off">
     <div class="row"><span class="aiic">${ICON.sparkle}</span><h2 class="sec grow" style="font-size:19px;margin:0">${t("aiImport")}</h2></div>
     <div><label class="f">${t("aiLink")}</label><input type="url" id="aiUrl" inputmode="url" placeholder="https://www.instagram.com/reel/…" value="${esc(pre.url||"")}"></div>
     <div><label class="f">${t("aiText")}</label><textarea dir="auto" id="aiText" style="min-height:90px">${esc(pre.text||"")}</textarea>
       <div class="muted small" style="margin-top:4px">${t("aiTextHint")}</div></div>
     <div><label class="f">${t("aiShots")}</label><div class="thumbs" id="aiThumbs"></div>
-      <label class="btn ghost block" style="cursor:pointer;margin-top:6px">${ICON.image}${t("aiAddShots")}<input type="file" id="aiFile" accept="image/*" multiple class="hidden"></label></div>
+      <div class="grid2" style="margin-top:6px"><label class="btn ghost" style="cursor:pointer">${ICON.image}${t("aiAddShots")}<input type="file" id="aiFile" accept="image/*" multiple class="hidden"></label>
+      <label class="btn ghost" style="cursor:pointer">${ICON.film}${t("video").split(" (")[0]}<input type="file" id="aiVid" accept="video/*" class="hidden"></label></div>
+      <div class="muted small" style="margin-top:4px">${t("videoHint")}</div><div id="aiVidInfo"></div></div>
     <div id="aiMsg"></div>
     <div class="grid2"><button type="button" class="btn ghost" id="aic">${t("cancel")}</button><button class="btn primary" id="aiGo">${ICON.sparkle}${t("aiGo")}</button></div>
   </form>`,()=>{
-    const drawThumbs=()=>{$("#aiThumbs").innerHTML=shots.map((s,i)=>`<div class="thumb"><img src="${s.preview}" alt=""><button type="button" class="x" data-rm="${i}">×</button></div>`).join("")};
+    const drawThumbs=()=>{$("#aiThumbs").innerHTML=shots.map((s,i)=>`<div class="thumb"><img src="${s.preview}" alt=""><button type="button" class="x" data-rm="${i}">×</button></div>`).join("")
+      +(vid?`<div class="thumb"><img src="${vid.frames[0]&&vid.frames[0].preview||""}" alt=""><span class="vbadge">${ICON.film}${vid.frames.length}</span><button type="button" class="x" data-rmv="1">×</button></div>`:"")};
+    $("#aiThumbs").addEventListener("click",e=>{if(e.target.closest("[data-rmv]")){vid=null;$("#aiVidInfo").innerHTML="";drawThumbs()}});
+    $("#aiVid").onchange=async e=>{const f=e.target.files[0];e.target.value="";if(!f)return;
+      busy=true;$("#aiGo").disabled=true;$("#aiVidInfo").innerHTML=`<div class="muted small"><span class="spin"></span>${t("preparingVideo")}</div>`;
+      try{const fr=await videoFrames(f,10);const au=await videoAudio(f);vid={frames:fr.frames,audio:au};
+        $("#aiVidInfo").innerHTML=`<div class="muted small">✓ ${t("videoReady")} · ${fr.frames.length} 🖼${au?" · 🔊":" · "+t("videoNoAudio")}</div>`}
+      catch(err){console.error(err);vid=null;$("#aiVidInfo").innerHTML=`<div class="banner warn">${esc(t("videoFail"))}</div>`}
+      finally{busy=false;$("#aiGo").disabled=false;drawThumbs()}};
     $("#aiThumbs").onclick=e=>{const b=e.target.closest("[data-rm]");if(b){shots.splice(+b.dataset.rm,1);drawThumbs()}};
     $("#aiFile").onchange=async e=>{for(const f of [...e.target.files].slice(0,4-shots.length)){try{shots.push(await shrinkImage(f))}catch(_){}}e.target.value="";drawThumbs()};
     $("#aic").onclick=()=>{if(!busy)closeSheet()};
@@ -721,17 +997,18 @@ function sheetAI(pre={}){
     $("#aif").addEventListener("input",()=>{if(!busy)msg("")});
     $("#aif").onsubmit=async ev=>{ev.preventDefault();if(busy)return;
       const url=$("#aiUrl").value.trim(),text=$("#aiText").value.trim();
-      if(!url&&!text&&!shots.length){msg(esc(t("aiNeedInput")),"warn");return}
+      if(!url&&!text&&!shots.length&&!vid){msg(esc(t("aiNeedInput")),"warn");return}
       busy=true;$("#aiGo").disabled=true;msg(`<span class="spin"></span>${esc(t("aiWorking"))}`);
       try{
-        const res=await SupaBackend.importAI({url,text,images:shots.map(({mime,data})=>({mime,data})),lang});
+        const imgs=[...shots,...(vid?vid.frames:[])].slice(0,12).map(({mime,data})=>({mime,data}));
+        const res=await SupaBackend.importAI({mode:"recipe",url,text,images:imgs,audio:vid&&vid.audio||undefined,lang});
         const r=normalizeRecipe({...res.recipe,source:res.recipe.source||url});
         if(!r)throw new Error(t("badJson"));
         r.id=uuid();S.draft=r;closeSheet();$("#view").dataset.editing="";
         go({tab:"recipes",view:"edit",id:null});
         toast(res.linkNote&&!text&&!shots.length?t("aiLinkWarn"):t("aiCheck"));
       }catch(e){console.error(e);
-        const linkOnly=url&&!text&&!shots.length&&["no_recipe","link_unreadable"].includes(e.code);
+        const linkOnly=url&&!text&&!shots.length&&!vid&&["no_recipe","link_unreadable"].includes(e.code);
         msg(esc(e.code==="setup"?t("aiSetup"):linkOnly?t("aiLinkOnly"):errMsg(e)),"warn");
         if(linkOnly){const ta=$("#aiText");ta.focus();ta.style.borderColor="var(--kcal)"}}
       finally{busy=false;const g=$("#aiGo");if(g)g.disabled=false}
@@ -826,6 +1103,12 @@ document.addEventListener("click",e=>{
     case "tag":tagFilter=tagFilter===a.dataset.tag?"":a.dataset.tag;render();break;
     case "import":sheetImport();break;
     case "ai":sheetAI();break;
+    case "translate":if(r)translateRecipe(r,a);break;
+    case "openProd":{const p=S.products.find(x=>x.id===a.dataset.id);if(p)sheetProduct(p);break}
+    case "saveCommon":{const f=commonFoods().find(x=>x.id===a.dataset.id);if(f)saveFoodToMine(f);break}
+    case "saveOff":{const f=(window.__offRes||[])[+a.dataset.i];if(f)saveFoodToMine(f);break}
+    case "offSearch":offSearchUI();break;
+    case "prodPhoto":sheetProduct(null,{photo:true});break;
     case "export":exportRecipes();break;
     case "setLang":lang=a.dataset.v;LS.set("nt.lang",lang);$("#view").dataset.editing="";render();break;
     case "setTheme":theme=a.dataset.v;LS.set("nt.theme",theme);render();break;
@@ -842,7 +1125,16 @@ document.addEventListener("click",e=>{
     case "retry":location.reload();break;
   }
 });
-document.addEventListener("input",e=>{if(e.target.closest("#editForm"))updIngSum()});
+document.addEventListener("input",e=>{
+  const el=e.target;
+  if(el.classList&&el.classList.contains("in-name")){const row=el.closest(".ingrow");const st=rowState(row);
+    if(st.food){st.food=null;st.p=st.c=st.f=null;row.classList.remove("auto")}
+    showSuggest(el,searchFoods(el.value,6),food=>{el.value=food.name;st.food=foodSnap(food);
+      const amt=row.querySelector(".in-amt");if(!amt.value.trim())amt.value=defaultAmount(food);recalcRow(row);updIngSum();amt.focus()})}
+  if(el.classList&&el.classList.contains("in-amt")){recalcRow(el.closest(".ingrow"))}
+  if(el.classList&&el.classList.contains("in-kcal")){const row=el.closest(".ingrow");row.classList.remove("auto")}
+  if(el.closest("#editForm"))updIngSum()});
+document.addEventListener("focusout",e=>{if(e.target.classList&&(e.target.classList.contains("in-name")||e.target.id==="qn"))setTimeout(closeSuggest,150)});
 document.addEventListener("submit",e=>{
   const id=e.target.id;
   if(["shopForm","editForm","authForm","createHh","joinHh","hhRename","hhJoin","meRename"].includes(id))e.preventDefault();
@@ -868,8 +1160,11 @@ document.addEventListener("submit",e=>{
   if(id!=="editForm")return;
   const f=e.target,name=f.rname.value.trim();if(!name){toast(t("needName"));return}
   const old=route.id?S.recipes.find(x=>x.id===route.id):null;
-  const ings=[...f.querySelectorAll(".ingrow")].map(row=>({name:row.querySelector(".in-name").value.trim(),amount:row.querySelector(".in-amt").value.trim(),
-    kcal:numOrNull(row.querySelector(".in-kcal").value)})).filter(i=>i.name);
+  const ings=[...f.querySelectorAll(".ingrow")].map(row=>{const st=rowState(row);
+    const o={name:row.querySelector(".in-name").value.trim(),amount:row.querySelector(".in-amt").value.trim(),kcal:numOrNull(row.querySelector(".in-kcal").value)};
+    if(st.food){o.food=st.food;if(st.p!=null)o.protein=st.p;if(st.c!=null)o.carbs=st.c;if(st.f!=null)o.fat=st.f}
+    else{if(st.p!=null)o.protein=st.p;if(st.c!=null)o.carbs=st.c;if(st.f!=null)o.fat=st.f}
+    return o}).filter(i=>i.name);
   const rec={...(old||{}),id:old?old.id:uuid(),name,servings:num(f.servings.value)||1,time:numOrNull(f.time.value),ingredients:ings,
     kcalPerServing:numOrNull(f.kcalPerServing.value),protein:numOrNull(f.protein.value),carbs:numOrNull(f.carbs.value),fat:numOrNull(f.fat.value),
     steps:f.steps.value.split("\n").map(s=>s.trim()).filter(Boolean),
@@ -881,12 +1176,12 @@ document.addEventListener("submit",e=>{
 $("#backBtn").onclick=()=>{
   if(route.tab==="settings"){go({tab:route.prevTab||"recipes",view:"list"});return}
   if(route.view==="edit")go({view:route.id?"detail":"list"});else go({view:"list",id:null})};
-$("#gearBtn").onclick=()=>{route.prevTab=["today","recipes","shopping"].includes(route.tab)?route.tab:"recipes";go({tab:"settings",view:"list"});
+$("#gearBtn").onclick=()=>{route.prevTab=["today","recipes","shopping","products"].includes(route.tab)?route.tab:"recipes";go({tab:"settings",view:"list"});
   if(CLOUD&&S.household)SupaBackend.members().then(m=>{S.members=m;if(route.tab==="settings")rerender()}).catch(()=>{})};
-$("#fab").onclick=()=>{if(route.tab==="today")sheetQuick();else{$("#view").dataset.editing="";go({view:"edit",id:null})}};
+$("#fab").onclick=()=>{if(route.tab==="today")sheetQuick();else if(route.tab==="products")sheetProduct(null);else{$("#view").dataset.editing="";go({view:"edit",id:null})}};
 $("#langBtn").onclick=()=>{lang=lang==="he"?"en":"he";LS.set("nt.lang",lang);$("#view").dataset.editing="";render()};
 $("#themeBtn").onclick=()=>{theme=theme==="dark"?"light":"dark";LS.set("nt.theme",theme);applyChrome()};
-const TABS=["today","recipes","shopping"];
+const TABS=["today","recipes","shopping","products"];
 window.addEventListener("hashchange",()=>{const h=location.hash.slice(1);if(TABS.includes(h)&&h!==route.tab)go({tab:h,view:"list",id:null})});
 {const h=location.hash.slice(1);if(TABS.includes(h))route.tab=h;if(!TABS.includes(route.tab))route.tab="recipes";if(sharedIn)route.tab="recipes"}
 

@@ -90,6 +90,22 @@ The recipe opens in the editor; check it and tap **Save**.
   If the recipe is only spoken in an Instagram/Facebook video, add screenshots.
 - Optional secret `GEMINI_MODEL` lets you pick a different Gemini model if Google renames them.
 
+## Updating to 1.2.0 (products, translate, video import) — do once
+
+1. **Database:** Supabase → SQL Editor → New query → paste all of `supabase/002_products.sql` → **Run**.
+2. **AI function:** Supabase → Edge Functions → `import-recipe` → **Code** → replace everything with the new
+   `supabase/functions/import-recipe/index.ts` → **Deploy**. (Your GEMINI_API_KEY secret stays.)
+
+What's new:
+- **Products tab** — your household's products (shared), 137 built-in common foods (English + Hebrew),
+  online search in **Open Food Facts** (free community database, many Israeli products; type a barcode to look it up),
+  and **Fill from photo**: photograph the package / nutrition label and the AI fills in the values (per 100 g).
+- **Typing an ingredient or a food in "Log food"** suggests products; pick one and enter an amount
+  (`150 g`, `2`, `2 ביצים`, `1 כוס`, `חצי גביע`) — calories, protein, carbs and fat are calculated.
+- **Translate** button on every recipe (to the language the app is in).
+- **AI import → Add video:** screen-record a reel while it plays, add the recording; the app sends frames and the
+  soundtrack to the AI.
+
 ---
 
 ## Adding recipes from a link (without AI import)
