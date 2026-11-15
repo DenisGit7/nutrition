@@ -36,7 +36,7 @@ aiImport:"Import with AI",aiSub:"From Instagram, Facebook, TikTok, YouTube or an
 aiText:"Caption or recipe text (optional)",aiTextHint:"Tip: in Instagram tap ••• → Copy, or open the caption and copy it",aiShots:"Screenshots (optional)",
 aiAddShots:"Add screenshots",aiGo:"Create recipe",aiWorking:"Reading the recipe… (10–30 seconds)",aiCheck:"Check the recipe and tap Save",
 aiNeedInput:"Paste a link, the caption text or add screenshots.",aiDemo:"AI import needs the synced version (Supabase).",
-aiSetup:"AI import isn't set up yet in Supabase (see README, step 6).",aiLinkWarn:"Couldn't open the link itself — the recipe was made from the text/screenshots."},
+aiSetup:"AI import isn't set up yet in Supabase (see README, step 6).",aiLinkWarn:"Couldn't open the link itself — the recipe was made from the text/screenshots.",aiLinkOnly:"This site only shared the title, not the recipe. Copy the post text (See more → copy) into the box above, or add screenshots of the ingredients, then tap Create recipe again."},
 he:{app:"תזונה",today:"היום",recipes:"מתכונים",shopping:"קניות",settings:"הגדרות",search:"חיפוש מתכון או מצרך…",
 noRecipes:"אין עדיין מתכונים. לחץ + כדי להוסיף, או ייבא מתכון ש-Claude הכין לך.",noMatch:"לא נמצאו מתכונים.",
 kcal:"קק״ל",perServing:"למנה",servings:"מנות",protein:"חלבון",carbs:"פחמימות",fat:"שומן",time:"זמן (דק׳)",min:"דק׳",
@@ -68,9 +68,9 @@ aiImport:"ייבוא עם AI",aiSub:"מאינסטגרם, פייסבוק, טיק�
 aiText:"טקסט הפוסט או המתכון (לא חובה)",aiTextHint:"טיפ: באינסטגרם לחץ ••• → העתקה, או פתח את הכיתוב והעתק אותו",aiShots:"צילומי מסך (לא חובה)",
 aiAddShots:"הוספת צילומי מסך",aiGo:"יצירת מתכון",aiWorking:"קורא את המתכון… (10–30 שניות)",aiCheck:"בדוק את המתכון ולחץ שמירה",
 aiNeedInput:"הדבק קישור, טקסט או הוסף צילומי מסך.",aiDemo:"ייבוא עם AI זמין רק בגרסה המסונכרנת (Supabase).",
-aiSetup:"ייבוא עם AI עדיין לא הוגדר ב-Supabase (ראה README, שלב 6).",aiLinkWarn:"לא הצלחתי לפתוח את הקישור עצמו — המתכון נוצר מהטקסט/צילומי המסך."}
+aiSetup:"ייבוא עם AI עדיין לא הוגדר ב-Supabase (ראה README, שלב 6).",aiLinkWarn:"לא הצלחתי לפתוח את הקישור עצמו — המתכון נוצר מהטקסט/צילומי המסך.",aiLinkOnly:"האתר שיתף רק את הכותרת, בלי המתכון. העתק את טקסט הפוסט (עוד → העתקה) לתיבה למעלה, או הוסף צילומי מסך של המצרכים, ואז לחץ שוב על יצירת מתכון."}
 };
-const VERSION = "1.1.0";
+const VERSION = "1.1.1";
 
 /* =================== small utils =================== */
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},
@@ -730,7 +730,10 @@ function sheetAI(pre={}){
         r.id=uuid();S.draft=r;closeSheet();$("#view").dataset.editing="";
         go({tab:"recipes",view:"edit",id:null});
         toast(res.linkNote&&!text&&!shots.length?t("aiLinkWarn"):t("aiCheck"));
-      }catch(e){console.error(e);msg(esc(e.code==="setup"?t("aiSetup"):errMsg(e)),"warn")}
+      }catch(e){console.error(e);
+        const linkOnly=url&&!text&&!shots.length&&["no_recipe","link_unreadable"].includes(e.code);
+        msg(esc(e.code==="setup"?t("aiSetup"):linkOnly?t("aiLinkOnly"):errMsg(e)),"warn");
+        if(linkOnly){const ta=$("#aiText");ta.focus();ta.style.borderColor="var(--kcal)"}}
       finally{busy=false;const g=$("#aiGo");if(g)g.disabled=false}
     };
   });
