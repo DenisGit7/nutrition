@@ -15,7 +15,7 @@ needOnline:"Online search needs the synced version",offNote:"Data from Open Food
 translateTo:"Translate to English",translating:"Translating…",translated:"Translated",amountHint:"e.g. 150 g, 2, 1 cup",
 autoCalc:"calculated",video:"Add video (screen recording)",videoHint:"Record your screen while the reel plays, then add the recording here",
 preparingVideo:"Preparing video…",videoReady:"Video ready",videoNoAudio:"no sound found — using pictures only",videoFail:"Couldn't read this video — try screenshots",
-grams:"g",picture:"Picture",addPicture:"Add picture",changePicture:"Change",removePicture:"Remove",uploading:"Saving picture…",picFail:"Couldn't save the picture: ",commonHint:"{n} common foods are built in — type above to search them",today:"Today",recipes:"Recipes",shopping:"Shopping",settings:"Settings",search:"Search recipes or ingredients…",
+grams:"g",findPicture:"Find picture online",choosePicture:"Choose a picture",noPictures:"No pictures found — try a shorter name, or take a photo",picSources:"Photos: Open Food Facts, Wikipedia",picture:"Picture",addPicture:"Add picture",changePicture:"Change",removePicture:"Remove",uploading:"Saving picture…",picFail:"Couldn't save the picture: ",commonHint:"{n} common foods are built in — type above to search them",today:"Today",recipes:"Recipes",shopping:"Shopping",settings:"Settings",search:"Search recipes or ingredients…",
 noRecipes:"No recipes yet. Tap + to add one, or import a recipe Claude made for you.",noMatch:"No recipes match your search.",
 kcal:"kcal",perServing:"per serving",servings:"Servings",protein:"Protein",carbs:"Carbs",fat:"Fat",time:"Time (min)",min:"min",
 ingredients:"Ingredients",steps:"Steps",notes:"Notes",source:"Source",edit:"Edit",del:"Delete",delAgain:"Tap again to delete",
@@ -57,7 +57,7 @@ needOnline:"חיפוש ברשת זמין רק בגרסה המסונכרנת",off
 translateTo:"תרגום לעברית",translating:"מתרגם…",translated:"תורגם",amountHint:"למשל 150 גרם, 2, כוס",
 autoCalc:"מחושב",video:"הוספת סרטון (הקלטת מסך)",videoHint:"הקלט את המסך בזמן שהסרטון מתנגן, והוסף את ההקלטה כאן",
 preparingVideo:"מכין את הסרטון…",videoReady:"הסרטון מוכן",videoNoAudio:"לא נמצא קול — משתמש בתמונות בלבד",videoFail:"לא הצלחתי לקרוא את הסרטון — נסה צילומי מסך",
-grams:"גרם",picture:"תמונה",addPicture:"הוספת תמונה",changePicture:"החלפה",removePicture:"הסרה",uploading:"שומר תמונה…",picFail:"לא הצלחתי לשמור את התמונה: ",commonHint:"{n} מזונות נפוצים כבר מובנים — הקלד למעלה כדי לחפש",today:"היום",recipes:"מתכונים",shopping:"קניות",settings:"הגדרות",search:"חיפוש מתכון או מצרך…",
+grams:"גרם",findPicture:"חיפוש תמונה ברשת",choosePicture:"בחירת תמונה",noPictures:"לא נמצאו תמונות — נסה שם קצר יותר, או צלם",picSources:"תמונות: Open Food Facts, ויקיפדיה",picture:"תמונה",addPicture:"הוספת תמונה",changePicture:"החלפה",removePicture:"הסרה",uploading:"שומר תמונה…",picFail:"לא הצלחתי לשמור את התמונה: ",commonHint:"{n} מזונות נפוצים כבר מובנים — הקלד למעלה כדי לחפש",today:"היום",recipes:"מתכונים",shopping:"קניות",settings:"הגדרות",search:"חיפוש מתכון או מצרך…",
 noRecipes:"אין עדיין מתכונים. לחץ + כדי להוסיף, או ייבא מתכון ש-Claude הכין לך.",noMatch:"לא נמצאו מתכונים.",
 kcal:"קק״ל",perServing:"למנה",servings:"מנות",protein:"חלבון",carbs:"פחמימות",fat:"שומן",time:"זמן (דק׳)",min:"דק׳",
 ingredients:"מצרכים",steps:"אופן הכנה",notes:"הערות",source:"מקור",edit:"עריכה",del:"מחיקה",delAgain:"לחץ שוב למחיקה",
@@ -90,7 +90,7 @@ aiAddShots:"הוספת צילומי מסך",aiGo:"יצירת מתכון",aiWorki
 aiNeedInput:"הדבק קישור, טקסט או הוסף צילומי מסך.",aiDemo:"ייבוא עם AI זמין רק בגרסה המסונכרנת (Supabase).",
 aiSetup:"ייבוא עם AI עדיין לא הוגדר ב-Supabase (ראה README, שלב 6).",aiLinkWarn:"לא הצלחתי לפתוח את הקישור עצמו — המתכון נוצר מהטקסט/צילומי המסך.",aiLinkOnly:"האתר שיתף רק את הכותרת, בלי המתכון. העתק את טקסט הפוסט (עוד → העתקה) לתיבה למעלה, או הוסף צילומי מסך של המצרכים, ואז לחץ שוב על יצירת מתכון."}
 };
-const VERSION = "1.3.0";
+const VERSION = "1.3.1";
 
 /* =================== small utils =================== */
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},
@@ -360,7 +360,27 @@ const EMOJI=[["egg white","🥚"],["eggplant","🍆"],["egg","🥚"],["milk","�
   ["honey","🍯"],["sugar","🧂"],["silan","🍯"],["jam","🍓"],["chocolate","🍫"],["ketchup","🍅"],["soy","🥢"],["tomato paste","🥫"],["crushed","🥫"],["coca","🥤"],["beer","🍺"],
   ["wine","🍷"],["coffee","☕"],["latte","☕"],["protein","💪"],["bamba","🥜"],["bissli","🥨"],["fries","🍟"],["pizza","🍕"],["shawarma","🌯"],["burekas","🥐"],["malawach","🫓"],["ice cream","🍨"]];
 function foodEmoji(en){en=norm(en);for(const [k,e] of EMOJI)if(en.includes(k))return e;return ""}
+/* ---------- real photos from Wikipedia (free, no key) ---------- */
+const WIKI_CACHE_KEY="nt.wikiimg.v1";let wikiCache=LS.get(WIKI_CACHE_KEY,{}),wikiQueue=[],wikiBusy=0,wikiTimer=null;
+const cleanFoodName=n=>String(n||"").replace(/\(.*?\)/g,"").replace(/\d+(\.\d+)?\s*%/g,"").replace(/[\/,].*$/,"").replace(/\s+/g," ").trim();
+async function wikiSearch(q,wlang="en",limit=6){
+  const u=`https://${wlang}.wikipedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrnamespace=0&gsrlimit=${limit}`+
+    `&gsrsearch=${encodeURIComponent(q)}&prop=pageimages&piprop=thumbnail&pithumbsize=320`;
+  try{const r=await fetch(u);if(!r.ok)return [];const d=await r.json();
+    return Object.values((d.query&&d.query.pages)||{}).sort((a,b)=>(a.index||0)-(b.index||0))
+      .filter(p=>p.thumbnail&&p.thumbnail.source&&!/\.svg/i.test(p.thumbnail.source)).map(p=>({url:p.thumbnail.source,title:p.title,src:"Wikipedia"}))}
+  catch(_){return []}
+}
+function commonImage(f){const k=f.en;if(!k)return "";
+  if(k in wikiCache)return wikiCache[k]||"";
+  if(!wikiQueue.includes(k)){wikiQueue.push(k);pumpWiki()}return ""}
+function pumpWiki(){
+  while(wikiBusy<3&&wikiQueue.length){const k=wikiQueue.shift();wikiBusy++;
+    wikiSearch(cleanFoodName(k)+" food","en",3).then(list=>{wikiCache[k]=(list[0]&&list[0].url)||"";LS.set(WIKI_CACHE_KEY,wikiCache)})
+      .finally(()=>{wikiBusy--;clearTimeout(wikiTimer);wikiTimer=setTimeout(()=>{if(S.phase==="app")rerender()},250);pumpWiki()})}
+}
 function thumbHTML(f,size=44){
+  if(f&&f.common&&!f.image){const u=commonImage(f);if(u)f={...f,image:u}}
   if(f&&f.image)return `<img class="pthumb" style="width:${size}px;height:${size}px" src="${esc(f.image)}" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'pthumb ph',textContent:'${esc(initial(f.name)).replace(/'/g,"")}'}))">`;
   const em=f&&(f.emoji||foodEmoji(f.en||f.name));
   return `<span class="pthumb ${em?"emo":"ph"}" style="width:${size}px;height:${size}px;font-size:${Math.round(size*(em?0.55:0.42))}px;${em?"":"background:"+grad(f&&f.name)}">${esc(em||initial(f&&f.name))}</span>`;
@@ -872,7 +892,7 @@ async function offSearchUI(){
 async function saveFoodToMine(f){
   const p={id:uuid(),name:f.name,brand:f.brand||"",barcode:f.barcode||"",category:f.category||"",unit:f.unit||"g",serving_g:f.serving_g||null,
     serving_name:f.serving_name||"",kcal:numOrNull(f.kcal),protein:numOrNull(f.protein),carbs:numOrNull(f.carbs),fat:numOrNull(f.fat),
-    sugar:numOrNull(f.sugar),fiber:numOrNull(f.fiber),source:f.source||(f.common?"common":"manual"),image:f.image||""};
+    sugar:numOrNull(f.sugar),fiber:numOrNull(f.fiber),source:f.source||(f.common?"common":"manual"),image:f.image||(f.common?commonImage(f):"")||""};
   S.products=[...S.products,p];saveCache();rerender();
   const ok=await write("products",()=>S.api.saveProduct(p));if(ok)toast(t("savedToMine"));
 }
@@ -890,7 +910,9 @@ function sheetProduct(p,opt={}){
     <div class="row" id="picRow">${`<span id="picBox">${thumbHTML(p,72)}</span>`}<div class="grow">
       <label class="f">${t("picture")}</label>
       <div class="row" style="gap:6px;flex-wrap:wrap"><label class="btn sm ghost" style="cursor:pointer">${ICON.camera}<span id="picLbl">${p.image?t("changePicture"):t("addPicture")}</span><input type="file" id="picFile" accept="image/*" class="hidden"></label>
+      <button type="button" class="btn sm ghost" id="picFind">${ICON.search}${t("findPicture")}</button>
       <button type="button" class="btn sm ghost ${p.image?"":"hidden"}" id="picDel">${t("removePicture")}</button></div></div></div>
+    <div id="picPick"></div>
     ${fld("pName",t("name"),p.name,"text")}
     <div class="grid2">${fld("pBrand",t("brand"),p.brand,"text")}
       <div><label class="f">${t("barcode")}</label><div class="row" style="gap:6px"><input type="text" inputmode="numeric" id="pCode" value="${esc(p.barcode||"")}">
@@ -909,6 +931,17 @@ function sheetProduct(p,opt={}){
     const setPicFrom=async file=>{try{const sm=await shrinkImage(file,480);picBlob=await (await fetch(sm.preview)).blob();image=sm.preview;showPic()}catch(_){}};
     $("#picFile").onchange=e=>{const f=e.target.files[0];e.target.value="";if(f)setPicFrom(f)};
     $("#picDel").onclick=()=>{image="";picBlob=null;showPic()};
+    $("#picFind").onclick=async()=>{const name=$("#pName").value.trim()||p.name||"";if(!name){toast(t("needName"));return}
+      const box=$("#picPick");box.innerHTML=`<div class="muted small"><span class="spin"></span>${t("searching")}</div>`;
+      const brand=$("#pBrand").value.trim(),code=$("#pCode").value.replace(/\D/g,""),clean=cleanFoodName(name);
+      const jobs=[wikiSearch(clean,lang==="he"?"he":"en",6),wikiSearch(clean,lang==="he"?"en":"he",4)];
+      if(CLOUD){jobs.unshift(S.api.callFn({mode:"off_search",q:(brand?brand+" ":"")+name,lang}).then(r=>(r.products||[]).filter(x=>x.image).map(x=>({url:x.image,title:x.name,src:"Open Food Facts"}))).catch(()=>[]));
+        if(code)jobs.unshift(S.api.callFn({mode:"off_barcode",code,lang}).then(r=>(r.products||[]).filter(x=>x.image).map(x=>({url:x.image,title:x.name,src:"Open Food Facts"}))).catch(()=>[]))}
+      const seen=new Set(),all=(await Promise.all(jobs)).flat().filter(x=>!seen.has(x.url)&&seen.add(x.url)).slice(0,12);
+      if(!$("#picPick"))return;
+      box.innerHTML=all.length?`<label class="f" style="margin-top:6px">${t("choosePicture")}</label><div class="picgrid">${all.map((x,i)=>`<button type="button" data-pi="${i}" title="${esc(x.title)}"><img src="${esc(x.url)}" alt="" loading="lazy" onerror="this.parentNode.remove()"></button>`).join("")}</div>
+        <div class="muted small" style="margin-top:4px">${t("picSources")}</div>`:`<div class="banner warn">${esc(t("noPictures"))}</div>`;
+      box.onclick=e=>{const b=e.target.closest("[data-pi]");if(!b)return;image=all[+b.dataset.pi].url;picBlob=null;showPic();box.innerHTML=""}};
     $("#pUnit").onclick=e=>{const b=e.target.closest("[data-u]");if(!b)return;unit=b.dataset.u;$("#pUnit").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));$("#pU").textContent=unit};
     const fill=x=>{const set=(id,v)=>{if(v!=null&&v!=="")$("#"+id).value=v};
       if(x.image&&!image){image=x.image;picBlob=null;setTimeout(showPic)}
