@@ -90,7 +90,7 @@ aiAddShots:"הוספת צילומי מסך",aiGo:"יצירת מתכון",aiWorki
 aiNeedInput:"הדבק קישור, טקסט או הוסף צילומי מסך.",aiDemo:"ייבוא עם AI זמין רק בגרסה המסונכרנת (Supabase).",
 aiSetup:"ייבוא עם AI עדיין לא הוגדר ב-Supabase (ראה README, שלב 6).",aiLinkWarn:"לא הצלחתי לפתוח את הקישור עצמו — המתכון נוצר מהטקסט/צילומי המסך.",aiLinkOnly:"האתר שיתף רק את הכותרת, בלי המתכון. העתק את טקסט הפוסט (עוד → העתקה) לתיבה למעלה, או הוסף צילומי מסך של המצרכים, ואז לחץ שוב על יצירת מתכון."}
 };
-const VERSION = "1.2.0";
+const VERSION = "1.2.1";
 
 /* =================== small utils =================== */
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},
@@ -148,7 +148,7 @@ function recipeToRow(r,hid){return {id:r.id,household_id:hid,name:r.name,serving
   kcal_per_serving:numOrNull(r.kcalPerServing),protein:numOrNull(r.protein),carbs:numOrNull(r.carbs),fat:numOrNull(r.fat),
   steps:r.steps||[],tags:r.tags||[],notes:r.notes||null,source:r.source||null}}
 const shopFromRow=r=>({id:r.id,name:r.name,amount:r.amount||"",done:!!r.done,recipes:r.recipes||[],createdAt:r.created_at});
-const prodFromRow=r=>({id:r.id,name:r.name,brand:r.brand||"",barcode:r.barcode||"",category:r.category||"",unit:r.unit||"g",
+const prodFromRow=r=>({id:r.id,updatedAt:r.updated_at,name:r.name,brand:r.brand||"",barcode:r.barcode||"",category:r.category||"",unit:r.unit||"g",
   serving_g:r.serving_g==null?null:num(r.serving_g),serving_name:r.serving_name||"",kcal:numOrNull(r.kcal),protein:numOrNull(r.protein),
   carbs:numOrNull(r.carbs),fat:numOrNull(r.fat),sugar:numOrNull(r.sugar),fiber:numOrNull(r.fiber),source:r.source||""});
 const prodToRow=(p,hid)=>({id:p.id,household_id:hid,name:p.name,brand:p.brand||null,barcode:p.barcode||null,category:p.category||null,unit:p.unit==="ml"?"ml":"g",
@@ -443,7 +443,7 @@ function render(){
     $("#title").textContent="";v.innerHTML=viewDetail(r);return}
   if(route.view==="edit"){const r=route.id?S.recipes.find(x=>x.id===route.id):null;
     $("#title").textContent=r?t("editRecipe"):t("newRecipe");
-    if(!v.querySelector("#editForm")||v.dataset.editing!==(route.id||"new")){v.innerHTML=viewEdit(r);v.dataset.editing=route.id||"new";updIngSum()}return}
+    if(!v.querySelector("#editForm")||v.dataset.editing!==(route.id||"new")){v.innerHTML=viewEdit(r);v.dataset.editing=route.id||"new";autoLinkRows();updIngSum()}return}
 }
 
 /* =================== install banner =================== */
@@ -551,7 +551,7 @@ function viewDetail(r){
 }
 const rowFood=new WeakMap();
 function ingRow(i={}){return `<div class="ingrow ${i.food?"auto":""}" data-ing='${esc(JSON.stringify({p:i.protein??null,c:i.carbs??null,f:i.fat??null,food:i.food||null}))}'>
-  <input type="text" dir="auto" class="in-name" placeholder="${t("ingName")}" value="${esc(i.name||"")}" autocomplete="off">
+  <input type="text" dir="auto" class="in-name" data-food placeholder="${t("ingName")}" value="${esc(i.name||"")}" autocomplete="off">
   <input type="text" dir="auto" class="in-amt" placeholder="${t("amount")}" value="${esc(i.amount||"")}">
   <input type="number" step="any" inputmode="decimal" class="in-kcal" placeholder="${t("kcal")}" value="${esc(i.kcal??"")}">
   <button class="x" type="button" data-act="rmIng" aria-label="remove">×</button></div>`}
@@ -589,7 +589,9 @@ function recalcRow(row){const st=rowState(row);if(!st.food)return;
 function closeSuggest(){document.querySelectorAll(".suggest").forEach(x=>x.remove())}
 function showSuggest(input,list,onPick){closeSuggest();if(!list.length)return;
   input.insertAdjacentHTML("afterend",suggestHTML(list));const box=input.nextElementSibling;
-  box.addEventListener("pointerdown",e=>{const b=e.target.closest("[data-sug]");if(!b)return;e.preventDefault();onPick(list[+b.dataset.sug]);closeSuggest()})}
+  // keep the keyboard open while tapping, and act on "click" so the tap can't fall through to what's underneath
+  box.addEventListener("pointerdown",e=>e.preventDefault());box.addEventListener("mousedown",e=>e.preventDefault());
+  box.addEventListener("click",e=>{const b=e.target.closest("[data-sug]");if(!b)return;e.preventDefault();e.stopPropagation();closeSuggest();onPick(list[+b.dataset.sug])})}
 function updIngSum(){const f=$("#editForm");if(!f)return;
   let s=0;f.querySelectorAll(".in-kcal").forEach(i=>s+=num(i.value));
   const sv=Math.max(1,num(f.servings.value)||1);
@@ -644,7 +646,7 @@ function shopRow(i){return `<div class="sitem ${i.done?"done":""}" data-shop="${
 function viewShop(){
   const items=S.shop,open=items.filter(i=>!i.done),done=items.filter(i=>i.done),pct=items.length?done.length/items.length*100:0;
   return `<div class="stack fadein">
-  <form class="addbar" id="shopForm" autocomplete="off"><input type="text" dir="auto" id="shopIn" placeholder="${t("addItem")}" enterkeyhint="done">
+  <form class="addbar" id="shopForm" autocomplete="off"><div class="grow" style="position:relative"><input type="text" dir="auto" id="shopIn" data-food placeholder="${t("addItem")}" enterkeyhint="done" autocomplete="off"></div>
     <button class="btn primary" aria-label="${t("add")}">${ICON.plus}</button></form>
   <button class="btn ghost block" data-act="shopFromRecipe">${ICON.book}${t("fromRecipes")}</button>
   ${!items.length?`<div class="card empty"><div class="em">🛒</div><b>${t("shopEmpty")}</b><div class="small" style="margin-top:4px">${t("shopEmpty2")}</div></div>`:`
@@ -771,7 +773,7 @@ function sheetQuick(){
   const opts=[...S.recipes].sort((a,b)=>(a.name||"").localeCompare(b.name||""));
   openSheet(`<form class="stack" id="qf"><h2 class="sec" style="font-size:19px">${t("quickAdd")}</h2>
     ${opts.length?`<div><label class="f">${t("fromRecipe")}</label><select id="qr"><option value="">—</option>${opts.map(r=>`<option value="${esc(r.id)}">${esc(r.name)}</option>`).join("")}</select></div>`:""}
-    <div style="position:relative"><label class="f">${t("whatAte")}</label><input type="text" dir="auto" id="qn" autocomplete="off" placeholder="${t("searchProducts")}"></div>
+    <div style="position:relative"><label class="f">${t("whatAte")}</label><input type="text" dir="auto" id="qn" data-food autocomplete="off" placeholder="${t("searchProducts")}"></div>
     <div><label class="f">${t("amount")}</label><input type="text" dir="auto" id="qa" placeholder="${t("amountHint")}"></div>
     <div class="grid2"><div><label class="f">${t("kcal")}</label><input type="number" step="any" inputmode="decimal" id="qk"></div>
       <div><label class="f">${t("protein")} (g)</label><input type="number" step="any" inputmode="decimal" id="qp"></div></div>
@@ -779,8 +781,9 @@ function sheetQuick(){
     $("#qc").onclick=closeSheet;
     let qfood=null,qmac={c:0,f:0};
     const qcalc=()=>{if(!qfood)return;const n=foodNutrition(qfood,$("#qa").value);if(n){$("#qk").value=n.kcal;$("#qp").value=n.protein;qmac={c:n.carbs,f:n.fat}}};
-    $("#qn").oninput=e=>{qfood=null;showSuggest(e.target,searchFoods(e.target.value,6),food=>{qfood=foodSnap(food);$("#qn").value=food.name;
-      if(!$("#qa").value.trim())$("#qa").value=defaultAmount(food);qcalc();$("#qa").focus()})};
+    $("#qn").addEventListener("input",()=>{qfood=null});
+    $("#qn").addEventListener("foodpick",e=>{const food=e.detail;qfood=foodSnap(food);$("#qn").value=food.name;
+      if(!$("#qa").value.trim())$("#qa").value=defaultAmount(food);qcalc();$("#qa").focus()});
     $("#qa").oninput=qcalc;
     const qr=$("#qr");if(qr)qr.onchange=()=>{const r=S.recipes.find(x=>x.id===qr.value);if(r){qfood=null;const ps=perServing(r);$("#qn").value=r.name;$("#qa").value="1";$("#qk").value=r0(ps.kcal);$("#qp").value=r1(ps.protein);qmac={c:r1(ps.carbs),f:r1(ps.fat)}}};
     $("#qa").addEventListener("input",()=>{const r=qr&&qr.value?S.recipes.find(x=>x.id===qr.value):null;if(r&&$("#qn").value===r.name){const ps=perServing(r),n=num($("#qa").value)||1;
@@ -1128,13 +1131,30 @@ document.addEventListener("click",e=>{
 document.addEventListener("input",e=>{
   const el=e.target;
   if(el.classList&&el.classList.contains("in-name")){const row=el.closest(".ingrow");const st=rowState(row);
-    if(st.food){st.food=null;st.p=st.c=st.f=null;row.classList.remove("auto")}
-    showSuggest(el,searchFoods(el.value,6),food=>{el.value=food.name;st.food=foodSnap(food);
-      const amt=row.querySelector(".in-amt");if(!amt.value.trim())amt.value=defaultAmount(food);recalcRow(row);updIngSum();amt.focus()})}
+    if(st.food){st.food=null;st.p=st.c=st.f=null;row.classList.remove("auto")}}
+  if(el.hasAttribute&&el.hasAttribute("data-food"))openFoodSuggest(el);
   if(el.classList&&el.classList.contains("in-amt")){recalcRow(el.closest(".ingrow"))}
   if(el.classList&&el.classList.contains("in-kcal")){const row=el.closest(".ingrow");row.classList.remove("auto")}
   if(el.closest("#editForm"))updIngSum()});
-document.addEventListener("focusout",e=>{if(e.target.classList&&(e.target.classList.contains("in-name")||e.target.id==="qn"))setTimeout(closeSuggest,150)});
+document.addEventListener("focusout",e=>{if(e.target.hasAttribute&&e.target.hasAttribute("data-food"))setTimeout(()=>{if(!document.activeElement||!document.activeElement.hasAttribute("data-food"))closeSuggest()},180)});
+document.addEventListener("focusin",e=>{if(e.target.hasAttribute&&e.target.hasAttribute("data-food"))openFoodSuggest(e.target)});
+/* one suggestion list for every food field: your products first (shown as soon as the field is tapped), then common foods */
+function foodListFor(el){const q=el.value.trim();
+  if(!q)return [...S.products].sort((a,b)=>String(b.updatedAt||"").localeCompare(String(a.updatedAt||""))||a.name.localeCompare(b.name)).slice(0,8).map(p=>({...p,mine:true}));
+  return searchFoods(q,8)}
+function openFoodSuggest(el){showSuggest(el,foodListFor(el),food=>el.dispatchEvent(new CustomEvent("foodpick",{detail:food,bubbles:true})))}
+document.addEventListener("foodpick",e=>{const el=e.target,food=e.detail;
+  if(el.classList.contains("in-name")){const row=el.closest(".ingrow"),st=rowState(row);el.value=food.name;st.food=foodSnap(food);
+    const amt=row.querySelector(".in-amt");if(!amt.value.trim())amt.value=defaultAmount(food);recalcRow(row);updIngSum();amt.focus();amt.select&&amt.select()}
+  else if(el.id==="shopIn"){el.value=food.name+" - ";el.focus();try{el.setSelectionRange(el.value.length,el.value.length)}catch(_){}}
+});
+/* link ingredients whose name matches one of your products (e.g. after AI import) */
+function autoLinkRows(){const f=$("#editForm");if(!f)return;let changed=false;
+  f.querySelectorAll(".ingrow").forEach(row=>{const st=rowState(row);if(st.food)return;const nm=norm(row.querySelector(".in-name").value);if(!nm)return;
+    const mine=S.products.find(p=>norm(p.name)===nm);const com=!mine&&commonFoods().find(c=>norm(c.name)===nm||norm(c.alt)===nm);
+    const food=mine||com;if(!food)return;const kcalEl=row.querySelector(".in-kcal");
+    if(mine||!kcalEl.value.trim()){st.food=foodSnap(food);if(foodNutrition(st.food,row.querySelector(".in-amt").value)){recalcRow(row);changed=true}else if(!mine)st.food=null}});
+  if(changed)updIngSum()}
 document.addEventListener("submit",e=>{
   const id=e.target.id;
   if(["shopForm","editForm","authForm","createHh","joinHh","hhRename","hhJoin","meRename"].includes(id))e.preventDefault();

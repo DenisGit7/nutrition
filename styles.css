@@ -118,6 +118,7 @@ ol.steps li::before{content:counter(s);flex:none;width:30px;height:30px;border-r
 /* shopping */
 .addbar{display:flex;gap:8px}
 .addbar input{background:var(--card)}
+.addbar .grow{display:flex}
 .addbar .btn{flex:none;width:50px;padding:0}
 .addbar .btn svg{width:24px;height:24px}
 .sitem{display:flex;align-items:center;gap:12px;padding:12px 2px;border-bottom:1px solid var(--line);cursor:pointer;user-select:none;-webkit-user-select:none}
