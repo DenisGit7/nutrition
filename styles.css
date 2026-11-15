@@ -188,3 +188,17 @@ nav.tabs .badge{position:absolute;top:3px;inset-inline-start:calc(50% + 6px);min
 .hidden{display:none!important}
 .fadein{animation:fade .2s}
 @media (min-width:700px){ header.top h1{font-size:32px} }
+/* AI import */
+.aibtn{display:flex;align-items:center;gap:12px;width:100%;text-align:start;border:0;cursor:pointer;color:#fff;border-radius:18px;padding:14px 16px;
+  background:linear-gradient(120deg,#7a6ff0,#c45fa0 55%,#f08a4b);box-shadow:0 8px 22px rgba(122,111,240,.28);transition:transform .08s}
+.aibtn:active{transform:scale(.985)}
+.aibtn svg{width:26px;height:26px;flex:none}
+.aibtn b{display:block;font-size:16px} .aibtn small{display:block;font-size:12.5px;opacity:.9;margin-top:1px}
+.aiic{width:34px;height:34px;border-radius:11px;display:flex;align-items:center;justify-content:center;color:#fff;background:linear-gradient(120deg,#7a6ff0,#c45fa0 55%,#f08a4b)}
+.aiic svg{width:20px;height:20px}
+.thumbs{display:flex;gap:8px;flex-wrap:wrap}
+.thumb{position:relative;width:72px;height:72px;border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.thumb .x{position:absolute;top:0;inset-inline-end:0;background:rgba(0,0,0,.55);color:#fff;font-size:16px;width:24px;height:24px;border-radius:0 0 0 10px;padding:0}
+.spin{display:inline-block;width:16px;height:16px;border:2.5px solid currentColor;border-right-color:transparent;border-radius:50%;animation:rot .8s linear infinite;margin-inline-end:8px;vertical-align:-3px}
+@keyframes rot{to{transform:rotate(360deg)}}

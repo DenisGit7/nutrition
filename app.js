@@ -31,7 +31,12 @@ data:"Recipes data",importR:"Import recipes",exportR:"Export all recipes",import
 imported:"recipes imported",badJson:"That doesn't look like recipe data.",exported:"Recipes copied and downloaded",
 install:"Install this app",installIos:"Tap the Share button, then “Add to Home Screen”.",installBtn:"Install",dismiss:"Close",
 switchHh:"Switch to another household",rename:"Rename",you:"you",demoNote:"Demo mode: connect Supabase in config.js to sync between devices.",
-version:"Version"},
+version:"Version",
+aiImport:"Import with AI",aiSub:"From Instagram, Facebook, TikTok, YouTube or any recipe site",aiLink:"Link to the post or recipe",
+aiText:"Caption or recipe text (optional)",aiTextHint:"Tip: in Instagram tap ••• → Copy, or open the caption and copy it",aiShots:"Screenshots (optional)",
+aiAddShots:"Add screenshots",aiGo:"Create recipe",aiWorking:"Reading the recipe… (10–30 seconds)",aiCheck:"Check the recipe and tap Save",
+aiNeedInput:"Paste a link, the caption text or add screenshots.",aiDemo:"AI import needs the synced version (Supabase).",
+aiSetup:"AI import isn't set up yet in Supabase (see README, step 6).",aiLinkWarn:"Couldn't open the link itself — the recipe was made from the text/screenshots."},
 he:{app:"תזונה",today:"היום",recipes:"מתכונים",shopping:"קניות",settings:"הגדרות",search:"חיפוש מתכון או מצרך…",
 noRecipes:"אין עדיין מתכונים. לחץ + כדי להוסיף, או ייבא מתכון ש-Claude הכין לך.",noMatch:"לא נמצאו מתכונים.",
 kcal:"קק״ל",perServing:"למנה",servings:"מנות",protein:"חלבון",carbs:"פחמימות",fat:"שומן",time:"זמן (דק׳)",min:"דק׳",
@@ -58,9 +63,14 @@ data:"נתוני מתכונים",importR:"ייבוא מתכונים",exportR:"י
 imported:"מתכונים יובאו",badJson:"זה לא נראה כמו נתוני מתכון.",exported:"המתכונים הועתקו והורדו",
 install:"התקנת האפליקציה",installIos:"לחץ על כפתור השיתוף ואז “הוסף למסך הבית”.",installBtn:"התקנה",dismiss:"סגירה",
 switchHh:"מעבר למשק בית אחר",rename:"שינוי שם",you:"את/ה",demoNote:"מצב הדגמה: חבר את Supabase בקובץ config.js כדי לסנכרן בין מכשירים.",
-version:"גרסה"}
+version:"גרסה",
+aiImport:"ייבוא עם AI",aiSub:"מאינסטגרם, פייסבוק, טיקטוק, יוטיוב או כל אתר מתכונים",aiLink:"קישור לפוסט או למתכון",
+aiText:"טקסט הפוסט או המתכון (לא חובה)",aiTextHint:"טיפ: באינסטגרם לחץ ••• → העתקה, או פתח את הכיתוב והעתק אותו",aiShots:"צילומי מסך (לא חובה)",
+aiAddShots:"הוספת צילומי מסך",aiGo:"יצירת מתכון",aiWorking:"קורא את המתכון… (10–30 שניות)",aiCheck:"בדוק את המתכון ולחץ שמירה",
+aiNeedInput:"הדבק קישור, טקסט או הוסף צילומי מסך.",aiDemo:"ייבוא עם AI זמין רק בגרסה המסונכרנת (Supabase).",
+aiSetup:"ייבוא עם AI עדיין לא הוגדר ב-Supabase (ראה README, שלב 6).",aiLinkWarn:"לא הצלחתי לפתוח את הקישור עצמו — המתכון נוצר מהטקסט/צילומי המסך."}
 };
-const VERSION = "1.0.1";
+const VERSION = "1.1.0";
 
 /* =================== small utils =================== */
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},
@@ -91,6 +101,8 @@ const ICON={
   download:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg>',
   upload:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 21V9M7 14l5-5 5 5M4 3h16"/></svg>',
   phone:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg>',
+  sparkle:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>',
+  image:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>',
   wifi:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 2l20 20M8.5 16.5a5 5 0 0 1 7 0M5 13a10 10 0 0 1 5.2-2.8M19 13a10 10 0 0 0-2.3-1.6M2 8.8a15 15 0 0 1 4.2-2.6M22 8.8A15 15 0 0 0 11 5M12 20h.01"/></svg>'
 };
 const GRADS=[["#f08a4b","#e0613a"],["#4fae7f","#2e7d5b"],["#5b8def","#3a62c9"],["#d266a0","#a8457d"],["#e2b33c","#c48e14"],["#7a6ff0","#5146c4"],["#33b3b0","#1f8584"],["#ef6b6b","#c74646"]];
@@ -177,6 +189,12 @@ const SupaBackend={
   async deleteLog(day,id){const {error}=await this.sb.from("food_log").delete().eq("id",id);if(error)throw error},
   async getSettings(){const {data}=await this.sb.from("settings").select("*").eq("user_id",this.user.id).maybeSingle();return {goal:2000,...(data||{})}},
   async saveSettings(s){const {error}=await this.sb.from("settings").upsert({user_id:this.user.id,...s});if(error)throw error},
+  async importAI(body){
+    const {data,error}=await this.sb.functions.invoke("import-recipe",{body});
+    if(error){let info=null;try{info=await error.context.json()}catch(_){}
+      const e=new Error((info&&info.message)||error.message||"Error");e.code=(info&&info.error)||(/not found|404|Failed to send/i.test(error.message||"")?"setup":"ai");throw e}
+    return data;
+  },
   subscribe(cb){
     if(this.channel)this.sb.removeChannel(this.channel);
     const hid=this.household.id, uid=this.user.id;
@@ -258,6 +276,7 @@ async function enterHousehold(h){
   await loadAll();
   SupaBackend.subscribe(k=>refetch(k));
   S.members=await SupaBackend.members().catch(()=>[]);
+  consumeShare();
 }
 async function loadAll(){
   try{
@@ -355,7 +374,7 @@ function viewAuth(){
     <div class="card stack">
       <div class="seg"><button data-act="authIn" class="${authMode==="in"?"on":""}">${t("signIn")}</button><button data-act="authUp" class="${authMode==="up"?"on":""}">${t("signUp")}</button></div>
       <form id="authForm" class="stack" autocomplete="on">
-        ${authMode==="up"?`<div><label class="f">${t("yourName")}</label><input type="text" id="aName" autocomplete="name" required></div>`:""}
+        ${authMode==="up"?`<div><label class="f">${t("yourName")}</label><input type="text" dir="auto" id="aName" autocomplete="name" required></div>`:""}
         <div><label class="f">${t("email")}</label><input type="email" id="aEmail" autocomplete="email" inputmode="email" required></div>
         <div><label class="f">${t("password")}</label><input type="password" id="aPass" ${authMode==="up"?'minlength="6"':""} autocomplete="${authMode==="up"?"new-password":"current-password"}" required></div>
         ${authErr?`<div class="err">${esc(authErr)}</div>`:""}
@@ -370,12 +389,12 @@ function viewOnboard(){
   return `<div class="stack fadein" style="padding-top:4vh">
     ${LOGO}<h1 style="text-align:center;margin:0;font-size:28px">${t("welcome")}</h1>
     <div class="muted" style="text-align:center">${t("hhIntro")}</div>
-    <div class="card"><label class="f">${t("yourName")}</label><input type="text" id="oName" value="${esc(nm)}"></div>
+    <div class="card"><label class="f">${t("yourName")}</label><input type="text" dir="auto" id="oName" value="${esc(nm)}"></div>
     <form class="card stack" id="createHh"><h2 class="sec">${t("createHh")}</h2>
-      <div><label class="f">${t("hhName")}</label><input type="text" id="oHh" placeholder="${lang==="he"?"הבית שלנו":"Home"}"></div>
+      <div><label class="f">${t("hhName")}</label><input type="text" dir="auto" id="oHh" placeholder="${lang==="he"?"הבית שלנו":"Home"}"></div>
       <button class="btn primary block">${t("create")}</button></form>
     <form class="card stack" id="joinHh"><h2 class="sec">${t("joinHh")}</h2>
-      <div><label class="f">${t("inviteCode")}</label><input type="text" id="oCode" autocapitalize="characters" maxlength="6" style="text-transform:uppercase;letter-spacing:.2em;font-weight:600"></div>
+      <div><label class="f">${t("inviteCode")}</label><input type="text" dir="auto" id="oCode" autocapitalize="characters" maxlength="6" style="text-transform:uppercase;letter-spacing:.2em;font-weight:600"></div>
       <button class="btn ghost block">${t("join")}</button></form>
     <button class="btn link block" data-act="signOut">${t("signOut")}</button>
   </div>`;
@@ -385,7 +404,7 @@ function viewOnboard(){
 function recipeCard(r){const ps=perServing(r);
   return `<div class="card rcard" data-open="${esc(r.id)}">
     <div class="avatar" style="background:${grad(r.name)}">${esc(initial(r.name))}</div>
-    <div class="grow"><h3>${esc(r.name)}</h3>
+    <div class="grow"><h3 dir="auto">${esc(r.name)}</h3>
       <div class="meta">${r.time?`<span>${ICON.clock}${esc(r.time)} ${t("min")}</span>`:""}<span>${ICON.people}${esc(r.servings||1)}</span>
         ${(r.ingredients||[]).length?`<span>${ICON.list}${r.ingredients.length}</span>`:""}</div>
       ${(r.tags||[]).length?`<div class="chips" style="margin-top:7px">${r.tags.slice(0,3).map(x=>`<span class="chip">${esc(x)}</span>`).join("")}</div>`:""}
@@ -400,8 +419,9 @@ function viewList(){
     ||(r.ingredients||[]).some(i=>norm(i.name).includes(q)))).sort((a,b)=>(a.name||"").localeCompare(b.name||""));
   let h=`<div class="stack fadein"><div class="searchbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
     <input type="search" id="q" placeholder="${t("search")}" value="${esc(query)}"></div>`;
+  h+=`<button class="aibtn" data-act="ai">${ICON.sparkle}<span class="grow"><b>${t("aiImport")}</b><small>${t("aiSub")}</small></span></button>`;
   if(allTags.length>1)h+=`<div class="chips">${allTags.map(x=>`<button class="chip ${tagFilter===x?"on":""}" data-act="tag" data-tag="${esc(x)}">${esc(x)}</button>`).join("")}</div>`;
-  if(!S.recipes.length)h+=`<div class="card empty"><div class="em">🥗</div>${t("noRecipes")}<br><br><button class="btn ghost" data-act="import">${ICON.upload}${t("importR")}</button></div>`;
+  if(!S.recipes.length)h+=`<div class="card empty"><div class="em">🥗</div>${t("noRecipes")}</div>`;
   else if(!list.length)h+=`<div class="empty">${t("noMatch")}</div>`;
   return h+list.map(recipeCard).join("")+"</div>";
 }
@@ -435,14 +455,14 @@ function viewDetail(r){
   </div>`;
 }
 function ingRow(i={}){return `<div class="ingrow">
-  <input type="text" class="in-name" placeholder="${t("ingName")}" value="${esc(i.name||"")}">
-  <input type="text" class="in-amt" placeholder="${t("amount")}" value="${esc(i.amount||"")}">
+  <input type="text" dir="auto" class="in-name" placeholder="${t("ingName")}" value="${esc(i.name||"")}">
+  <input type="text" dir="auto" class="in-amt" placeholder="${t("amount")}" value="${esc(i.amount||"")}">
   <input type="number" inputmode="decimal" class="in-kcal" placeholder="${t("kcal")}" value="${esc(i.kcal??"")}">
   <button class="x" type="button" data-act="rmIng" aria-label="remove">×</button></div>`}
-function viewEdit(r){r=r||{servings:1,ingredients:[{},{},{}],steps:[]};
+function viewEdit(r){r=r||S.draft||{servings:1,ingredients:[{},{},{}],steps:[]};S.draft=null;
   return `<form id="editForm" class="stack fadein" autocomplete="off">
   <div class="card stack">
-    <div><label class="f">${t("name")}</label><input type="text" name="rname" value="${esc(r.name||"")}" required></div>
+    <div><label class="f">${t("name")}</label><input type="text" dir="auto" name="rname" value="${esc(r.name||"")}" required></div>
     <div class="grid2">
       <div><label class="f">${t("servings")}</label><input type="number" inputmode="decimal" name="servings" min="1" value="${esc(r.servings||1)}"></div>
       <div><label class="f">${t("time")}</label><input type="number" inputmode="numeric" name="time" value="${esc(r.time??"")}"></div>
@@ -458,10 +478,10 @@ function viewEdit(r){r=r||{servings:1,ingredients:[{},{},{}],steps:[]};
       <input type="number" inputmode="decimal" name="protein" placeholder="${t("protein")}" value="${esc(r.protein??"")}">
       <input type="number" inputmode="decimal" name="carbs" placeholder="${t("carbs")}" value="${esc(r.carbs??"")}">
       <input type="number" inputmode="decimal" name="fat" placeholder="${t("fat")}" value="${esc(r.fat??"")}"></div></div>
-  <div class="card"><h2 class="sec">${t("steps")} <span class="muted small" style="font-weight:400">· ${t("stepsHint")}</span></h2><textarea name="steps">${esc((r.steps||[]).join("\n"))}</textarea></div>
+  <div class="card"><h2 class="sec">${t("steps")} <span class="muted small" style="font-weight:400">· ${t("stepsHint")}</span></h2><textarea dir="auto" name="steps">${esc((r.steps||[]).join("\n"))}</textarea></div>
   <div class="card stack">
-    <div><label class="f">${t("tags")}</label><input type="text" name="tags" value="${esc((r.tags||[]).join(", "))}"></div>
-    <div><label class="f">${t("notes")}</label><textarea name="notes" style="min-height:70px">${esc(r.notes||"")}</textarea></div>
+    <div><label class="f">${t("tags")}</label><input type="text" dir="auto" name="tags" value="${esc((r.tags||[]).join(", "))}"></div>
+    <div><label class="f">${t("notes")}</label><textarea dir="auto" name="notes" style="min-height:70px">${esc(r.notes||"")}</textarea></div>
     <div><label class="f">${t("source")}</label><input type="url" name="source" value="${esc(r.source||"")}" placeholder="https://"></div></div>
   <div class="grid2"><button type="button" class="btn ghost" data-act="cancel">${t("cancel")}</button>
     <button type="submit" class="btn primary">${t("save")}</button></div>
@@ -517,7 +537,7 @@ function shopRow(i){return `<div class="sitem ${i.done?"done":""}" data-shop="${
 function viewShop(){
   const items=S.shop,open=items.filter(i=>!i.done),done=items.filter(i=>i.done),pct=items.length?done.length/items.length*100:0;
   return `<div class="stack fadein">
-  <form class="addbar" id="shopForm" autocomplete="off"><input type="text" id="shopIn" placeholder="${t("addItem")}" enterkeyhint="done">
+  <form class="addbar" id="shopForm" autocomplete="off"><input type="text" dir="auto" id="shopIn" placeholder="${t("addItem")}" enterkeyhint="done">
     <button class="btn primary" aria-label="${t("add")}">${ICON.plus}</button></form>
   <button class="btn ghost block" data-act="shopFromRecipe">${ICON.book}${t("fromRecipes")}</button>
   ${!items.length?`<div class="card empty"><div class="em">🛒</div><b>${t("shopEmpty")}</b><div class="small" style="margin-top:4px">${t("shopEmpty2")}</div></div>`:`
@@ -557,13 +577,13 @@ function viewSettings(){
   return `<div class="stack fadein">
   ${!CLOUD?`<div class="banner warn">${esc(t("demoNote"))}</div>`:""}
   ${CLOUD?`<div class="card stack"><h2 class="sec">${t("household")}</h2>
-    <form class="row" id="hhRename"><input type="text" id="hhName" value="${esc(h.name||"")}"><button class="btn sm ghost">${t("rename")}</button></form>
+    <form class="row" id="hhRename"><input type="text" dir="auto" id="hhName" value="${esc(h.name||"")}"><button class="btn sm ghost">${t("rename")}</button></form>
     <div><label class="f">${t("invite")}</label><div class="code">${esc(h.invite_code||"——")}</div>
       <div class="muted small" style="margin-top:8px">${t("inviteHint")}</div></div>
     <div class="grid2"><button class="btn sm ghost" data-act="copyCode">${ICON.copy}${t("copyCode")}</button><button class="btn sm ghost" data-act="newCode">↻ ${t("newCode")}</button></div>
     ${S.members.length?`<div><label class="f">${t("members")}</label>${S.members.map(m=>`<div class="member"><div class="ic" style="background:${grad(m.display_name||"?")}">${esc(initial(m.display_name||"?"))}</div>
       <div class="grow">${esc(m.display_name||"—")}${S.user&&m.user_id===S.user.id?` <span class="muted small">(${t("you")})</span>`:""}</div></div>`).join("")}</div>`:""}
-    <form class="row" id="hhJoin"><input type="text" id="joinCode" placeholder="${t("inviteCode")}" maxlength="6" style="text-transform:uppercase"><button class="btn sm ghost">${t("join")}</button></form>
+    <form class="row" id="hhJoin"><input type="text" dir="auto" id="joinCode" placeholder="${t("inviteCode")}" maxlength="6" style="text-transform:uppercase"><button class="btn sm ghost">${t("join")}</button></form>
     <div class="muted small">${t("switchHh")}</div>
   </div>`:""}
   <div class="card"><h2 class="sec">${t("settings")}</h2>
@@ -575,7 +595,7 @@ function viewSettings(){
     <button class="btn ghost block" data-act="import">${ICON.upload}${t("importR")}</button>
     <button class="btn ghost block" data-act="export">${ICON.download}${t("exportR")}</button></div>
   ${CLOUD?`<div class="card stack"><h2 class="sec">${t("account")}</h2>
-    ${me?`<form class="row" id="meRename"><input type="text" id="meName" value="${esc(me.display_name||"")}"><button class="btn sm ghost">${t("rename")}</button></form>`:""}
+    ${me?`<form class="row" id="meRename"><input type="text" dir="auto" id="meName" value="${esc(me.display_name||"")}"><button class="btn sm ghost">${t("rename")}</button></form>`:""}
     <div class="muted small">${esc(S.user&&S.user.email||"")}</div>
     <button class="btn danger block" data-act="signOut">${t("signOut")}</button></div>`:""}
   <div class="muted small" style="text-align:center">${t("version")} ${VERSION}</div>
@@ -644,7 +664,7 @@ function sheetQuick(){
   const opts=[...S.recipes].sort((a,b)=>(a.name||"").localeCompare(b.name||""));
   openSheet(`<form class="stack" id="qf"><h2 class="sec" style="font-size:19px">${t("quickAdd")}</h2>
     ${opts.length?`<div><label class="f">${t("fromRecipe")}</label><select id="qr"><option value="">—</option>${opts.map(r=>`<option value="${esc(r.id)}">${esc(r.name)}</option>`).join("")}</select></div>`:""}
-    <div><label class="f">${t("whatAte")}</label><input type="text" id="qn"></div>
+    <div><label class="f">${t("whatAte")}</label><input type="text" dir="auto" id="qn"></div>
     <div class="grid2"><div><label class="f">${t("kcal")}</label><input type="number" inputmode="decimal" id="qk"></div>
       <div><label class="f">${t("protein")} (g)</label><input type="number" inputmode="decimal" id="qp"></div></div>
     <div class="grid2"><button type="button" class="btn ghost" id="qc">${t("cancel")}</button><button class="btn primary">${t("add")}</button></div></form>`,()=>{
@@ -671,6 +691,63 @@ function sheetNewPassword(){
     $("#npf").onsubmit=ev=>{ev.preventDefault();safe(async()=>{const {error}=await SupaBackend.sb.auth.updateUser({password:$("#np").value});if(error)throw error;closeSheet();toast(t("pwChanged"))})};
   });
 }
+/* AI import */
+async function shrinkImage(file){ // -> {mime,data(base64)} max 1280px JPEG
+  const url=URL.createObjectURL(file);
+  try{const img=await new Promise((ok,bad)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=bad;i.src=url});
+    const k=Math.min(1,1280/Math.max(img.naturalWidth,img.naturalHeight));const c=document.createElement("canvas");
+    c.width=Math.round(img.naturalWidth*k);c.height=Math.round(img.naturalHeight*k);c.getContext("2d").drawImage(img,0,0,c.width,c.height);
+    const d=c.toDataURL("image/jpeg",0.82);return {mime:"image/jpeg",data:d.split(",")[1],preview:d}}
+  finally{URL.revokeObjectURL(url)}
+}
+function sheetAI(pre={}){
+  if(!CLOUD){toast(t("aiDemo"));return}
+  const shots=[];let busy=false;
+  openSheet(`<form class="stack" id="aif" autocomplete="off">
+    <div class="row"><span class="aiic">${ICON.sparkle}</span><h2 class="sec grow" style="font-size:19px;margin:0">${t("aiImport")}</h2></div>
+    <div><label class="f">${t("aiLink")}</label><input type="url" id="aiUrl" inputmode="url" placeholder="https://www.instagram.com/reel/…" value="${esc(pre.url||"")}"></div>
+    <div><label class="f">${t("aiText")}</label><textarea dir="auto" id="aiText" style="min-height:90px">${esc(pre.text||"")}</textarea>
+      <div class="muted small" style="margin-top:4px">${t("aiTextHint")}</div></div>
+    <div><label class="f">${t("aiShots")}</label><div class="thumbs" id="aiThumbs"></div>
+      <label class="btn ghost block" style="cursor:pointer;margin-top:6px">${ICON.image}${t("aiAddShots")}<input type="file" id="aiFile" accept="image/*" multiple class="hidden"></label></div>
+    <div id="aiMsg"></div>
+    <div class="grid2"><button type="button" class="btn ghost" id="aic">${t("cancel")}</button><button class="btn primary" id="aiGo">${ICON.sparkle}${t("aiGo")}</button></div>
+  </form>`,()=>{
+    const drawThumbs=()=>{$("#aiThumbs").innerHTML=shots.map((s,i)=>`<div class="thumb"><img src="${s.preview}" alt=""><button type="button" class="x" data-rm="${i}">×</button></div>`).join("")};
+    $("#aiThumbs").onclick=e=>{const b=e.target.closest("[data-rm]");if(b){shots.splice(+b.dataset.rm,1);drawThumbs()}};
+    $("#aiFile").onchange=async e=>{for(const f of [...e.target.files].slice(0,4-shots.length)){try{shots.push(await shrinkImage(f))}catch(_){}}e.target.value="";drawThumbs()};
+    $("#aic").onclick=()=>{if(!busy)closeSheet()};
+    const msg=(html,cls="")=>$("#aiMsg").innerHTML=html?`<div class="banner ${cls}">${html}</div>`:"";
+    $("#aif").addEventListener("input",()=>{if(!busy)msg("")});
+    $("#aif").onsubmit=async ev=>{ev.preventDefault();if(busy)return;
+      const url=$("#aiUrl").value.trim(),text=$("#aiText").value.trim();
+      if(!url&&!text&&!shots.length){msg(esc(t("aiNeedInput")),"warn");return}
+      busy=true;$("#aiGo").disabled=true;msg(`<span class="spin"></span>${esc(t("aiWorking"))}`);
+      try{
+        const res=await SupaBackend.importAI({url,text,images:shots.map(({mime,data})=>({mime,data})),lang});
+        const r=normalizeRecipe({...res.recipe,source:res.recipe.source||url});
+        if(!r)throw new Error(t("badJson"));
+        r.id=uuid();S.draft=r;closeSheet();$("#view").dataset.editing="";
+        go({tab:"recipes",view:"edit",id:null});
+        toast(res.linkNote&&!text&&!shots.length?t("aiLinkWarn"):t("aiCheck"));
+      }catch(e){console.error(e);msg(esc(e.code==="setup"?t("aiSetup"):errMsg(e)),"warn")}
+      finally{busy=false;const g=$("#aiGo");if(g)g.disabled=false}
+    };
+  });
+}
+/* Android "Share → Nutrition" (Web Share Target) */
+function pendingShare(){
+  const q=new URLSearchParams(location.search);
+  if(!(q.has("url")||q.has("text")||q.has("title")))return null;
+  const all=[q.get("title"),q.get("text"),q.get("url")].filter(Boolean).join("\n");
+  const url=(q.get("url")||(all.match(/https?:\/\/\S+/)||[""])[0]).trim();
+  const text=all.replace(url,"").trim();
+  try{history.replaceState(null,"",location.pathname+"#recipes")}catch(_){}
+  return {url,text};
+}
+let sharedIn=pendingShare();
+function consumeShare(){if(sharedIn&&S.phase==="app"&&CLOUD){const p=sharedIn;sharedIn=null;route.tab="recipes";route.view="list";render();sheetAI(p)}}
+
 /* import / export */
 function normalizeRecipe(o){
   if(!o||typeof o!=="object")return null;
@@ -688,7 +765,7 @@ function normalizeRecipe(o){
 function sheetImport(){
   openSheet(`<form class="stack" id="impf"><h2 class="sec" style="font-size:19px">${t("importR")}</h2>
     <div class="muted small">${t("importHint")}</div>
-    <textarea id="impt" style="min-height:200px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px" placeholder='{"name": "...", "servings": 2, "ingredients": [...], "steps": [...]}'></textarea>
+    <textarea dir="auto" id="impt" style="min-height:200px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px" placeholder='{"name": "...", "servings": 2, "ingredients": [...], "steps": [...]}'></textarea>
     <label class="btn ghost block" style="cursor:pointer">${ICON.upload}.json<input type="file" id="impfile" accept=".json,application/json,text/plain" class="hidden"></label>
     <div class="grid2"><button type="button" class="btn ghost" id="impc">${t("cancel")}</button><button class="btn primary">${t("importR")}</button></div></form>`,()=>{
     $("#impc").onclick=closeSheet;
@@ -745,6 +822,7 @@ document.addEventListener("click",e=>{
       try{navigator.clipboard.writeText(txt).then(()=>toast(t("copied")),()=>toast(t("copyFail")))}catch(_){toast(t("copyFail"))}break}
     case "tag":tagFilter=tagFilter===a.dataset.tag?"":a.dataset.tag;render();break;
     case "import":sheetImport();break;
+    case "ai":sheetAI();break;
     case "export":exportRecipes();break;
     case "setLang":lang=a.dataset.v;LS.set("nt.lang",lang);$("#view").dataset.editing="";render();break;
     case "setTheme":theme=a.dataset.v;LS.set("nt.theme",theme);render();break;
@@ -807,7 +885,7 @@ $("#langBtn").onclick=()=>{lang=lang==="he"?"en":"he";LS.set("nt.lang",lang);$("
 $("#themeBtn").onclick=()=>{theme=theme==="dark"?"light":"dark";LS.set("nt.theme",theme);applyChrome()};
 const TABS=["today","recipes","shopping"];
 window.addEventListener("hashchange",()=>{const h=location.hash.slice(1);if(TABS.includes(h)&&h!==route.tab)go({tab:h,view:"list",id:null})});
-{const h=location.hash.slice(1);if(TABS.includes(h))route.tab=h;if(!TABS.includes(route.tab))route.tab="recipes"}
+{const h=location.hash.slice(1);if(TABS.includes(h))route.tab=h;if(!TABS.includes(route.tab))route.tab="recipes";if(sharedIn)route.tab="recipes"}
 
 /* service worker (offline + installable) */
 if("serviceWorker" in navigator&&location.protocol.startsWith("http")){

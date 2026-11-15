@@ -65,9 +65,34 @@ your app.
 3. ⚙️ Settings shows an **invite code**. Your wife creates her own account and chooses
    **Join with an invite code**. From then on you share recipes and the shopping list.
 
+## Step 6 — Turn on "✨ Import with AI" (free, Google Gemini)
+
+**6a. Get a free Gemini key**
+1. Go to **https://aistudio.google.com/apikey** and sign in with a Google account.
+2. Click **Create API key** (choose any project, or let it create one). Copy the key (starts with `AIza…`).
+   No credit card is needed. Free use is rate-limited, and Google may use free-tier requests to improve its products.
+
+**6b. Add the server function in Supabase**
+1. Supabase → left menu **Edge Functions** → **Deploy a new function** → **Via Editor**.
+2. Name it exactly: `import-recipe`
+3. Delete the sample code, paste **all** of `supabase/functions/import-recipe/index.ts` from this folder
+   (or from GitHub: DenisGit7/nutrition → supabase/functions/import-recipe/index.ts → Raw → copy), click **Deploy**.
+4. Open the function → **Details / Settings** → turn **off** "Enforce JWT verification"
+   (also called "Verify JWT") → Save. The function checks the sign-in itself.
+5. Edge Functions → **Secrets** → **Add new secret**: Name `GEMINI_API_KEY`, Value = your key → Save.
+
+Done — in the app tap **✨ Import with AI**, paste a link (and/or the caption, or add screenshots) → **Create recipe**.
+The recipe opens in the editor; check it and tap **Save**.
+
+- **Samsung/Android:** in Instagram/Facebook/TikTok tap **Share → Nutrition** (the app must be installed).
+- **iPhone:** copy the link (and caption) and paste it in the app.
+- **Works best:** recipe websites, YouTube videos, posts where the recipe is in the caption.
+  If the recipe is only spoken in an Instagram/Facebook video, add screenshots.
+- Optional secret `GEMINI_MODEL` lets you pick a different Gemini model if Google renames them.
+
 ---
 
-## Adding recipes from a link
+## Adding recipes from a link (without AI import)
 
 Send Claude the recipe link. Claude replies with the recipe as a block of JSON text.
 In the app: **⚙️ → Import recipes** (or the *Import* button on the empty Recipes page) →
