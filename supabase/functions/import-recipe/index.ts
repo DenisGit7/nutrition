@@ -185,7 +185,7 @@ If the picture is not a food product, reply {"found": false, "reason": "short se
 }
 
 // ---------- Open Food Facts (free product database) ----------
-const OFF_UA = "NutritionFamilyApp/1.2 (github.com/DenisGit7/nutrition)";
+const OFF_UA = "NutritionFamilyApp/1.3 (github.com/DenisGit7/nutrition)";
 function offProduct(p: any, lang: string) {
   const n = p?.nutriments || {};
   const num = (v: any) => (v === undefined || v === null || v === "" || isNaN(Number(v)) ? null : Math.round(Number(v) * 10) / 10);
@@ -201,6 +201,7 @@ function offProduct(p: any, lang: string) {
     serving_g: servingMatch ? Number(servingMatch[1].replace(",", ".")) : null, serving_name: "",
     kcal, protein: num(n.proteins_100g), carbs: num(n.carbohydrates_100g), fat: num(n.fat_100g),
     sugar: num(n.sugars_100g), fiber: num(n.fiber_100g), source: "openfoodfacts",
+    image: String(p.image_front_small_url || p.image_small_url || p.image_front_url || p.image_url || "").replace(/^http:/, "https:"),
   };
 }
 async function offFetch(url: string): Promise<any> {
@@ -208,7 +209,7 @@ async function offFetch(url: string): Promise<any> {
   try { const r = await fetch(url, { headers: { "User-Agent": OFF_UA }, signal: ctrl.signal }); return r.ok ? await r.json() : null; }
   catch { return null; } finally { clearTimeout(timer); }
 }
-const OFF_FIELDS = "code,product_name,product_name_he,product_name_en,generic_name,brands,nutriments,serving_size,quantity";
+const OFF_FIELDS = "code,product_name,product_name_he,product_name_en,generic_name,brands,nutriments,serving_size,quantity,image_front_small_url,image_front_url,image_small_url,image_url";
 const OFF_SEARCH = Deno.env.get("OFF_SEARCH_URL") || "https://search.openfoodfacts.org/search";
 const OFF_WORLD = Deno.env.get("OFF_WORLD_URL") || "https://world.openfoodfacts.org";
 async function offSearch(q: string, lang: string) {

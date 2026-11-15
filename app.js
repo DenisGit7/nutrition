@@ -15,7 +15,7 @@ needOnline:"Online search needs the synced version",offNote:"Data from Open Food
 translateTo:"Translate to English",translating:"Translating…",translated:"Translated",amountHint:"e.g. 150 g, 2, 1 cup",
 autoCalc:"calculated",video:"Add video (screen recording)",videoHint:"Record your screen while the reel plays, then add the recording here",
 preparingVideo:"Preparing video…",videoReady:"Video ready",videoNoAudio:"no sound found — using pictures only",videoFail:"Couldn't read this video — try screenshots",
-grams:"g",commonHint:"{n} common foods are built in — type above to search them",today:"Today",recipes:"Recipes",shopping:"Shopping",settings:"Settings",search:"Search recipes or ingredients…",
+grams:"g",picture:"Picture",addPicture:"Add picture",changePicture:"Change",removePicture:"Remove",uploading:"Saving picture…",picFail:"Couldn't save the picture: ",commonHint:"{n} common foods are built in — type above to search them",today:"Today",recipes:"Recipes",shopping:"Shopping",settings:"Settings",search:"Search recipes or ingredients…",
 noRecipes:"No recipes yet. Tap + to add one, or import a recipe Claude made for you.",noMatch:"No recipes match your search.",
 kcal:"kcal",perServing:"per serving",servings:"Servings",protein:"Protein",carbs:"Carbs",fat:"Fat",time:"Time (min)",min:"min",
 ingredients:"Ingredients",steps:"Steps",notes:"Notes",source:"Source",edit:"Edit",del:"Delete",delAgain:"Tap again to delete",
@@ -57,7 +57,7 @@ needOnline:"חיפוש ברשת זמין רק בגרסה המסונכרנת",off
 translateTo:"תרגום לעברית",translating:"מתרגם…",translated:"תורגם",amountHint:"למשל 150 גרם, 2, כוס",
 autoCalc:"מחושב",video:"הוספת סרטון (הקלטת מסך)",videoHint:"הקלט את המסך בזמן שהסרטון מתנגן, והוסף את ההקלטה כאן",
 preparingVideo:"מכין את הסרטון…",videoReady:"הסרטון מוכן",videoNoAudio:"לא נמצא קול — משתמש בתמונות בלבד",videoFail:"לא הצלחתי לקרוא את הסרטון — נסה צילומי מסך",
-grams:"גרם",commonHint:"{n} מזונות נפוצים כבר מובנים — הקלד למעלה כדי לחפש",today:"היום",recipes:"מתכונים",shopping:"קניות",settings:"הגדרות",search:"חיפוש מתכון או מצרך…",
+grams:"גרם",picture:"תמונה",addPicture:"הוספת תמונה",changePicture:"החלפה",removePicture:"הסרה",uploading:"שומר תמונה…",picFail:"לא הצלחתי לשמור את התמונה: ",commonHint:"{n} מזונות נפוצים כבר מובנים — הקלד למעלה כדי לחפש",today:"היום",recipes:"מתכונים",shopping:"קניות",settings:"הגדרות",search:"חיפוש מתכון או מצרך…",
 noRecipes:"אין עדיין מתכונים. לחץ + כדי להוסיף, או ייבא מתכון ש-Claude הכין לך.",noMatch:"לא נמצאו מתכונים.",
 kcal:"קק״ל",perServing:"למנה",servings:"מנות",protein:"חלבון",carbs:"פחמימות",fat:"שומן",time:"זמן (דק׳)",min:"דק׳",
 ingredients:"מצרכים",steps:"אופן הכנה",notes:"הערות",source:"מקור",edit:"עריכה",del:"מחיקה",delAgain:"לחץ שוב למחיקה",
@@ -90,7 +90,7 @@ aiAddShots:"הוספת צילומי מסך",aiGo:"יצירת מתכון",aiWorki
 aiNeedInput:"הדבק קישור, טקסט או הוסף צילומי מסך.",aiDemo:"ייבוא עם AI זמין רק בגרסה המסונכרנת (Supabase).",
 aiSetup:"ייבוא עם AI עדיין לא הוגדר ב-Supabase (ראה README, שלב 6).",aiLinkWarn:"לא הצלחתי לפתוח את הקישור עצמו — המתכון נוצר מהטקסט/צילומי המסך.",aiLinkOnly:"האתר שיתף רק את הכותרת, בלי המתכון. העתק את טקסט הפוסט (עוד → העתקה) לתיבה למעלה, או הוסף צילומי מסך של המצרכים, ואז לחץ שוב על יצירת מתכון."}
 };
-const VERSION = "1.2.1";
+const VERSION = "1.3.0";
 
 /* =================== small utils =================== */
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},
@@ -150,10 +150,10 @@ function recipeToRow(r,hid){return {id:r.id,household_id:hid,name:r.name,serving
 const shopFromRow=r=>({id:r.id,name:r.name,amount:r.amount||"",done:!!r.done,recipes:r.recipes||[],createdAt:r.created_at});
 const prodFromRow=r=>({id:r.id,updatedAt:r.updated_at,name:r.name,brand:r.brand||"",barcode:r.barcode||"",category:r.category||"",unit:r.unit||"g",
   serving_g:r.serving_g==null?null:num(r.serving_g),serving_name:r.serving_name||"",kcal:numOrNull(r.kcal),protein:numOrNull(r.protein),
-  carbs:numOrNull(r.carbs),fat:numOrNull(r.fat),sugar:numOrNull(r.sugar),fiber:numOrNull(r.fiber),source:r.source||""});
+  carbs:numOrNull(r.carbs),fat:numOrNull(r.fat),sugar:numOrNull(r.sugar),fiber:numOrNull(r.fiber),source:r.source||"",image:r.image||""});
 const prodToRow=(p,hid)=>({id:p.id,household_id:hid,name:p.name,brand:p.brand||null,barcode:p.barcode||null,category:p.category||null,unit:p.unit==="ml"?"ml":"g",
   serving_g:numOrNull(p.serving_g),serving_name:p.serving_name||null,kcal:numOrNull(p.kcal),protein:numOrNull(p.protein),carbs:numOrNull(p.carbs),
-  fat:numOrNull(p.fat),sugar:numOrNull(p.sugar),fiber:numOrNull(p.fiber),source:p.source||null});
+  fat:numOrNull(p.fat),sugar:numOrNull(p.sugar),fiber:numOrNull(p.fiber),source:p.source||null,image:p.image||null});
 const logFromRow=r=>({id:r.id,day:r.day,name:r.name,recipeId:r.recipe_id,servings:num(r.servings),kcal:num(r.kcal),protein:num(r.protein),carbs:num(r.carbs),fat:num(r.fat),createdAt:r.created_at});
 
 /* =================== backends =================== */
@@ -178,6 +178,7 @@ const LocalBackend={
   async listProducts(){return this._get("products")},
   async saveProduct(p){const a=this._get("products");const i=a.findIndex(x=>x.id===p.id);if(i>=0)a[i]=p;else a.push(p);this._set("products",a);return p},
   async deleteProduct(id){this._set("products",this._get("products").filter(x=>x.id!==id))},
+  async uploadImage(blob){return await new Promise(ok=>{const r=new FileReader();r.onload=()=>ok(r.result);r.readAsDataURL(blob)})},
   async callFn(){const e=new Error(t("needOnline"));e.code="demo";throw e},
   async getSettings(){return LS.get("nt2.settings",{goal:2000})},
   async saveSettings(s){LS.set("nt2.settings",{...LS.get("nt2.settings",{goal:2000}),...s})},
@@ -228,7 +229,11 @@ const SupaBackend={
   async saveSettings(s){const {error}=await this.sb.from("settings").upsert({user_id:this.user.id,...s});if(error)throw error},
   async listProducts(){const {data,error}=await this.sb.from("products").select("*").eq("household_id",this.household.id);if(error){if(/products/.test(error.message||""))return [];throw error}return data.map(prodFromRow)},
   async saveProduct(p){const {data,error}=await this.sb.from("products").upsert(prodToRow(p,this.household.id)).select().single();if(error)throw error;return prodFromRow(data)},
-  async deleteProduct(id){const {error}=await this.sb.from("products").delete().eq("id",id);if(error)throw error},
+  async deleteProduct(id){const {error}=await this.sb.from("products").delete().eq("id",id);if(error)throw error;
+    this.sb.storage.from("product-images").remove([`${this.household.id}/${id}.jpg`]).catch(()=>{})},
+  async uploadImage(blob,id){const path=`${this.household.id}/${id}.jpg`;
+    const {error}=await this.sb.storage.from("product-images").upload(path,blob,{upsert:true,contentType:"image/jpeg",cacheControl:"86400"});
+    if(error)throw error;const {data}=this.sb.storage.from("product-images").getPublicUrl(path);return data.publicUrl+"?v="+Date.now()},
   async callFn(body){return this.importAI(body)},
   async importAI(body){
     const {data,error}=await this.sb.functions.invoke("import-recipe",{body});
@@ -343,10 +348,28 @@ function perServing(r){
   return {kcal,protein:m("protein"),carbs:m("carbs"),fat:m("fat")};
 }
 /* ---------- foods: my products + built-in common foods ---------- */
+const EMOJI=[["egg white","🥚"],["eggplant","🍆"],["egg","🥚"],["milk","🥛"],["cottage","🧀"],["cheese","🧀"],["parmesan","🧀"],["mozzarella","🧀"],["labaneh","🥣"],["yogurt","🥣"],
+  ["butter","🧈"],["cream","🥛"],["chicken","🍗"],["turkey","🦃"],["beef","🥩"],["steak","🥩"],["salmon","🐟"],["tuna","🐟"],["fish","🐟"],["sardine","🐟"],["schnitzel","🍗"],
+  ["rice cake","🍘"],["rice","🍚"],["pasta","🍝"],["couscous","🍚"],["bulgur","🌾"],["quinoa","🌾"],["oats","🌾"],["bread","🍞"],["pita","🫓"],["tortilla","🫓"],["flour","🌾"],
+  ["corn flakes","🥣"],["granola","🥣"],["chickpea","🫘"],["lentil","🫘"],["bean","🫘"],["peas","🫛"],["tofu","🧊"],["edamame","🫛"],["hummus","🥙"],["tahini","🥙"],["falafel","🧆"],
+  ["cherry tomato","🍅"],["tomato","🍅"],["cucumber","🥒"],["onion","🧅"],["garlic","🧄"],["pepper","🫑"],["carrot","🥕"],["sweet potato","🍠"],["potato","🥔"],["zucchini","🥒"],
+  ["broccoli","🥦"],["cauliflower","🥦"],["cabbage","🥬"],["lettuce","🥬"],["spinach","🥬"],["mushroom","🍄"],["corn","🌽"],["beet","🟣"],["pumpkin","🎃"],["celery","🥬"],
+  ["parsley","🌿"],["avocado","🥑"],["olive oil","🫒"],["olive","🫒"],["pickle","🥒"],["apple","🍎"],["banana","🍌"],["orange juice","🧃"],["orange","🍊"],["clementine","🍊"],
+  ["grape","🍇"],["strawberr","🍓"],["blueberr","🫐"],["watermelon","🍉"],["melon","🍈"],["mango","🥭"],["pear","🍐"],["peach","🍑"],["pomegranate","🔴"],["date","🌴"],
+  ["lemon","🍋"],["raisin","🍇"],["almond","🌰"],["walnut","🌰"],["cashew","🌰"],["peanut","🥜"],["seed","🌻"],["chia","🌱"],["sesame","🌱"],["oil","🫗"],["mayonnaise","🥫"],
+  ["honey","🍯"],["sugar","🧂"],["silan","🍯"],["jam","🍓"],["chocolate","🍫"],["ketchup","🍅"],["soy","🥢"],["tomato paste","🥫"],["crushed","🥫"],["coca","🥤"],["beer","🍺"],
+  ["wine","🍷"],["coffee","☕"],["latte","☕"],["protein","💪"],["bamba","🥜"],["bissli","🥨"],["fries","🍟"],["pizza","🍕"],["shawarma","🌯"],["burekas","🥐"],["malawach","🫓"],["ice cream","🍨"]];
+function foodEmoji(en){en=norm(en);for(const [k,e] of EMOJI)if(en.includes(k))return e;return ""}
+function thumbHTML(f,size=44){
+  if(f&&f.image)return `<img class="pthumb" style="width:${size}px;height:${size}px" src="${esc(f.image)}" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'pthumb ph',textContent:'${esc(initial(f.name)).replace(/'/g,"")}'}))">`;
+  const em=f&&(f.emoji||foodEmoji(f.en||f.name));
+  return `<span class="pthumb ${em?"emo":"ph"}" style="width:${size}px;height:${size}px;font-size:${Math.round(size*(em?0.55:0.42))}px;${em?"":"background:"+grad(f&&f.name)}">${esc(em||initial(f&&f.name))}</span>`;
+}
+function productFor(name){const n=norm(name);if(!n)return null;return S.products.find(p=>norm(p.name)===n)||commonFoods().find(c=>norm(c.name)===n||norm(c.alt)===n)||null}
 function commonFoods(){
   if(commonFoods._c&&commonFoods._l===lang)return commonFoods._c;
   commonFoods._l=lang;
-  return commonFoods._c=(window.COMMON_FOODS||[]).map((f,i)=>({id:"c:"+i,common:true,name:lang==="he"?f[1]:f[0],alt:lang==="he"?f[0]:f[1],
+  return commonFoods._c=(window.COMMON_FOODS||[]).map((f,i)=>({id:"c:"+i,common:true,en:f[0],emoji:foodEmoji(f[0]),name:lang==="he"?f[1]:f[0],alt:lang==="he"?f[0]:f[1],
     kcal:f[2],protein:f[3],carbs:f[4],fat:f[5],serving_g:f[6]||null,serving_name:(lang==="he"?f[8]:f[7])||"",serving_alt:(lang==="he"?f[7]:f[8])||"",unit:f[9]||"g",brand:""}));
 }
 function searchFoods(q,limit=8,{mine=true,common=true}={}){
@@ -385,7 +408,7 @@ function foodNutrition(food,amount){
   return {grams:Math.round(g),kcal:Math.round(num(food.kcal)*k),protein:r1(num(food.protein)*k),carbs:r1(num(food.carbs)*k),fat:r1(num(food.fat)*k)};
 }
 const defaultAmount=f=>f.serving_g&&f.serving_name?("1 "+f.serving_name):("100 "+(f.unit==="ml"?"ml":t("grams")));
-function suggestHTML(list){return list.length?`<div class="suggest">${list.map((f,i)=>`<button type="button" data-sug="${i}">
+function suggestHTML(list){return list.length?`<div class="suggest">${list.map((f,i)=>`<button type="button" data-sug="${i}">${thumbHTML(f,30)}
   <span class="grow"><b>${esc(f.name)}</b>${f.brand?` <span class="muted small">${esc(f.brand)}</span>`:""}${f.mine?` <span class="mine">★</span>`:""}</span>
   <span class="muted small">${r0(num(f.kcal))} ${t("kcal")}/100</span></button>`).join("")}</div>`:""}
 
@@ -638,8 +661,8 @@ function viewToday(){
 }
 
 /* =================== views: shopping =================== */
-function shopRow(i){return `<div class="sitem ${i.done?"done":""}" data-shop="${esc(i.id)}">
-  <div class="check">${ICON.check}</div>
+function shopRow(i){const pf=productFor(i.name);return `<div class="sitem ${i.done?"done":""}" data-shop="${esc(i.id)}">
+  <div class="check">${ICON.check}</div>${pf?thumbHTML(pf,34):""}
   <div class="grow"><div class="nm">${esc(i.name)}</div>${(i.recipes||[]).length?`<span class="src">${esc(i.recipes.join(" · "))}</span>`:""}</div>
   ${i.amount?`<span class="amt"><bdi>${esc(i.amount)}</bdi></span>`:""}
   <button class="x" data-act="rmShop" data-id="${esc(i.id)}" aria-label="remove">×</button></div>`}
@@ -813,7 +836,7 @@ function sheetNewPassword(){
 }
 /* =================== products =================== */
 let pq="",offHTML="";
-function prodCard(p,extra=""){return `<div class="pcard" ${p.mine?`data-act="openProd" data-id="${esc(p.id)}"`:""}>
+function prodCard(p,extra=""){return `<div class="pcard" ${p.mine?`data-act="openProd" data-id="${esc(p.id)}"`:""}>${thumbHTML(p,48)}
   <div class="grow"><div class="pname" dir="auto">${esc(p.name)}${p.brand?` <span class="muted small">· ${esc(p.brand)}</span>`:""}</div>
     <div class="pmac"><span class="kc">${r0(num(p.kcal))} ${t("kcal")}</span><span>${t("protein")[0]} ${r1(num(p.protein))}</span><span>${t("carbs")[0]} ${r1(num(p.carbs))}</span><span>${t("fat")[0]} ${r1(num(p.fat))}</span>
     <span class="muted">/ 100${p.unit==="ml"?"ml":"g"}</span></div></div>${extra}</div>`}
@@ -849,7 +872,7 @@ async function offSearchUI(){
 async function saveFoodToMine(f){
   const p={id:uuid(),name:f.name,brand:f.brand||"",barcode:f.barcode||"",category:f.category||"",unit:f.unit||"g",serving_g:f.serving_g||null,
     serving_name:f.serving_name||"",kcal:numOrNull(f.kcal),protein:numOrNull(f.protein),carbs:numOrNull(f.carbs),fat:numOrNull(f.fat),
-    sugar:numOrNull(f.sugar),fiber:numOrNull(f.fiber),source:f.source||(f.common?"common":"manual")};
+    sugar:numOrNull(f.sugar),fiber:numOrNull(f.fiber),source:f.source||(f.common?"common":"manual"),image:f.image||""};
   S.products=[...S.products,p];saveCache();rerender();
   const ok=await write("products",()=>S.api.saveProduct(p));if(ok)toast(t("savedToMine"));
 }
@@ -864,6 +887,10 @@ function sheetProduct(p,opt={}){
       <div class="grid2"><label class="btn ghost" style="cursor:pointer">${ICON.image}${t("aiAddShots").split(" ")[0]}<input type="file" id="pFile" accept="image/*" multiple class="hidden"></label>
         <button type="button" class="btn primary" id="pAI">${ICON.sparkle}AI</button></div>
       <div id="pMsg"></div></div>`:""}
+    <div class="row" id="picRow">${`<span id="picBox">${thumbHTML(p,72)}</span>`}<div class="grow">
+      <label class="f">${t("picture")}</label>
+      <div class="row" style="gap:6px;flex-wrap:wrap"><label class="btn sm ghost" style="cursor:pointer">${ICON.camera}<span id="picLbl">${p.image?t("changePicture"):t("addPicture")}</span><input type="file" id="picFile" accept="image/*" class="hidden"></label>
+      <button type="button" class="btn sm ghost ${p.image?"":"hidden"}" id="picDel">${t("removePicture")}</button></div></div></div>
     ${fld("pName",t("name"),p.name,"text")}
     <div class="grid2">${fld("pBrand",t("brand"),p.brand,"text")}
       <div><label class="f">${t("barcode")}</label><div class="row" style="gap:6px"><input type="text" inputmode="numeric" id="pCode" value="${esc(p.barcode||"")}">
@@ -877,8 +904,14 @@ function sheetProduct(p,opt={}){
     ${!isNew?`<button type="button" class="btn danger block" id="pDel">${t("del")}</button>`:""}
   </form>`,()=>{
     let unit=p.unit==="ml"?"ml":"g";
+    let image=p.image||"",picBlob=null;                  // picBlob = new photo waiting to be uploaded on Save
+    const showPic=()=>{$("#picBox").innerHTML=thumbHTML({name:$("#pName").value||p.name,image},72);$("#picLbl").textContent=image?t("changePicture"):t("addPicture");$("#picDel").classList.toggle("hidden",!image)};
+    const setPicFrom=async file=>{try{const sm=await shrinkImage(file,480);picBlob=await (await fetch(sm.preview)).blob();image=sm.preview;showPic()}catch(_){}};
+    $("#picFile").onchange=e=>{const f=e.target.files[0];e.target.value="";if(f)setPicFrom(f)};
+    $("#picDel").onclick=()=>{image="";picBlob=null;showPic()};
     $("#pUnit").onclick=e=>{const b=e.target.closest("[data-u]");if(!b)return;unit=b.dataset.u;$("#pUnit").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));$("#pU").textContent=unit};
     const fill=x=>{const set=(id,v)=>{if(v!=null&&v!=="")$("#"+id).value=v};
+      if(x.image&&!image){image=x.image;picBlob=null;setTimeout(showPic)}
       set("pName",x.name);set("pBrand",x.brand);set("pCode",x.barcode);set("pSg",x.serving_g);set("pSn",x.serving_name);
       set("pK",x.kcal);set("pP",x.protein);set("pC",x.carbs);set("pF",x.fat);set("pSu",x.sugar);set("pFi",x.fiber);
       if(x.unit){unit=x.unit;$("#pUnit").querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.u===unit));$("#pU").textContent=unit}};
@@ -891,7 +924,9 @@ function sheetProduct(p,opt={}){
         try{const res=await S.api.callFn({mode:"product",lang,images:shots.map(({mime,data})=>({mime,data}))});
           fill(res.product);p.source="ai";msg(res.product.estimated?esc(t("estimated")):"",res.product.estimated?"warn":"")}
         catch(e){msg(esc(e.code==="setup"?t("aiSetup"):errMsg(e)),"warn")}finally{busy=false;const b=$("#pAI");if(b)b.disabled=false}};
-      $("#pFile").onchange=async e=>{for(const f of [...e.target.files].slice(0,3-shots.length)){try{shots.push(await shrinkImage(f))}catch(_){}}e.target.value="";draw();if(shots.length)runAI()};
+      $("#pFile").onchange=async e=>{const files=[...e.target.files].slice(0,3-shots.length);
+        if(files[0]&&!image)setPicFrom(files[0]);                       // first photo becomes the product picture
+        for(const f of files){try{shots.push(await shrinkImage(f))}catch(_){}}e.target.value="";draw();if(shots.length)runAI()};
       $("#pAI").onclick=runAI;
       $("#pLook").onclick=async()=>{const code=$("#pCode").value.replace(/\D/g,"");if(!code)return;msg(`<span class="spin"></span>${esc(t("searching"))}`);
         try{const res=await S.api.callFn({mode:"off_barcode",code,lang});const f=(res.products||[])[0];
@@ -904,9 +939,15 @@ function sheetProduct(p,opt={}){
     $("#pf").onsubmit=ev=>{ev.preventDefault();const name=$("#pName").value.trim();if(!name){toast(t("needName"));return}
       const v=id=>numOrNull($("#"+id).value);
       const rec={id:p.id||uuid(),name,brand:$("#pBrand").value.trim(),barcode:$("#pCode").value.replace(/\D/g,""),category:p.category||"",unit,
-        serving_g:v("pSg"),serving_name:$("#pSn").value.trim(),kcal:v("pK"),protein:v("pP"),carbs:v("pC"),fat:v("pF"),sugar:v("pSu"),fiber:v("pFi"),source:p.source||"manual"};
-      const i=S.products.findIndex(x=>x.id===rec.id);if(i>=0)S.products[i]=rec;else S.products.push(rec);saveCache();closeSheet();rerender();
-      write("products",()=>S.api.saveProduct(rec)).then(ok=>ok&&toast(t("saved")))};
+        serving_g:v("pSg"),serving_name:$("#pSn").value.trim(),kcal:v("pK"),protein:v("pP"),carbs:v("pC"),fat:v("pF"),sugar:v("pSu"),fiber:v("pFi"),source:p.source||"manual",
+        image:picBlob?image:image};
+      const i=S.products.findIndex(x=>x.id===rec.id);if(i>=0)S.products[i]=rec;else S.products.push(rec);closeSheet();rerender();
+      const blob=picBlob;
+      write("products",async()=>{
+        if(blob){try{rec.image=await S.api.uploadImage(blob,rec.id)}catch(e){rec.image=(p.image||"");toast(t("picFail")+errMsg(e))}}
+        await S.api.saveProduct(rec);
+        const k=S.products.findIndex(x=>x.id===rec.id);if(k>=0)S.products[k]={...rec};saveCache();rerender();
+      }).then(ok=>ok&&toast(t("saved")))};
   });
 }
 /* translate a recipe into the app language */
@@ -961,10 +1002,10 @@ async function videoAudio(file,maxSec=120,rate=12000){
 }
 
 /* AI import */
-async function shrinkImage(file){ // -> {mime,data(base64)} max 1280px JPEG
+async function shrinkImage(file,max=1280){ // -> {mime,data(base64),preview} JPEG, longest side <= max
   const url=URL.createObjectURL(file);
   try{const img=await new Promise((ok,bad)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=bad;i.src=url});
-    const k=Math.min(1,1280/Math.max(img.naturalWidth,img.naturalHeight));const c=document.createElement("canvas");
+    const k=Math.min(1,max/Math.max(img.naturalWidth,img.naturalHeight));const c=document.createElement("canvas");
     c.width=Math.round(img.naturalWidth*k);c.height=Math.round(img.naturalHeight*k);c.getContext("2d").drawImage(img,0,0,c.width,c.height);
     const d=c.toDataURL("image/jpeg",0.82);return {mime:"image/jpeg",data:d.split(",")[1],preview:d}}
   finally{URL.revokeObjectURL(url)}

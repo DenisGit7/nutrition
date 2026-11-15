@@ -106,6 +106,16 @@ What's new:
 - **AI import → Add video:** screen-record a reel while it plays, add the recording; the app sends frames and the
   soundtrack to the AI.
 
+## Updating to 1.3.0 (product pictures) — do once
+
+1. **Database + photo storage:** Supabase → SQL Editor → New query → paste all of `supabase/003_product_images.sql` → **Run**.
+2. **AI function:** Edge Functions → `import-recipe` → **Code** → replace with the new
+   `supabase/functions/import-recipe/index.ts` → **Deploy** (adds Open Food Facts product photos).
+
+Pictures appear in the Products list, suggestions and the shopping list. Ways to get one:
+the first photo you give the AI, **Add picture** on any product, or the photo from Open Food Facts.
+Products without a picture show a matching emoji or a coloured letter.
+
 ---
 
 ## Adding recipes from a link (without AI import)

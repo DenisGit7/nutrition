@@ -220,3 +220,10 @@ nav.tabs .badge{position:absolute;top:3px;inset-inline-start:calc(50% + 6px);min
 .vbadge{position:absolute;bottom:3px;inset-inline-start:3px;background:rgba(0,0,0,.6);color:#fff;border-radius:7px;padding:1px 5px;font-size:11px;display:flex;align-items:center;gap:3px}
 .vbadge svg{width:12px;height:12px}
 nav.tabs button span{white-space:nowrap}
+/* product pictures (v1.3) */
+.pthumb{flex:none;border-radius:12px;object-fit:cover;background:var(--bg);border:1px solid var(--line);display:inline-flex;align-items:center;justify-content:center}
+.pthumb.emo{background:var(--soft);border-color:transparent}
+.pthumb.ph{color:#fff;font-weight:700;border:0}
+.suggest .pthumb{border-radius:8px}
+.sitem .pthumb{border-radius:9px}
+#picBox .pthumb{border-radius:16px}
