@@ -24,7 +24,7 @@ ingredients:"Ingredients",steps:"Steps",notes:"Notes",source:"Source",edit:"Edit
 save:"Save",cancel:"Cancel",newRecipe:"New recipe",editRecipe:"Edit recipe",name:"Name",ingName:"Ingredient",amount:"Amount",
 addIng:"+ Add ingredient",recalcAI:"Recalculate calories with AI",recalcing:"Calculating…",recalcNone:"Nothing to recalculate — all ingredients use your products' numbers",recalcDone:"Updated {n} ingredients",stepsHint:"one step per line",tags:"Tags (comma separated)",calcFromIng:"from ingredients",
 kcalServing:"Calories per serving",macrosServing:"Macros per serving (g)",addToday:"Add to today",added:"Added",saved:"Saved",deleted:"Deleted",
-goal:"Goal",left:"left",over:"over",eaten:"eaten",quickAdd:"Log food",whatAte:"What did you eat?",meal_breakfast:"Breakfast",meal_lunch:"Lunch",meal_dinner:"Dinner",meal_snack:"Snack",editEntry:"Edit meal entry",editAmountHint:"Changing the amount updates calories, protein, carbs and fat.",needDbMeals:"Saved without the meal — run 005_food_log_meals.sql in Supabase to keep meals",logSearch:"Search your recipes and products…",byGrams:"Grams",byServings:"Servings",servingsWord:"servings",servingWord:"serving",change:"Change",dishWeight:"Whole dish weight (g)",dishWeightHint:"Sum of the ingredients. If you weigh the cooked dish, type that weight — it is remembered on this device.",needDishW:"Type the whole dish weight to count by grams, or switch to servings.",nothing:"Nothing logged yet for this day.",
+goal:"Goal",left:"left",over:"over",eaten:"eaten",quickAdd:"Log food",whatAte:"What did you eat?",cookedW:"Cooked weight of the whole dish (g)",cookedWShort:"Cooked weight",cookedWPh:"e.g. 1200",cookedWHint:"Weigh the finished dish (pot minus the empty pot). Logging by grams uses it, so grams count as cooked food. Leave empty and the AI estimates it.",estimate:"Estimate",cookedSet:"Cooked weight ≈ {g} g",cookedWord:"cooked",rawW:"raw ingredients",cookedWLogHint:"Grams count as cooked food. Weighed the pot? Type the real weight — it is saved in the recipe.",cookedWMissing:"Type the cooked weight of the whole dish, or switch to servings.",estimatingCooked:"Estimating the cooked weight…",needDbCooked:"Run 006_recipe_cooked_weight.sql in Supabase to save cooked weights in recipes",meal_breakfast:"Breakfast",meal_lunch:"Lunch",meal_dinner:"Dinner",meal_snack:"Snack",editEntry:"Edit meal entry",editAmountHint:"Changing the amount updates calories, protein, carbs and fat.",needDbMeals:"Saved without the meal — run 005_food_log_meals.sql in Supabase to keep meals",logSearch:"Search your recipes and products…",byGrams:"Grams",byServings:"Servings",servingsWord:"servings",servingWord:"serving",change:"Change",needDishW:"Type the cooked weight of the whole dish to count by grams, or switch to servings.",nothing:"Nothing logged yet for this day.",
 setGoal:"Daily calorie goal",fromRecipe:"From recipe",add:"Add",
 cloud:"Synced",local:"Demo mode — saved on this device only",offline:"Offline — showing saved copy",
 loading:"Loading…",needName:"Please enter a name",prev:"Previous day",next:"Next day",todayBtn:"Back to today",total:"Total",
@@ -68,7 +68,7 @@ ingredients:"מצרכים",steps:"אופן הכנה",notes:"הערות",source:"
 save:"שמירה",cancel:"ביטול",newRecipe:"מתכון חדש",editRecipe:"עריכת מתכון",name:"שם",ingName:"מצרך",amount:"כמות",
 addIng:"+ הוספת מצרך",recalcAI:"חישוב קלוריות מחדש עם AI",recalcing:"מחשב…",recalcNone:"אין מה לחשב — כל המצרכים מקושרים למוצרים שלך",recalcDone:"עודכנו {n} מצרכים",stepsHint:"שלב אחד בכל שורה",tags:"תגיות (מופרדות בפסיק)",calcFromIng:"מחושב מהמצרכים",
 kcalServing:"קלוריות למנה",macrosServing:"ערכים למנה (גרם)",addToday:"הוסף להיום",added:"נוסף",saved:"נשמר",deleted:"נמחק",
-goal:"יעד",left:"נותרו",over:"מעל",eaten:"נאכלו",quickAdd:"רישום אוכל",whatAte:"מה אכלת?",meal_breakfast:"בוקר",meal_lunch:"צהריים",meal_dinner:"ערב",meal_snack:"נשנוש",editEntry:"עריכת רישום",editAmountHint:"שינוי הכמות מעדכן קלוריות, חלבון, פחמימות ושומן.",needDbMeals:"נשמר בלי הארוחה — הרץ את 005_food_log_meals.sql ב-Supabase כדי לשמור ארוחות",logSearch:"חיפוש במתכונים ובמוצרים שלך…",byGrams:"גרמים",byServings:"מנות",servingsWord:"מנות",servingWord:"מנה",change:"החלפה",dishWeight:"משקל כל המנה (גרם)",dishWeightHint:"סכום המצרכים. אם שקלת את המנה המבושלת, הקלד את המשקל — הוא נשמר במכשיר הזה.",needDishW:"הקלד את משקל כל המנה כדי לחשב לפי גרמים, או עבור למנות.",nothing:"עדיין לא נרשם כלום ביום הזה.",
+goal:"יעד",left:"נותרו",over:"מעל",eaten:"נאכלו",quickAdd:"רישום אוכל",whatAte:"מה אכלת?",cookedW:"משקל כל המנה המבושלת (גרם)",cookedWShort:"משקל מבושל",cookedWPh:"למשל 1200",cookedWHint:"שקול את המנה המוכנה (הסיר פחות משקל הסיר הריק). רישום לפי גרמים משתמש בזה, כך שהגרמים נספרים כאוכל מבושל. השאר ריק וה-AI יעריך.",estimate:"הערכה",cookedSet:"משקל מבושל ≈ {g} גרם",cookedWord:"מבושל",rawW:"מצרכים לא מבושלים",cookedWLogHint:"הגרמים נספרים כאוכל מבושל. שקלת את הסיר? הקלד את המשקל האמיתי — הוא יישמר במתכון.",cookedWMissing:"הקלד את משקל כל המנה המבושלת, או עבור למנות.",estimatingCooked:"מעריך את המשקל המבושל…",needDbCooked:"הרץ את 006_recipe_cooked_weight.sql ב-Supabase כדי לשמור משקל מבושל במתכונים",meal_breakfast:"בוקר",meal_lunch:"צהריים",meal_dinner:"ערב",meal_snack:"נשנוש",editEntry:"עריכת רישום",editAmountHint:"שינוי הכמות מעדכן קלוריות, חלבון, פחמימות ושומן.",needDbMeals:"נשמר בלי הארוחה — הרץ את 005_food_log_meals.sql ב-Supabase כדי לשמור ארוחות",logSearch:"חיפוש במתכונים ובמוצרים שלך…",byGrams:"גרמים",byServings:"מנות",servingsWord:"מנות",servingWord:"מנה",change:"החלפה",needDishW:"הקלד את משקל כל המנה המבושלת כדי לחשב לפי גרמים, או עבור למנות.",nothing:"עדיין לא נרשם כלום ביום הזה.",
 setGoal:"יעד קלוריות יומי",fromRecipe:"ממתכון",add:"הוסף",
 cloud:"מסונכרן",local:"מצב הדגמה — נשמר במכשיר הזה בלבד",offline:"אין חיבור — מוצג עותק שמור",
 loading:"טוען…",needName:"נא להזין שם",prev:"יום קודם",next:"יום הבא",todayBtn:"חזרה להיום",total:"סה״כ",
@@ -94,7 +94,7 @@ aiAddShots:"הוספת צילומי מסך",aiGo:"יצירת מתכון",aiWorki
 aiNeedInput:"הדבק קישור, טקסט או הוסף צילומי מסך.",aiDemo:"ייבוא עם AI זמין רק בגרסה המסונכרנת (Supabase).",
 aiSetup:"ייבוא עם AI עדיין לא הוגדר ב-Supabase (ראה README, שלב 6).",aiLinkWarn:"לא הצלחתי לפתוח את הקישור עצמו — המתכון נוצר מהטקסט/צילומי המסך.",aiLinkOnly:"האתר שיתף רק את הכותרת, בלי המתכון. העתק את טקסט הפוסט (עוד → העתקה) לתיבה למעלה, או הוסף צילומי מסך של המצרכים, ואז לחץ שוב על יצירת מתכון."}
 };
-const VERSION = "1.10.0";
+const VERSION = "1.11.0";
 
 /* =================== small utils =================== */
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},
@@ -145,14 +145,14 @@ async function safe(fn){try{return await fn()}catch(e){console.error(e);toast(er
 /* =================== mapping =================== */
 function recipeFromRow(r){return {id:r.id,name:r.name,servings:num(r.servings)||1,time:r.time_min,ingredients:r.ingredients||[],
   kcalPerServing:r.kcal_per_serving,protein:r.protein,carbs:r.carbs,fat:r.fat,steps:r.steps||[],tags:r.tags||[],
-  notes:r.notes||"",source:r.source||"",image:r.image||"",createdAt:r.created_at,updatedAt:r.updated_at}}
+  notes:r.notes||"",source:r.source||"",image:r.image||"",cookedG:numOrNull(r.cooked_g),createdAt:r.created_at,updatedAt:r.updated_at}}
 function recipeToRow(r,hid){return {id:r.id,household_id:hid,name:r.name,servings:num(r.servings)||1,time_min:numOrNull(r.time),
   ingredients:(r.ingredients||[]).map(i=>{const o={name:i.name||"",amount:i.amount||"",kcal:numOrNull(i.kcal)};
     if(i.qty!=null)o.qty=numOrNull(i.qty);if(i.unit)o.unit=String(i.unit);if(i.grams!=null)o.grams=numOrNull(i.grams);
     if(i.protein!=null)o.protein=numOrNull(i.protein);if(i.carbs!=null)o.carbs=numOrNull(i.carbs);if(i.fat!=null)o.fat=numOrNull(i.fat);
     if(i.food)o.food=i.food;return o}),
   kcal_per_serving:numOrNull(r.kcalPerServing),protein:numOrNull(r.protein),carbs:numOrNull(r.carbs),fat:numOrNull(r.fat),
-  steps:r.steps||[],tags:r.tags||[],notes:r.notes||null,source:r.source||null,image:r.image||null}}
+  steps:r.steps||[],tags:r.tags||[],notes:r.notes||null,source:r.source||null,image:r.image||null,cooked_g:numOrNull(r.cookedG)}}
 const shopFromRow=r=>({id:r.id,name:r.name,amount:r.amount||"",done:!!r.done,recipes:r.recipes||[],createdAt:r.created_at});
 const prodFromRow=r=>({id:r.id,updatedAt:r.updated_at,name:r.name,brand:r.brand||"",barcode:r.barcode||"",category:r.category||"",unit:r.unit||"g",
   serving_g:r.serving_g==null?null:num(r.serving_g),serving_name:r.serving_name||"",kcal:numOrNull(r.kcal),protein:numOrNull(r.protein),
@@ -164,6 +164,7 @@ const logFromRow=r=>({id:r.id,day:r.day,name:r.name,recipeId:r.recipe_id,serving
   meal:r.meal||null,amount:numOrNull(r.amount),amountUnit:r.amount_unit||""});
 const logToRow=e=>({name:e.name,recipe_id:e.recipeId||null,servings:e.servings||1,kcal:e.kcal||0,protein:e.protein||0,carbs:e.carbs||0,fat:e.fat||0,
   meal:e.meal||null,amount:numOrNull(e.amount),amount_unit:e.amountUnit||null});
+const missingCol=(err,cols)=>{const m=(err&&err.message)||"";if(!/column|schema cache/i.test(m))return null;return cols.find(c=>m.includes(c))||null};
 const noMealCol=err=>/meal|amount/i.test((err&&err.message)||"")&&/column|schema cache/i.test((err&&err.message)||"");
 
 /* =================== backends =================== */
@@ -225,11 +226,14 @@ const SupaBackend={
   async renameHousehold(name){const {error}=await this.sb.from("households").update({name}).eq("id",this.household.id);if(error)throw error;this.household.name=name},
   async renameMe(display){const {error}=await this.sb.from("members").update({display_name:display}).eq("household_id",this.household.id).eq("user_id",this.user.id);if(error)throw error},
   async listRecipes(){const {data,error}=await this.sb.from("recipes").select("*").eq("household_id",this.household.id);if(error)throw error;return data.map(recipeFromRow)},
-  async saveRecipe(r){let row=recipeToRow(r,this.household.id);
-    let {data,error}=await this.sb.from("recipes").upsert(row).select().single();
-    if(error&&/image/i.test(error.message||"")&&/column|schema cache/i.test(error.message||"")){const {image,...rest}=row;({data,error}=await this.sb.from("recipes").upsert(rest).select().single());if(!error)this.warn=t("needDbUpdateRecipe")}
+  async saveRecipe(r){let row=recipeToRow(r,this.household.id),data,error;
+    for(let k=0;k<3;k++){({data,error}=await this.sb.from("recipes").upsert(row).select().single());
+      const col=missingCol(error,["image","cooked_g"]);if(!col||!(col in row))break;
+      const {[col]:_,...rest}=row;row=rest;this.warn=t(col==="image"?"needDbUpdateRecipe":"needDbCooked");if(col==="cooked_g")S.noCookedCol=true}
     if(error)throw error;return recipeFromRow(data)},
-  async saveRecipes(list){if(!list.length)return;const {error}=await this.sb.from("recipes").upsert(list.map(r=>recipeToRow(r,this.household.id)));if(error)throw error},
+  async saveRecipes(list){if(!list.length)return;let rows=list.map(r=>recipeToRow(r,this.household.id)),error;
+    for(let k=0;k<3;k++){({error}=await this.sb.from("recipes").upsert(rows));const col=missingCol(error,["image","cooked_g"]);if(!col)break;rows=rows.map(({[col]:_,...rest})=>rest)}
+    if(error)throw error},
   async deleteRecipe(id){const {error}=await this.sb.from("recipes").delete().eq("id",id);if(error)throw error},
   async listShop(){const {data,error}=await this.sb.from("shopping_items").select("*").eq("household_id",this.household.id).order("created_at");if(error)throw error;return data.map(shopFromRow)},
   async insertShop(items){if(!items.length)return;const hid=this.household.id;
@@ -305,7 +309,7 @@ function refetch(kind,delay=250){
   refetchTimers[kind]=setTimeout(async()=>{
     if(S.pending[kind]>0){refetch(kind,400);return}
     try{
-      if(kind==="recipes")S.recipes=await S.api.listRecipes();
+      if(kind==="recipes"){S.recipes=await S.api.listRecipes();ensureCookedSoon()}
       else if(kind==="shop")S.shop=await S.api.listShop();
       else if(kind==="log")S.log[curDate]=await S.api.listLog(curDate);
       else if(kind==="products")S.products=await S.api.listProducts();
@@ -364,7 +368,7 @@ async function enterHousehold(h){
 async function loadAll(){
   try{
     const [rec,shop,log,st,prods]=await Promise.all([S.api.listRecipes(),S.api.listShop(),S.api.listLog(curDate),S.api.getSettings(),S.api.listProducts().catch(()=>[])]);
-    S.recipes=rec;S.shop=shop;S.log[curDate]=log;S.products=prods;S.settings={goal:2000,...st};S.loaded=true;S.online=true;saveCache();
+    S.recipes=rec;S.shop=shop;S.log[curDate]=log;S.products=prods;S.settings={goal:2000,...st};S.loaded=true;S.online=true;saveCache();ensureCookedSoon();
   }catch(e){console.warn(e);S.online=false}
   rerender();
 }
@@ -518,7 +522,7 @@ function rerender(){ // re-render unless the user is typing in a form we'd destr
   render()}
 
 function render(){
-  applyChrome();setStatus();renderBanner();
+  applyChrome();setStatus();renderBanner();if(CLOUD&&route.tab==="today"&&S.phase==="app")migrateLogsSoon();
   const inApp=S.phase==="app";
   $("#tabs").classList.toggle("hidden",!inApp);
   $("#gearBtn").classList.toggle("hidden",!inApp||route.tab==="settings");
@@ -638,7 +642,8 @@ function viewDetail(r){
     <div class="macro p"><b>${r1(ps.protein)}</b><span>${t("protein")}</span></div>
     <div class="macro c"><b>${r1(ps.carbs)}</b><span>${t("carbs")}</span></div>
     <div class="macro f"><b>${r1(ps.fat)}</b><span>${t("fat")}</span></div></div>
-    <div class="muted small" style="text-align:center;margin-top:10px">${t("perServing")}</div></div>
+    <div class="muted small" style="text-align:center;margin-top:10px">${t("perServing")}</div>
+    ${num(r.cookedG)>0?`<div class="muted small" style="text-align:center;margin-top:4px">${t("cookedWShort")}: <b>${r0(r.cookedG)} g</b> · ${r0(ps.kcal*Math.max(1,num(r.servings)||1)/num(r.cookedG)*100)} ${t("kcal")} / 100 g ${t("cookedWord")}</div>`:""}</div>
   <div class="grid2"><button class="btn primary" data-act="addToday">${ICON.plus}${t("addToday")}</button>
     <button class="btn ghost" data-act="toShop" ${ings.length?"":"disabled"}>${ICON.cart}${t("toShop")}</button></div>
   ${ings.length?`<button class="btn ghost block" data-act="ingToProd">${ICON.plus}${t("ingToProd")}</button>`:""}
@@ -713,7 +718,10 @@ function viewEdit(r){r=r||S.draft||{servings:1,ingredients:[{},{},{}],steps:[]};
     <div class="grid2">
       <div><label class="f">${t("servings")}</label><input type="number" step="any" inputmode="decimal" name="servings" min="1" value="${esc(r.servings||1)}"></div>
       <div><label class="f">${t("time")}</label><input type="number" step="any" inputmode="numeric" name="time" value="${esc(r.time??"")}"></div>
-    </div></div>
+    </div>
+    <div><label class="f">${t("cookedW")}</label><div class="row" style="gap:8px"><input type="number" step="any" inputmode="decimal" name="cookedG" class="grow" value="${esc(r.cookedG??"")}" placeholder="${t("cookedWPh")}">
+      ${CLOUD?`<button type="button" class="btn sm ghost" data-act="estCooked">✨ ${t("estimate")}</button>`:""}</div>
+      <div class="muted small" style="margin-top:4px">${t("cookedWHint")}</div></div></div>
   <div class="card"><h2 class="sec">${t("ingredients")}</h2>
     <div class="ing-head"><span>${t("qty")}</span><span>${t("unitCol")}</span><span>${t("gramsCol")}</span><span>${t("kcal")}</span></div>
     <div id="ings">${(r.ingredients&&r.ingredients.length?r.ingredients:[{}]).map(ingRow).join("")}</div>
@@ -921,10 +929,11 @@ const mealNow=()=>mealByHour(new Date().getHours());
 const mealOf=e=>MEALS.includes(e.meal)?e.meal:(e.createdAt?mealByHour(new Date(e.createdAt).getHours()):"snack");
 const mealSeg=(id,cur)=>`<div class="seg meals" id="${id}">${MEALS.map(m=>`<button type="button" data-meal="${m}" class="${cur===m?"on":""}"><span>${MEAL_IC[m]}</span>${t("meal_"+m)}</button>`).join("")}</div>`;
 const amountText=e=>{const a=numOrNull(e.amount);if(a==null)return "";const u=e.amountUnit||"";
+  if(u==="gc")return `${fmtQty(a)} ${t("grams")} ${t("cookedWord")}`;
   if(u==="g"||u==="ml")return `${fmtQty(a)} ${u==="g"?t("grams"):"ml"}`;if(u==="srv")return `${fmtQty(a)} ${t("servingsWord")}`;return `${fmtQty(a)} ${u}`};
 function sheetEditEntry(e){
   const day=e.day||curDate;let meal=mealOf(e),armDel=false;const base={amount:numOrNull(e.amount),kcal:num(e.kcal),protein:num(e.protein),carbs:num(e.carbs),fat:num(e.fat)};
-  const uLabel=e.amountUnit==="g"?t("gramsCol"):e.amountUnit==="ml"?"ml":e.amountUnit==="srv"?t("servings"):(e.amountUnit||t("amount"));
+  const uLabel=e.amountUnit==="g"||e.amountUnit==="gc"?t("gramsCol"):e.amountUnit==="ml"?"ml":e.amountUnit==="srv"?t("servings"):(e.amountUnit||t("amount"));
   const fld=(id,label,val)=>`<div><label class="f">${label}</label><input type="number" step="any" inputmode="decimal" id="${id}" value="${esc(val===""||val==null?"":val)}"></div>`;
   openSheet(`<form class="stack" id="ef" autocomplete="off"><h2 class="sec" style="font-size:19px;margin:0">${t("editEntry")}</h2>
     ${mealSeg("eMeal",meal)}
@@ -1020,9 +1029,45 @@ function sheetPickRecipe(){
     $("#sheet").querySelectorAll("[data-rid]").forEach(el=>el.onclick=()=>{const r=S.recipes.find(x=>x.id===el.dataset.rid);if(r)sheetShopIngs(r)});
   });
 }
+/* ---------- cooked weight of recipes (AI estimate, synced in the recipe) ---------- */
+const cookedInput=r=>({name:r.name,servings:num(r.servings)||1,steps:(r.steps||[]).slice(0,10),
+  ingredients:(r.ingredients||[]).filter(i=>i.name).map(i=>({name:i.name,amount:i.amount||composeAmount(i.qty,i.unit,null),grams:numOrNull(i.grams)}))});
+async function estimateCooked(list){const res=await S.api.callFn({mode:"cooked",recipes:list});return (res&&res.recipes||[]).map(x=>x&&num(x.cooked_g)>0?Math.round(num(x.cooked_g)):null)}
+async function setRecipeCooked(r,g){const rec={...r,cookedG:g};const i=S.recipes.findIndex(x=>x.id===r.id);if(i>=0)S.recipes[i]=rec;saveCache();
+  S.api.warn="";await S.api.saveRecipe(rec);return rec}
+/* existing recipes without a cooked weight: your own weighed value (saved on this device before 1.11) or the AI's estimate */
+const estTried=new Set();let cookedBusy=false;const cookedTried=new Set();
+async function ensureCookedWeights(){
+  if(!CLOUD||cookedBusy||S.noCookedCol||S.phase!=="app")return;cookedBusy=true;
+  try{for(const r of S.recipes.filter(r=>!(num(r.cookedG)>0)&&dishW.get(r.id))){await setRecipeCooked(r,dishW.get(r.id));dishW.set(r.id,null);if(S.noCookedCol)return}
+    const todo=S.recipes.filter(r=>!(num(r.cookedG)>0)&&!cookedTried.has(r.id)&&(r.ingredients||[]).some(i=>i.name)).slice(0,25);
+    if(!todo.length)return;todo.forEach(r=>cookedTried.add(r.id));
+    const gs=await estimateCooked(todo.map(cookedInput));
+    for(let k=0;k<todo.length;k++){const cur=S.recipes.find(x=>x.id===todo[k].id);if(gs[k]&&cur&&!(num(cur.cookedG)>0)){await setRecipeCooked(cur,gs[k]);if(S.noCookedCol)break}}
+    rerender();
+  }catch(e){console.warn("cooked weights",e)}
+  finally{cookedBusy=false;if(S.noCookedCol&&!S._cookedWarned){S._cookedWarned=true;toast(t("needDbCooked"))}migrateLogsSoon()}
+}
+/* food-log entries of recipes logged by grams before 1.11 were counted as raw weight → recount as cooked grams (once) */
+const logFixed=new Set();
+async function migrateLogs(){if(S.phase!=="app")return;let changed=false;
+  for(const day of Object.keys(S.log)){for(const e of (S.log[day]||[])){
+    if(!e.recipeId||logFixed.has(e.id)||e.amountUnit==="gc"||e.amountUnit==="srv")continue;
+    const m=e.amount==null?String(e.name||"").match(/\s*\((\d+(?:[.,]\d+)?)\s*(?:g|גרם)\)\s*$/):null;
+    const amount=e.amountUnit==="g"?num(e.amount):m?num(m[1].replace(",",".")):0;if(!(amount>0)){logFixed.add(e.id);continue}
+    const r=S.recipes.find(x=>x.id===e.recipeId);if(!r||!(num(r.cookedG)>0))continue;
+    logFixed.add(e.id);const T=recipeTotals(r),k=amount/num(r.cookedG);
+    const upd={...e,name:m?e.name.slice(0,m.index):e.name,amount,amountUnit:"gc",servings:r1(amount/(num(r.cookedG)/T.sv))||1,
+      kcal:Math.round(T.kcal*k),protein:r1(T.protein*k),carbs:r1(T.carbs*k),fat:r1(T.fat*k)};
+    S.log[day]=S.log[day].map(x=>x.id===e.id?upd:x);changed=true;S.api.warn="";await write("log",()=>S.api.updateLog(upd))}}
+  if(changed)rerender()}
+const migrateLogsSoon=()=>{clearTimeout(migrateLogsSoon._t);migrateLogsSoon._t=setTimeout(migrateLogs,1500)};
+const ensureCookedSoon=()=>{clearTimeout(ensureCookedSoon._t);ensureCookedSoon._t=setTimeout(ensureCookedWeights,2500)};
+
 /* ---------- log food: pick a recipe or product, enter grams (or servings) → calories for the day ---------- */
 const dishW={get(id){try{return num(JSON.parse(localStorage.getItem("nt.dishw")||"{}")[id])||null}catch(_){return null}},
   set(id,g){try{const o=JSON.parse(localStorage.getItem("nt.dishw")||"{}");if(g)o[id]=g;else delete o[id];localStorage.setItem("nt.dishw",JSON.stringify(o))}catch(_){}}};
+const cookedOf=r=>num(r.cookedG)||dishW.get(r.id)||null;
 function recipeWeight(r){const ings=(r.ingredients||[]).filter(i=>i.name);if(!ings.length)return null;
   let g=0;for(const i of ings){const x=numOrNull(i.grams);if(x==null){if(num(i.kcal)>0)return null;continue}g+=x}return g>0?Math.round(g):null}
 function recipeTotals(r){const ps=perServing(r),sv=Math.max(1,num(r.servings)||1);return {kcal:ps.kcal*sv,protein:ps.protein*sv,carbs:ps.carbs*sv,fat:ps.fat*sv,sv}}
@@ -1036,7 +1081,7 @@ function logPickHTML(list){return list.length?`<div class="suggest" style="posit
   :`<button type="button" data-lp="${i}">${thumbHTML(x.f,30)}<span class="grow"><b dir="auto">${esc(x.f.name)}</b>${x.f.brand?` <span class="muted small">${esc(x.f.brand)}</span>`:""}${x.f.mine?` <span class="mine">★</span>`:""}</span>
      <span class="muted small">${r0(num(x.f.kcal))} ${t("kcal")}/100</span></button>`).join("")}</div>`:""}
 function sheetQuick(opt={}){
-  const day=opt.day||curDate;let sel=null,mode="g",list=[],mac={c:null,f:null},meal=opt.meal||mealNow();
+  const day=opt.day||curDate;let sel=null,mode="g",list=[],mac={c:null,f:null},meal=opt.meal||mealNow(),wChanged=false;
   openSheet(`<form class="stack" id="qf" autocomplete="off"><h2 class="sec" style="font-size:19px;margin:0">${t("quickAdd")}</h2>
     ${mealSeg("qMeal",meal)}
     <div><label class="f">${t("whatAte")}</label><input type="search" dir="auto" id="qn" placeholder="${t("logSearch")}"><div id="qlist"></div></div>
@@ -1070,15 +1115,20 @@ function sheetQuick(opt={}){
         <label class="f" style="margin-top:10px">${mode==="g"?(f&&f.unit==="ml"?"ml":t("gramsCol")):(isR?t("servings"):esc(sName)+(f.serving_g?` (${r0(f.serving_g)} g)`:""))}</label>
         <input type="number" step="any" inputmode="decimal" id="qg" style="font-size:20px;font-weight:600;text-align:center">
         <div class="chips" style="margin-top:6px">${chips.map(c=>`<button type="button" class="chip" data-qc="${c}">${c}${mode==="g"?" g":""}</button>`).join("")}</div>
-        ${isR&&mode==="g"?`<label class="f" style="margin-top:10px">${t("dishWeight")}</label><input type="number" step="any" inputmode="decimal" id="qw" value="${esc(dishW.get(r.id)||recipeWeight(r)||"")}">
-          <div class="muted small" style="margin-top:4px">${t("dishWeightHint")}</div>`:""}
+        ${isR&&mode==="g"?`<label class="f" style="margin-top:10px">${t("cookedW")}</label><input type="number" step="any" inputmode="decimal" id="qw" value="${esc(cookedOf(r)||"")}" placeholder="${esc(recipeWeight(r)?t("rawW")+": "+recipeWeight(r)+" g":"")}">
+          <div class="muted small" style="margin-top:4px" id="qwHint">${cookedOf(r)?t("cookedWLogHint"):t("cookedWMissing")}</div>`:""}
       </div>`;
       $("#qx").onclick=()=>{sel=null;$("#qn").value="";$("#qk").value="";$("#qp").value="";$("#qmac").textContent="";drawSel();showList();$("#qn").focus()};
       const qm=$("#qm");if(qm)qm.onclick=e=>{const b=e.target.closest("[data-m]");if(!b||b.dataset.m===mode)return;mode=b.dataset.m;drawSel();$("#qg").value=mode==="s"?1:"";calc();$("#qg").focus()};
       box.querySelector(".chips").onclick=e=>{const b=e.target.closest("[data-qc]");if(b){$("#qg").value=b.dataset.qc;calc()}};
-      $("#qg").oninput=calc;const qw=$("#qw");if(qw)qw.oninput=()=>{dishW.set(r.id,num(qw.value)||null);calc()};
+      $("#qg").oninput=calc;const qw=$("#qw");if(qw)qw.oninput=()=>{wChanged=true;calc()};
+      // no cooked weight yet → ask the AI once and save it in the recipe
+      if(qw&&!cookedOf(r)&&CLOUD&&!estTried.has(r.id)){estTried.add(r.id);$("#qwHint").innerHTML=`<span class="spin"></span>${t("estimatingCooked")}`;
+        estimateCooked([cookedInput(r)]).then(async([g])=>{if(!g)throw new Error("none");const rec=await setRecipeCooked(r,g).catch(()=>({...r,cookedG:g}));
+          if(sel&&sel.r&&sel.r.id===r.id){sel.r=rec;const w=$("#qw");if(w&&!w.value){w.value=g;const qg=$("#qg");if(qg&&!qg.value)qg.value=r0(g/Math.max(1,num(r.servings)||1));calc()}const h=$("#qwHint");if(h)h.textContent=t("cookedWLogHint")}})
+          .catch(()=>{const h=$("#qwHint");if(h)h.textContent=t("cookedWMissing")})}
       calc()};
-    const pick=x=>{sel=x;mode=x.kind==="recipe"&&!recipeWeight(x.r)&&!dishW.get(x.r.id)?"s":"g";
+    const pick=x=>{sel=x;wChanged=false;mode=x.kind==="recipe"&&!cookedOf(x.r)&&!CLOUD?"s":"g";
       $("#qn").value=x.kind==="recipe"?x.r.name:x.f.name;$("#qlist").innerHTML="";drawSel();
       const w=x.kind==="recipe"?num($("#qw")&&$("#qw").value):0;
       $("#qg").value=mode==="s"?1:(x.kind==="food"?(x.f.serving_g?r0(x.f.serving_g):100):(w?r0(w/Math.max(1,num(x.r.servings)||1)):""));calc();$("#qg").focus();$("#qg").select&&$("#qg").select()};
@@ -1089,8 +1139,9 @@ function sheetQuick(opt={}){
     $("#qk").addEventListener("input",()=>{mac={c:null,f:null};$("#qmac").textContent=""});
     $("#qf").onsubmit=ev=>{ev.preventDefault();const name=$("#qn").value.trim();if(!name){toast(t("needName"));return}
       const n=num($("#qg")&&$("#qg").value);let servings=1,recipeId=null,amount=null,amountUnit="";
-      if(sel&&n){amount=n;amountUnit=mode==="g"?(sel.kind==="food"&&sel.f.unit==="ml"?"ml":"g"):(sel.kind==="recipe"?"srv":(sel.f.serving_name||t("servingWord")));
+      if(sel&&n){amount=n;amountUnit=mode==="g"?(sel.kind==="food"?(sel.f.unit==="ml"?"ml":"g"):"gc"):(sel.kind==="recipe"?"srv":(sel.f.serving_name||t("servingWord")));
         if(sel.kind==="recipe"){recipeId=sel.r.id;const T=recipeTotals(sel.r),w=num($("#qw")&&$("#qw").value);
+          if(wChanged&&w>0&&w!==num(sel.r.cookedG)){if(CLOUD&&!S.noCookedCol)write("recipes",()=>setRecipeCooked(sel.r,w));else dishW.set(sel.r.id,w)}
           servings=mode==="s"?n:(w?r1(n/(w/T.sv)):1)}}
       closeSheet();addEntry(day,{recipeId,name,servings,meal,amount,amountUnit,kcal:num($("#qk").value),protein:num($("#qp").value),carbs:num(mac.c),fat:num(mac.f)});
       toast(t("added")+(day!==curDate||route.tab!=="today"?" · "+t("today"):""))};
@@ -1495,7 +1546,7 @@ function normalizeRecipe(o){
   const isUuid=v=>/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(String(v||""));
   return {id:isUuid(o.id)?o.id:uuid(),name,servings:num(o.servings||o.yield)||1,time:numOrNull(o.time??o.time_min??o.minutes),ingredients:ings,
     kcalPerServing:numOrNull(o.kcalPerServing??o.kcal_per_serving??o.calories),protein:numOrNull(o.protein),carbs:numOrNull(o.carbs),fat:numOrNull(o.fat),
-    steps,tags:tags.map(s=>String(s).trim()).filter(Boolean),notes:String(o.notes||""),source:String(o.source||o.url||""),image:typeof o.image==="string"?o.image:""};
+    steps,tags:tags.map(s=>String(s).trim()).filter(Boolean),notes:String(o.notes||""),source:String(o.source||o.url||""),image:typeof o.image==="string"?o.image:"",cookedG:numOrNull(o.cookedG??o.cooked_g)};
 }
 function sheetImport(){
   openSheet(`<form class="stack" id="impf"><h2 class="sec" style="font-size:19px">${t("importR")}</h2>
@@ -1543,6 +1594,11 @@ document.addEventListener("click",e=>{
       else{delArm=r.id;render();setTimeout(()=>{if(delArm===r.id){delArm=null;if(route.view==="detail")render()}},3000)}
       break;
     case "aiNutr":recalcWithAI(a);break;
+    case "estCooked":{const f=$("#editForm");if(!f)break;a.disabled=true;const old=a.innerHTML;a.innerHTML=`<span class="spin"></span>`;
+      const ings=[...f.querySelectorAll(".ingrow")].map(row=>{const {qEl,uEl,gEl}=rowVals(row);return {name:row.querySelector(".in-name").value.trim(),amount:composeAmount(parseQty(qEl.value),uEl.value,null),grams:numOrNull(gEl.value)}}).filter(i=>i.name);
+      estimateCooked([{name:f.rname.value,servings:num(f.servings.value)||1,steps:f.steps.value.split("\n").filter(Boolean),ingredients:ings}])
+        .then(([g])=>{if(g){f.cookedG.value=g;toast(t("cookedSet").replace("{g}",g))}else toast(t("notFound"))}).catch(e=>toast(e.code==="outdated"?t("fnOutdated"):errMsg(e)))
+        .finally(()=>{a.disabled=false;a.innerHTML=old});break}
     case "addIng":$("#ings").insertAdjacentHTML("beforeend",ingRow());$("#ings").lastElementChild.querySelector("input").focus();break;
     case "rmIng":a.closest(".ingrow").remove();updIngSum();break;
     case "cancel":go({view:route.id?"detail":"list"});break;
@@ -1683,6 +1739,7 @@ document.addEventListener("submit",e=>{
     return o}).filter(i=>i.name);
   const rec={...(old||{}),id:old?old.id:uuid(),name,servings:num(f.servings.value)||1,time:numOrNull(f.time.value),ingredients:ings,
     kcalPerServing:numOrNull(f.kcalPerServing.value),protein:numOrNull(f.protein.value),carbs:numOrNull(f.carbs.value),fat:numOrNull(f.fat.value),
+    cookedG:numOrNull(f.cookedG.value),
     steps:f.steps.value.split("\n").map(s=>s.trim()).filter(Boolean),
     tags:f.tags.value.split(/[,،]/).map(s=>s.trim()).filter(Boolean),notes:f.notes.value.trim(),source:f.source.value.trim(),image:f.rimage.value||""};
   const i=S.recipes.findIndex(x=>x.id===rec.id);if(i>=0)S.recipes[i]=rec;else S.recipes.push(rec);

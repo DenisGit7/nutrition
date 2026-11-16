@@ -43,7 +43,8 @@ create table if not exists public.recipes (
   source           text,
   created_by       uuid default auth.uid() references auth.users(id) on delete set null,
   created_at       timestamptz not null default now(),
-  updated_at       timestamptz not null default now()
+  updated_at       timestamptz not null default now(),
+  cooked_g   numeric
 );
 
 -- Shared with the household

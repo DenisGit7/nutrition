@@ -9,6 +9,7 @@
 // Requests (POST, JSON), all with lang: "en" | "he":
 //   { mode:"recipe",    url?, text?, images?: [{mime,data(base64)}], audio?: {mime,data} }  -> { recipe }
 //   { mode:"find", q, mine:{products:[…],recipes:[…]} }  -> { mine:[ids], results:[{type:"product"|"recipe",…}] }
+//   { mode:"cooked", recipes:[{name,servings,steps,ingredients:[{name,amount,grams}]}] }  -> { recipes:[{cooked_g}] }
 //   { mode:"nutrition", ingredients:[{name,qty,unit,grams?}] }  -> { ingredients:[{grams,kcal,protein,carbs,fat}] }
 //   { mode:"translate", recipe: {name, ingredients, steps, notes, tags} }                      -> { recipe }
 //   { mode:"product",   images?, text? }  (photo of a package / nutrition label)               -> { product }
@@ -184,6 +185,7 @@ Reply with ONLY a JSON object, no markdown, in exactly this shape:
   "name": "short recipe name",
   "servings": 2,
   "time": 25,
+  "cooked_g": 450,
   "tags": ["breakfast", "quick"],
   "ingredients": [{"name": "Eggs", "amount": "4", "grams": 200, "kcal": 286, "protein": 25, "carbs": 1.4, "fat": 19}],
   "protein": 14, "carbs": 12, "fat": 11,
@@ -197,6 +199,7 @@ Rules:
 - For every ingredient line give "grams" = realistic weight in grams of that amount (dry foods weigh less than water: 1/2 cup rolled oats ≈ 40 g, 1 cup flour ≈ 125 g, 1 tsp cinnamon ≈ 2.6 g; liquids 1 cup ≈ 240 g),
   and "kcal", "protein", "carbs", "fat" for that line in that amount (numbers, from standard nutrition tables). Never leave them empty.
 - protein / carbs / fat = estimated grams PER SERVING (numbers). servings = how many portions the recipe makes (estimate if missing). time = total minutes or null.
+- "cooked_g" = realistic total weight in grams of the whole finished dish after cooking (grains and legumes absorb water and get heavier, e.g. 100 g dry lentils → ~250 g cooked; meat and vegetables lose water, e.g. 500 g raw chicken → ~375 g cooked; drained cooking water is not included).
 - Steps: short and clear, one action each, at most 10 steps.
 - 1 to 4 short tags (meal type, main ingredient, diet).
 - If there is no recipe in the material, reply {"found": false, "reason": "one short sentence in ${language} saying what is missing"}.`;
@@ -219,7 +222,7 @@ Reply with ONLY a JSON object:
 {"recipes": [ {
   "name": "short name",
   "summary": "one short sentence on what makes this variant different",
-  "servings": 2, "time": 30,
+  "servings": 2, "time": 30, "cooked_g": 600,
   "tags": ["lunch", "vegan"],
   "ingredients": [{"name": "Brown lentils", "amount": "1 cup", "grams": 190, "kcal": 670, "protein": 48, "carbs": 114, "fat": 2}],
   "protein": 18, "carbs": 45, "fat": 6,
@@ -229,6 +232,7 @@ Reply with ONLY a JSON object:
 Rules: write everything in ${language}; numbers as digits. "amount" includes units, preferably grams in brackets for dry foods.
 For every ingredient line: "grams" = realistic weight of that amount (1/2 cup rolled oats ≈ 40 g, 1 cup flour ≈ 125 g, liquids 1 cup ≈ 240 g), and "kcal", "protein", "carbs", "fat" for that line (from standard nutrition tables).
 Recipe-level protein/carbs/fat = grams PER SERVING.
+- "cooked_g" = realistic total weight in grams of the whole finished dish after cooking (grains and legumes absorb water and get heavier, e.g. 100 g dry lentils → ~250 g cooked; meat and vegetables lose water, e.g. 500 g raw chicken → ~375 g cooked; drained cooking water is not included).
 Steps short and clear, one action each, at most 10. 1-4 tags.
 If the question is not about food or cooking, reply {"recipes": [], "reason": "short sentence in ${language}"}.`;
 }
@@ -249,15 +253,24 @@ Reply with ONLY a JSON object:
  "results": [
   {"type": "product", "name": "Greek yogurt 0%", "brand": "", "unit": "g", "serving_g": 150, "serving_name": "cup",
    "kcal": 59, "protein": 10, "carbs": 3.6, "fat": 0.4, "sugar": 3.2, "fiber": 0, "why": "one short sentence"},
-  {"type": "recipe", "name": "short name", "why": "one short sentence", "servings": 2, "time": 20, "tags": ["dinner"],
+  {"type": "recipe", "name": "short name", "why": "one short sentence", "servings": 2, "time": 20, "cooked_g": 520, "tags": ["dinner"],
    "ingredients": [{"name": "Chicken breast", "amount": "300 g", "grams": 300, "kcal": 495, "protein": 93, "carbs": 0, "fat": 11}],
    "protein": 48, "carbs": 30, "fat": 8, "steps": ["Short step"], "notes": ""}
  ]}
 Rules: write names and text in ${language}; numbers as digits; standard nutrition tables (USDA-like) for values.
-Recipes: every ingredient line has realistic "grams" and "kcal", "protein", "carbs", "fat" for that line; recipe-level protein/carbs/fat per serving; steps short, at most 10.
+Recipes: "cooked_g" = total weight of the finished dish after cooking (grains/legumes gain water, meat/vegetables lose water). Every ingredient line has realistic "grams" and "kcal", "protein", "carbs", "fat" for that line; recipe-level protein/carbs/fat per serving; steps short, at most 10.
 If the search is not about food, reply {"mine": [], "results": [], "reason": "short sentence in ${language}"}.
 
 Saved items (JSON): ${JSON.stringify(mine)}`;
+}
+
+function cookedPrompt(list: unknown): string {
+  return `For each recipe below, estimate the realistic total weight in grams of the whole finished dish after cooking, as it would be weighed on a plate scale.
+Grains and legumes absorb water and get heavier (100 g dry lentils → ~250 g cooked, 100 g dry rice → ~300 g cooked); meat, fish and vegetables lose water when cooked (500 g raw chicken breast → ~375 g, air-fried or roasted vegetables lose 20–40%). Drained cooking water is not included; water absorbed is.
+Ingredient "grams" are raw weights. Reply with ONLY a JSON object, same order and count as the input:
+{"recipes": [{"cooked_g": 600}]}
+
+${JSON.stringify(list)}`;
 }
 
 function nutritionPrompt(list: unknown): string {
@@ -426,7 +439,7 @@ export async function handle(req: Request): Promise<Response> {
       const out = await callGemini(key, [{ text: suggestPrompt(lang, q, count, have) }]);
       const list = (Array.isArray(out?.recipes) ? out.recipes : []).filter((r: any) => r && r.name).slice(0, count).map((r: any) => ({
         name: String(r.name).slice(0, 200), summary: String(r.summary || ""),
-        servings: Number(r.servings) || 2, time: r.time == null || r.time === "" ? null : Number(r.time) || null,
+        servings: Number(r.servings) || 2, time: r.time == null || r.time === "" ? null : Number(r.time) || null, cooked_g: Number(r.cooked_g) > 0 ? Math.round(Number(r.cooked_g)) : null,
         tags: Array.isArray(r.tags) ? r.tags.map(String).slice(0, 6) : [],
         ingredients: (Array.isArray(r.ingredients) ? r.ingredients : []).map((i: any) => ({
           name: String(i?.name || "").trim(), amount: String(i?.amount ?? "").trim(),
@@ -462,7 +475,7 @@ export async function handle(req: Request): Promise<Response> {
         kcal: n(r.kcal), protein: n(r.protein), carbs: n(r.carbs), fat: n(r.fat), sugar: n(r.sugar), fiber: n(r.fiber), source: "ai",
       } : {
         type: "recipe", name: String(r.name).slice(0, 200), why: String(r.why || r.summary || ""),
-        servings: Number(r.servings) || 2, time: r.time == null || r.time === "" ? null : Number(r.time) || null,
+        servings: Number(r.servings) || 2, time: r.time == null || r.time === "" ? null : Number(r.time) || null, cooked_g: Number(r.cooked_g) > 0 ? Math.round(Number(r.cooked_g)) : null,
         tags: Array.isArray(r.tags) ? r.tags.map(String).slice(0, 6) : [],
         ingredients: (Array.isArray(r.ingredients) ? r.ingredients : []).map((i: any) => ({
           name: String(i?.name || "").trim(), amount: String(i?.amount ?? "").trim(),
@@ -476,6 +489,22 @@ export async function handle(req: Request): Promise<Response> {
       const mineIds = (Array.isArray(out?.mine) ? out.mine : []).map(String).filter((x: string) => ids.has(x));
       if (!results.length && !mineIds.length) return json({ error: "no_result", message: out?.reason || "Nothing found — try describing it differently." }, 422);
       return json({ mine: mineIds, results });
+    } catch (e) { return aiError(e); }
+  }
+
+  // --- cooked weight of whole recipes (for logging cooked grams) ---
+  if (mode === "cooked") {
+    const list = (Array.isArray(body.recipes) ? body.recipes : []).slice(0, 25).map((r: any) => ({
+      name: String(r?.name || "").slice(0, 120), servings: Number(r?.servings) || 1,
+      steps: (Array.isArray(r?.steps) ? r.steps : []).slice(0, 10).map((x: any) => String(x).slice(0, 160)),
+      ingredients: (Array.isArray(r?.ingredients) ? r.ingredients : []).slice(0, 40).map((i: any) => ({
+        name: String(i?.name || "").slice(0, 80), amount: String(i?.amount || "").slice(0, 40), grams: i?.grams == null || i?.grams === "" ? null : Number(i.grams) })),
+    }));
+    if (!list.length) return json({ error: "empty", message: "No recipes." }, 422);
+    try {
+      const out = await callGemini(key, [{ text: cookedPrompt(list) }]);
+      const arr = Array.isArray(out?.recipes) ? out.recipes : [];
+      return json({ recipes: list.map((_: any, k: number) => ({ cooked_g: Number(arr[k]?.cooked_g) > 0 ? Math.round(Number(arr[k].cooked_g)) : null })) });
     } catch (e) { return aiError(e); }
   }
 
@@ -577,6 +606,7 @@ export async function handle(req: Request): Promise<Response> {
     const recipe = {
       name: String(out.name).slice(0, 200),
       servings: Number(out.servings) || 1,
+      cooked_g: Number(out.cooked_g) > 0 ? Math.round(Number(out.cooked_g)) : null,
       time: out.time == null || out.time === "" ? null : Number(out.time) || null,
       tags: Array.isArray(out.tags) ? out.tags.map(String).slice(0, 6) : [],
       ingredients: (Array.isArray(out.ingredients) ? out.ingredients : []).map((i: any) => ({

@@ -160,6 +160,15 @@ each marked Product or Recipe with the matching Add button.
 It adds meal + amount to the food log and puts your existing entries into a meal by the time they were logged.
 Until you run it, entries still save, but without the meal (the app shows a reminder).
 
+## Updating to 1.11.0 (cooked weight) — do once
+
+1. **Database:** SQL Editor → New query → paste all of `supabase/006_recipe_cooked_weight.sql` → **Run**.
+2. **AI function:** Edge Functions → `import-recipe` → **Code** → replace with the new `index.ts` → **Deploy** (contains `cookedPrompt`).
+
+Each recipe now has the cooked weight of the whole dish; logging a recipe by grams counts cooked grams.
+Existing recipes get an AI estimate automatically when the app opens; food-log entries of recipes logged by grams
+before 1.11 (counted as raw) are recalculated once as cooked grams.
+
 **If the AI says a model "is no longer available":** paste the latest `index.ts` (it finds a working Gemini model by itself),
 or as a quick fix add a secret `GEMINI_MODEL` with the model name Google suggests in the message (Edge Functions → Secrets).
 
