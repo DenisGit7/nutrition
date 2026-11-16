@@ -94,7 +94,7 @@ aiAddShots:"הוספת צילומי מסך",aiGo:"יצירת מתכון",aiWorki
 aiNeedInput:"הדבק קישור, טקסט או הוסף צילומי מסך.",aiDemo:"ייבוא עם AI זמין רק בגרסה המסונכרנת (Supabase).",
 aiSetup:"ייבוא עם AI עדיין לא הוגדר ב-Supabase (ראה README, שלב 6).",aiLinkWarn:"לא הצלחתי לפתוח את הקישור עצמו — המתכון נוצר מהטקסט/צילומי המסך.",aiLinkOnly:"האתר שיתף רק את הכותרת, בלי המתכון. העתק את טקסט הפוסט (עוד → העתקה) לתיבה למעלה, או הוסף צילומי מסך של המצרכים, ואז לחץ שוב על יצירת מתכון."}
 };
-const VERSION = "1.12.0";
+const VERSION = "1.12.1";
 
 /* =================== small utils =================== */
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},
@@ -834,10 +834,12 @@ function viewToday(){
       <span class="chev">${shut?"›":"⌄"}</span><span class="mic">${mealIcon(m)}</span><b class="grow mname" dir="auto">${esc(mealLabel(m))}${shut&&list.length?`<span class="muted small" style="font-weight:500"> · ${list.length}</span>`:""}</b>
       <span class="mealk"><b>${r0(k)}</b> ${t("kcal")}${pr?` · <span class="muted">${r0(pr)}g ${t("protein").toLowerCase()}</span>`:""}</span>
       <button class="iconbtn sm" data-act="logMeal" data-meal="${esc(m)}" aria-label="${t("add")}">${ICON.plus}</button></div>
-    ${shut?"":list.map(e=>{const am=amountText(e);return `<div class="entry" data-act="editEntry" data-id="${esc(e.id)}" style="cursor:pointer"><div class="ic" style="background:${grad(e.name)}">${esc(initial(e.name))}</div>
-      <div class="grow"><div style="font-weight:500" dir="auto">${esc(e.name)}</div>
-      <div class="muted small">${am?esc(am)+" · ":(e.servings&&e.servings!=1?esc(e.servings)+" × · ":"")}${num(e.protein)?r0(num(e.protein))+"g "+t("protein").toLowerCase():""}</div></div>
-      <b style="color:var(--kcal)">${r0(num(e.kcal))}</b>
+    ${shut||!list.length?"":`<div class="entry mhcols"><span class="grow"></span><span class="nc p">${t("protein")[0]}</span><span class="nc c">${t("carbs")[0]}</span><span class="nc f">${t("fat")[0]}</span><span class="nk">${t("kcal")}</span><span class="xsp"></span></div>`}
+    ${shut?"":list.map(e=>{const am=amountText(e),g=v=>{const x=num(v);return x>=10?r0(x):r1(x)};return `<div class="entry" data-act="editEntry" data-id="${esc(e.id)}" style="cursor:pointer"><div class="ic" style="background:${grad(e.name)}">${esc(initial(e.name))}</div>
+      <div class="grow" style="min-width:0"><div class="ename" dir="auto">${esc(e.name)}</div>
+      <div class="muted small">${am?esc(am):(e.servings&&e.servings!=1?esc(e.servings)+" ×":"")}</div></div>
+      <span class="nc p">${g(e.protein)}</span><span class="nc c">${g(e.carbs)}</span><span class="nc f">${g(e.fat)}</span>
+      <b class="nk" style="color:var(--kcal)">${r0(num(e.kcal))}</b>
       <button class="x" data-act="rmEntry" data-id="${esc(e.id)}" aria-label="remove">×</button></div>`}).join("")}</div>`}).join("")}
   <button class="btn ghost block" data-act="addMeal">${ICON.plus}${t("addMeal")}</button>
   </div>`;
