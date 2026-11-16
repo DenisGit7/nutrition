@@ -145,6 +145,15 @@ the first screenshot or video frame, a Wikipedia photo for "Ask AI" recipes, or 
   Ingredients linked to your products keep the product's calories per 100 g; missing protein/carbs/fat are filled in.
 - Imported and "Ask AI" recipes now come with grams and macros for each ingredient.
 
+## Updating to 1.8.0 (AI search) — do once
+
+**AI function:** Edge Functions → `import-recipe` → **Code** → replace with the new
+`supabase/functions/import-recipe/index.ts` → **Deploy** (the new code contains `findPrompt`). No database change; existing recipes and products are unchanged.
+
+New **✨ AI search: products & recipes** button (Recipes tab and Products tab): search by description or values
+("high-protein yogurt", "dinner under 400 kcal with 30 g protein"). Shows matching saved items first, then new suggestions,
+each marked Product or Recipe with the matching Add button.
+
 **If the AI says a model "is no longer available":** paste the latest `index.ts` (it finds a working Gemini model by itself),
 or as a quick fix add a secret `GEMINI_MODEL` with the model name Google suggests in the message (Edge Functions → Secrets).
 

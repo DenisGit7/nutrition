@@ -8,6 +8,7 @@
 //
 // Requests (POST, JSON), all with lang: "en" | "he":
 //   { mode:"recipe",    url?, text?, images?: [{mime,data(base64)}], audio?: {mime,data} }  -> { recipe }
+//   { mode:"find", q, mine:{products:[…],recipes:[…]} }  -> { mine:[ids], results:[{type:"product"|"recipe",…}] }
 //   { mode:"nutrition", ingredients:[{name,qty,unit,grams?}] }  -> { ingredients:[{grams,kcal,protein,carbs,fat}] }
 //   { mode:"translate", recipe: {name, ingredients, steps, notes, tags} }                      -> { recipe }
 //   { mode:"product",   images?, text? }  (photo of a package / nutrition label)               -> { product }
@@ -232,6 +233,32 @@ Steps short and clear, one action each, at most 10. 1-4 tags.
 If the question is not about food or cooking, reply {"recipes": [], "reason": "short sentence in ${language}"}.`;
 }
 
+function findPrompt(lang: string, q: string, mine: unknown): string {
+  const language = lang === "he" ? "Hebrew" : "English";
+  return `The user is searching a nutrition app: "${q.replace(/"/g, "'")}"
+The search can be a name, a description, or nutrition values (e.g. "high protein yogurt", "dinner under 400 kcal with 30 g protein", "low carb snack").
+
+1) From the user's saved items below, list the ids that match the search (respect any value limits: products use values per 100 g, recipes per serving). Empty list if none.
+2) Suggest up to 4 NEW items that answer the search. Each is either:
+   - "product": a single food or a packaged product you buy (e.g. Greek yogurt 0%, almonds, a protein bar brand). Values per 100 g (or 100 ml for drinks). Prefer products sold in Israel when the user writes Hebrew.
+   - "recipe": a dish you cook from several ingredients.
+   Decide the type by what the user asks for; mixing both is fine. Respect value limits in the search.
+Reply with ONLY a JSON object:
+{"mine": ["id1"],
+ "results": [
+  {"type": "product", "name": "Greek yogurt 0%", "brand": "", "unit": "g", "serving_g": 150, "serving_name": "cup",
+   "kcal": 59, "protein": 10, "carbs": 3.6, "fat": 0.4, "sugar": 3.2, "fiber": 0, "why": "one short sentence"},
+  {"type": "recipe", "name": "short name", "why": "one short sentence", "servings": 2, "time": 20, "tags": ["dinner"],
+   "ingredients": [{"name": "Chicken breast", "amount": "300 g", "grams": 300, "kcal": 495, "protein": 93, "carbs": 0, "fat": 11}],
+   "protein": 48, "carbs": 30, "fat": 8, "steps": ["Short step"], "notes": ""}
+ ]}
+Rules: write names and text in ${language}; numbers as digits; standard nutrition tables (USDA-like) for values.
+Recipes: every ingredient line has realistic "grams" and "kcal", "protein", "carbs", "fat" for that line; recipe-level protein/carbs/fat per serving; steps short, at most 10.
+If the search is not about food, reply {"mine": [], "results": [], "reason": "short sentence in ${language}"}.
+
+Saved items (JSON): ${JSON.stringify(mine)}`;
+}
+
 function nutritionPrompt(list: unknown): string {
   return `For each ingredient line below, give its realistic weight in grams and its nutrition for that amount, using standard nutrition tables (USDA-like values).
 Dry foods weigh less than water: 1/2 cup rolled oats ≈ 40 g, 1 cup flour ≈ 125 g, 1 tbsp honey ≈ 21 g, 1 tsp cinnamon ≈ 2.6 g; liquids 1 cup ≈ 240 g.
@@ -411,6 +438,42 @@ export async function handle(req: Request): Promise<Response> {
       }));
       if (!list.length) return json({ error: "no_recipe", message: out?.reason || "No recipes found — try asking differently." }, 422);
       return json({ recipes: list });
+    } catch (e) { return aiError(e); }
+  }
+
+  // --- search: the user's own items + new products / recipes, by description or values ---
+  if (mode === "find") {
+    const q = String(body.q || "").trim().slice(0, 300);
+    if (!q) return json({ error: "empty", message: "Type what you are looking for." }, 422);
+    const n = (v: any) => (v === undefined || v === null || v === "" || isNaN(Number(v)) ? null : Math.round(Number(v) * 10) / 10);
+    const m = body.mine || {};
+    const mine = {
+      products: (Array.isArray(m.products) ? m.products : []).slice(0, 150).map((p: any) => ({ id: String(p.id).slice(0, 40), name: String(p.name || "").slice(0, 80), brand: String(p.brand || "").slice(0, 40), kcal: n(p.kcal), protein: n(p.protein), carbs: n(p.carbs), fat: n(p.fat) })),
+      recipes: (Array.isArray(m.recipes) ? m.recipes : []).slice(0, 150).map((r: any) => ({ id: String(r.id).slice(0, 40), name: String(r.name || "").slice(0, 80), tags: (Array.isArray(r.tags) ? r.tags : []).slice(0, 5).map(String), kcal: n(r.kcal), protein: n(r.protein), carbs: n(r.carbs), fat: n(r.fat) })),
+    };
+    const ids = new Set([...mine.products, ...mine.recipes].map((x) => x.id));
+    try {
+      const out = await callGemini(key, [{ text: findPrompt(lang, q, mine) }]);
+      const results = (Array.isArray(out?.results) ? out.results : []).filter((r: any) => r && r.name).slice(0, 6).map((r: any) => r.type === "product" ? {
+        type: "product", name: String(r.name).slice(0, 200), brand: String(r.brand || ""), why: String(r.why || ""),
+        unit: r.unit === "ml" ? "ml" : "g", serving_g: n(r.serving_g), serving_name: String(r.serving_name || ""),
+        kcal: n(r.kcal), protein: n(r.protein), carbs: n(r.carbs), fat: n(r.fat), sugar: n(r.sugar), fiber: n(r.fiber), source: "ai",
+      } : {
+        type: "recipe", name: String(r.name).slice(0, 200), why: String(r.why || r.summary || ""),
+        servings: Number(r.servings) || 2, time: r.time == null || r.time === "" ? null : Number(r.time) || null,
+        tags: Array.isArray(r.tags) ? r.tags.map(String).slice(0, 6) : [],
+        ingredients: (Array.isArray(r.ingredients) ? r.ingredients : []).map((i: any) => ({
+          name: String(i?.name || "").trim(), amount: String(i?.amount ?? "").trim(),
+          kcal: i?.kcal == null || i?.kcal === "" ? null : Math.round(Number(i.kcal)) || 0,
+          ...ingMacros(i),
+        })).filter((i: any) => i.name),
+        protein: n(r.protein), carbs: n(r.carbs), fat: n(r.fat),
+        steps: (Array.isArray(r.steps) ? r.steps : []).map((x: any) => String(x).trim()).filter(Boolean),
+        notes: String(r.notes || ""),
+      });
+      const mineIds = (Array.isArray(out?.mine) ? out.mine : []).map(String).filter((x: string) => ids.has(x));
+      if (!results.length && !mineIds.length) return json({ error: "no_result", message: out?.reason || "Nothing found — try describing it differently." }, 422);
+      return json({ mine: mineIds, results });
     } catch (e) { return aiError(e); }
   }
 

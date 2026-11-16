@@ -15,7 +15,7 @@ needOnline:"Online search needs the synced version",offNote:"Data from Open Food
 translateTo:"Translate to English",translating:"Translating…",translated:"Translated",amountHint:"e.g. 150 g, 2, 1 cup",
 autoCalc:"calculated",video:"Add video (screen recording)",videoHint:"Record your screen while the reel plays, then add the recording here",
 preparingVideo:"Preparing video…",videoReady:"Video ready",videoNoAudio:"no sound found — using pictures only",videoFail:"Couldn't read this video — try screenshots",
-grams:"g",qty:"Qty",unitCol:"Unit",gramsCol:"Grams",dishPicture:"Picture of the dish",needDbUpdateRecipe:"Recipe saved without picture — run 004_recipe_images.sql in Supabase to enable recipe pictures",fnBusy:"The AI server was busy (Supabase compute limit). Please try again in a moment.",fnOutdated:"The AI function in Supabase is an older version. Paste the new import-recipe code (Edge Functions → import-recipe → Code → Deploy).",askAI:"Ask AI for a recipe",askSub:"e.g. \u201chow to cook brown lentils\u201d \u2014 get a few options to choose from",askPlaceholder:"What would you like to cook?",
+grams:"g",qty:"Qty",unitCol:"Unit",gramsCol:"Grams",dishPicture:"Picture of the dish",needDbUpdateRecipe:"Recipe saved without picture — run 004_recipe_images.sql in Supabase to enable recipe pictures",fnBusy:"The AI server was busy (Supabase compute limit). Please try again in a moment.",fnOutdated:"The AI function in Supabase is an older version. Paste the new import-recipe code (Edge Functions → import-recipe → Code → Deploy).",askAI:"Ask AI for a recipe",findAI:"AI search: products & recipes",findSub:"by description or values — e.g. \u201chigh-protein yogurt\u201d, \u201cdinner under 400 kcal\u201d",findHint:"Searches your saved recipes and products, and suggests new ones. Add each as a product or a recipe.",findPlaceholder:"What are you looking for?",findGo:"Search",findThinking:"Searching…",findMine:"Your saved",findNew:"New suggestions",findOnlyMine:"Only your saved items matched.",typeProduct:"Product",typeRecipe:"Recipe",addAsProduct:"Add product",addAsRecipe:"Add recipe",findEx1:"High-protein yogurt",findEx2:"Dinner under 400 kcal with 30 g protein",findEx3:"Low-carb snack",findEx4:"Bread with the most fiber",askSub:"e.g. \u201chow to cook brown lentils\u201d \u2014 get a few options to choose from",askPlaceholder:"What would you like to cook?",
 askGo:"Get recipes",askVariants:"Options",askThinking:"Thinking of recipes… (10–30 seconds)",addRecipe:"Add",added2:"Added ✓",editFirst:"Edit first",
 showMore:"Ingredients & steps",askEx1:"How to cook brown lentils",askEx2:"High-protein breakfast",askEx3:"Quick dinner with chicken breast",askEx4:"Healthy snack under 200 kcal",perServ:"per serving",needDbUpdate:"Product saved without picture — run 003_product_images.sql in Supabase to enable pictures",findPicture:"Find picture online",choosePicture:"Choose a picture",noPictures:"No pictures found — try a shorter name, or take a photo",picSources:"Photos: Open Food Facts, Wikipedia",picture:"Picture",addPicture:"Add picture",changePicture:"Change",removePicture:"Remove",uploading:"Saving picture…",picFail:"Couldn't save the picture: ",commonHint:"{n} common foods are built in — type above to search them",today:"Today",recipes:"Recipes",shopping:"Shopping",settings:"Settings",search:"Search recipes or ingredients…",
 noRecipes:"No recipes yet. Tap + to add one, or import a recipe Claude made for you.",noMatch:"No recipes match your search.",
@@ -59,7 +59,7 @@ needOnline:"חיפוש ברשת זמין רק בגרסה המסונכרנת",off
 translateTo:"תרגום לעברית",translating:"מתרגם…",translated:"תורגם",amountHint:"למשל 150 גרם, 2, כוס",
 autoCalc:"מחושב",video:"הוספת סרטון (הקלטת מסך)",videoHint:"הקלט את המסך בזמן שהסרטון מתנגן, והוסף את ההקלטה כאן",
 preparingVideo:"מכין את הסרטון…",videoReady:"הסרטון מוכן",videoNoAudio:"לא נמצא קול — משתמש בתמונות בלבד",videoFail:"לא הצלחתי לקרוא את הסרטון — נסה צילומי מסך",
-grams:"גרם",qty:"כמות",unitCol:"יחידה",gramsCol:"גרם",dishPicture:"תמונה של המנה",needDbUpdateRecipe:"המתכון נשמר בלי תמונה — הרץ את 004_recipe_images.sql ב-Supabase כדי להפעיל תמונות למתכונים",fnBusy:"שרת ה-AI היה עמוס (מגבלת משאבים ב-Supabase). נסה שוב בעוד רגע.",fnOutdated:"פונקציית ה-AI ב-Supabase בגרסה ישנה. הדבק את הקוד החדש של import-recipe (Edge Functions ← import-recipe ← Code ← Deploy).",askAI:"לשאול את ה-AI על מתכון",askSub:"למשל \u201dאיך לבשל עדשים חומות\u201d \u2014 ותקבל כמה אפשרויות לבחירה",askPlaceholder:"מה תרצה לבשל?",
+grams:"גרם",qty:"כמות",unitCol:"יחידה",gramsCol:"גרם",dishPicture:"תמונה של המנה",needDbUpdateRecipe:"המתכון נשמר בלי תמונה — הרץ את 004_recipe_images.sql ב-Supabase כדי להפעיל תמונות למתכונים",fnBusy:"שרת ה-AI היה עמוס (מגבלת משאבים ב-Supabase). נסה שוב בעוד רגע.",fnOutdated:"פונקציית ה-AI ב-Supabase בגרסה ישנה. הדבק את הקוד החדש של import-recipe (Edge Functions ← import-recipe ← Code ← Deploy).",askAI:"לשאול את ה-AI על מתכון",findAI:"חיפוש AI: מוצרים ומתכונים",findSub:"לפי תיאור או ערכים — למשל \u201dיוגורט עשיר בחלבון\u201d, \u201dארוחת ערב עד 400 קלוריות\u201d",findHint:"מחפש במתכונים ובמוצרים השמורים שלך ומציע חדשים. אפשר להוסיף כל אחד כמוצר או כמתכון.",findPlaceholder:"מה אתה מחפש?",findGo:"חיפוש",findThinking:"מחפש…",findMine:"השמורים שלך",findNew:"הצעות חדשות",findOnlyMine:"נמצאו רק פריטים מהשמורים שלך.",typeProduct:"מוצר",typeRecipe:"מתכון",addAsProduct:"הוספת מוצר",addAsRecipe:"הוספת מתכון",findEx1:"יוגורט עשיר בחלבון",findEx2:"ארוחת ערב עד 400 קלוריות עם 30 גרם חלבון",findEx3:"נשנוש דל פחמימות",findEx4:"לחם עם הכי הרבה סיבים",askSub:"למשל \u201dאיך לבשל עדשים חומות\u201d \u2014 ותקבל כמה אפשרויות לבחירה",askPlaceholder:"מה תרצה לבשל?",
 askGo:"קבלת מתכונים",askVariants:"אפשרויות",askThinking:"חושב על מתכונים… (10–30 שניות)",addRecipe:"הוספה",added2:"נוסף ✓",editFirst:"עריכה קודם",
 showMore:"מצרכים ושלבים",askEx1:"איך לבשל עדשים חומות",askEx2:"ארוחת בוקר עשירה בחלבון",askEx3:"ארוחת ערב מהירה עם חזה עוף",askEx4:"חטיף בריא עד 200 קלוריות",perServ:"למנה",needDbUpdate:"המוצר נשמר בלי תמונה — הרץ את 003_product_images.sql ב-Supabase כדי להפעיל תמונות",findPicture:"חיפוש תמונה ברשת",choosePicture:"בחירת תמונה",noPictures:"לא נמצאו תמונות — נסה שם קצר יותר, או צלם",picSources:"תמונות: Open Food Facts, ויקיפדיה",picture:"תמונה",addPicture:"הוספת תמונה",changePicture:"החלפה",removePicture:"הסרה",uploading:"שומר תמונה…",picFail:"לא הצלחתי לשמור את התמונה: ",commonHint:"{n} מזונות נפוצים כבר מובנים — הקלד למעלה כדי לחפש",today:"היום",recipes:"מתכונים",shopping:"קניות",settings:"הגדרות",search:"חיפוש מתכון או מצרך…",
 noRecipes:"אין עדיין מתכונים. לחץ + כדי להוסיף, או ייבא מתכון ש-Claude הכין לך.",noMatch:"לא נמצאו מתכונים.",
@@ -94,7 +94,7 @@ aiAddShots:"הוספת צילומי מסך",aiGo:"יצירת מתכון",aiWorki
 aiNeedInput:"הדבק קישור, טקסט או הוסף צילומי מסך.",aiDemo:"ייבוא עם AI זמין רק בגרסה המסונכרנת (Supabase).",
 aiSetup:"ייבוא עם AI עדיין לא הוגדר ב-Supabase (ראה README, שלב 6).",aiLinkWarn:"לא הצלחתי לפתוח את הקישור עצמו — המתכון נוצר מהטקסט/צילומי המסך.",aiLinkOnly:"האתר שיתף רק את הכותרת, בלי המתכון. העתק את טקסט הפוסט (עוד → העתקה) לתיבה למעלה, או הוסף צילומי מסך של המצרכים, ואז לחץ שוב על יצירת מתכון."}
 };
-const VERSION = "1.7.1";
+const VERSION = "1.8.0";
 
 /* =================== small utils =================== */
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},
@@ -605,7 +605,8 @@ function viewList(){
   let h=`<div class="stack fadein"><div class="searchbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
     <input type="search" id="q" placeholder="${t("search")}" value="${esc(query)}"></div>`;
   h+=`<button class="aibtn" data-act="ai">${ICON.sparkle}<span class="grow"><b>${t("aiImport")}</b><small>${t("aiSub")}</small></span></button>
-    <button class="aibtn ask" data-act="ask">${ICON.chat}<span class="grow"><b>${t("askAI")}</b><small>${t("askSub")}</small></span></button>`;
+    <button class="aibtn ask" data-act="ask">${ICON.chat}<span class="grow"><b>${t("askAI")}</b><small>${t("askSub")}</small></span></button>
+    <button class="aibtn find" data-act="find">${ICON.search}<span class="grow"><b>${t("findAI")}</b><small>${t("findSub")}</small></span></button>`;
   if(allTags.length>1)h+=`<div class="chips">${allTags.map(x=>`<button class="chip ${tagFilter===x?"on":""}" data-act="tag" data-tag="${esc(x)}">${esc(x)}</button>`).join("")}</div>`;
   if(!S.recipes.length)h+=`<div class="card empty"><div class="em">🥗</div>${t("noRecipes")}</div>`;
   else if(!list.length)h+=`<div class="empty">${t("noMatch")}</div>`;
@@ -1034,6 +1035,7 @@ function viewProducts(){
     .sort((a,b)=>a.name.localeCompare(b.name));
   const common=q?searchFoods(q,12,{mine:false}):[];
   return `<div class="stack fadein">
+  ${CLOUD?`<button class="aibtn find" data-act="find">${ICON.search}<span class="grow"><b>${t("findAI")}</b><small>${t("findSub")}</small></span></button>`:""}
   <div class="searchbox">${ICON.search}<input type="search" id="pq" placeholder="${t("searchProducts")}" value="${esc(pq)}" dir="auto"></div>
   <div class="grid2"><button class="btn primary" data-act="prodPhoto">${ICON.camera}${t("fromPhoto").replace(" (AI)","")}</button>
     <button class="btn ghost" data-act="offSearch" ${q.length>1?"":"disabled"}>${ICON.globe}${t("searchOnline")}</button></div>
@@ -1217,6 +1219,81 @@ function askCard(r,i){const ps=perServing(r);return `<div class="askcard" data-i
     ${r.notes?`<div class="muted small" dir="auto" style="margin-top:6px">💡 ${esc(r.notes)}</div>`:""}</details>
   <div class="grid2" style="margin-top:10px"><button type="button" class="btn sm ghost" data-ask="edit" data-i="${i}">${t("editFirst")}</button>
     <button type="button" class="btn sm primary" data-ask="add" data-i="${i}" ${r._added?"disabled":""}>${r._added?t("added2"):ICON.plus+t("addRecipe")}</button></div></div>`}
+/* AI recipe → saved recipe (with a Wikipedia dish photo) or → editor draft */
+async function addAIRecipe(r){const rec=normalizeRecipe({...r,source:""});rec.id=uuid();
+  S.recipes=[...S.recipes,rec];saveCache();rerender();
+  const ok=await write("recipes",()=>S.api.saveRecipe(rec));if(ok)toast(t("added2")+" · "+rec.name);
+  if(ok){const pic=await findDishPicture(rec.name).catch(()=>"");if(pic){rec.image=pic;const i=S.recipes.findIndex(x=>x.id===rec.id);if(i>=0)S.recipes[i]={...S.recipes[i],image:pic};
+    saveCache();rerender();write("recipes",()=>S.api.saveRecipe(rec))}}}
+async function editAIRecipe(r){const rec=normalizeRecipe({...r,source:""});rec.id=uuid();
+  rec.image=await Promise.race([findDishPicture(rec.name),wait(4000).then(()=>"")]).catch(()=>"");
+  S.draft=rec;closeSheet();$("#view").dataset.editing="";go({tab:"recipes",view:"edit",id:null})}
+
+/* ---------- AI search: your saved items + new products / recipes, by description or values ---------- */
+let findState={q:"",mine:[],results:null};
+function findLocal(q){const words=norm(q).split(/\s+/).filter(w=>w.length>1&&!/^\d/.test(w));if(!words.length)return [];
+  const hit=x=>{const n=norm(x.name+" "+(x.brand||"")+" "+(x.tags||[]).join(" "));return words.every(w=>n.includes(w))};
+  return [...S.recipes.filter(hit).map(r=>r.id),...S.products.filter(hit).map(p=>p.id)]}
+function findCard(x,i){
+  if(x.type==="product")return `<div class="askcard"><span class="tbadge prod">${t("typeProduct")}</span>${prodCard({...x,mine:false})}
+    ${x.why?`<div class="muted small" dir="auto">${esc(x.why)}</div>`:""}
+    <div class="grid2" style="margin-top:8px"><span></span><button type="button" class="btn sm primary" data-fd="addP" data-i="${i}" ${x._added?"disabled":""}>${x._added?t("added2"):ICON.plus+t("addAsProduct")}</button></div></div>`;
+  const ps=perServing(x);
+  return `<div class="askcard"><span class="tbadge rec">${t("typeRecipe")}</span>
+  <div class="row" style="align-items:flex-start;margin-top:6px"><div class="avatar" style="width:46px;height:46px;font-size:20px;border-radius:14px;background:${grad(x.name)}">${esc(initial(x.name))}</div>
+    <div class="grow"><b dir="auto">${esc(x.name)}</b>${x.why?`<div class="muted small" dir="auto">${esc(x.why)}</div>`:""}
+      <div class="meta" style="margin-top:4px">${x.time?`<span>${ICON.clock}${esc(x.time)} ${t("min")}</span>`:""}<span>${ICON.people}${esc(x.servings||1)}</span>
+        ${ps.kcal?`<span style="color:var(--kcal);font-weight:600">${r0(ps.kcal)} ${t("kcal")} ${t("perServ")}</span>`:""}${ps.protein?`<span>${t("protein")} ${r0(ps.protein)}g</span>`:""}</div></div></div>
+  <details><summary>${t("showMore")}</summary>
+    <ul class="ing">${(x.ingredients||[]).map(y=>`<li><span class="dot"></span><span class="grow" dir="auto">${esc(y.name)}</span><span class="muted"><bdi>${esc(y.amount||"")}</bdi></span></li>`).join("")}</ul>
+    <ol class="steps">${(x.steps||[]).map(y=>`<li><span dir="auto">${esc(y)}</span></li>`).join("")}</ol></details>
+  <div class="grid2" style="margin-top:10px"><button type="button" class="btn sm ghost" data-fd="editR" data-i="${i}">${t("editFirst")}</button>
+    <button type="button" class="btn sm primary" data-fd="addR" data-i="${i}" ${x._added?"disabled":""}>${x._added?t("added2"):ICON.plus+t("addAsRecipe")}</button></div></div>`}
+function findMineHTML(){const ids=findState.mine||[];if(!ids.length)return "";
+  const rs=ids.map(id=>S.recipes.find(r=>r.id===id)).filter(Boolean),ps=ids.map(id=>S.products.find(p=>p.id===id)).filter(Boolean);
+  if(!rs.length&&!ps.length)return "";
+  return `<div class="card"><h2 class="sec">${t("findMine")}<span class="n">${rs.length+ps.length}</span></h2>
+    ${rs.map(r=>{const v=perServing(r);return `<button type="button" class="pcard" style="width:100%;text-align:start;background:none;border:0;color:inherit;cursor:pointer" data-fd="openR" data-id="${esc(r.id)}">${r.image?`<img class="pthumb" style="width:48px;height:48px" src="${esc(r.image)}" alt="">`:`<span class="pthumb ph" style="width:48px;height:48px;background:${grad(r.name)}">${esc(initial(r.name))}</span>`}
+      <div class="grow"><div class="pname" dir="auto">${esc(r.name)} <span class="tbadge rec sm">${t("typeRecipe")}</span></div>
+      <div class="pmac"><span class="kc">${r0(v.kcal)} ${t("kcal")}</span>${v.protein?`<span>${t("protein")[0]} ${r1(v.protein)}</span>`:""}<span class="muted">${t("perServ")}</span></div></div></button>`}).join("")}
+    ${ps.map(p=>`<div data-fd="openP" data-id="${esc(p.id)}" style="cursor:pointer">${prodCard({...p,mine:false})}</div>`).join("")}</div>`}
+function sheetFind(){
+  if(!CLOUD){toast(t("aiDemo"));return}
+  let busy=false;const exs=[t("findEx1"),t("findEx2"),t("findEx3"),t("findEx4")];
+  openSheet(`<form class="stack" id="fdf" autocomplete="off">
+    <div class="row"><span class="aiic find">${ICON.search}</span><h2 class="sec grow" style="font-size:19px;margin:0">${t("findAI")}</h2></div>
+    <div class="muted small">${t("findHint")}</div>
+    <textarea dir="auto" id="fdQ" style="min-height:64px" placeholder="${t("findPlaceholder")}">${esc(findState.q)}</textarea>
+    <div class="chips">${exs.map(x=>`<button type="button" class="chip" data-ex="${esc(x)}">${esc(x)}</button>`).join("")}</div>
+    <button class="btn primary block" id="fdGo">${ICON.sparkle}${t("findGo")}</button>
+    <div id="fdMsg"></div><div id="fdMine"></div><div id="fdRes" class="stack"></div>
+    <button type="button" class="btn ghost block" id="fdClose">${t("cancel")}</button>
+  </form>`,()=>{
+    const msg=(h,c="")=>$("#fdMsg").innerHTML=h?`<div class="banner ${c}">${h}</div>`:"";
+    const draw=()=>{$("#fdMine").innerHTML=findMineHTML();
+      $("#fdRes").innerHTML=findState.results&&findState.results.length?`<h2 class="sec" style="margin:4px 0 0">${t("findNew")}</h2>`+findState.results.map(findCard).join(""):""};draw();
+    $("#fdClose").onclick=()=>{if(!busy)closeSheet()};
+    $("#fdf").querySelector(".chips").onclick=e=>{const b=e.target.closest("[data-ex]");if(b){$("#fdQ").value=b.dataset.ex;$("#fdQ").focus()}};
+    $("#fdf").addEventListener("click",async e=>{const b=e.target.closest("[data-fd]");if(!b)return;e.preventDefault();const k=b.dataset.fd,x=findState.results&&findState.results[+b.dataset.i];
+      if(k==="openR"){closeSheet();go({tab:"recipes",view:"detail",id:b.dataset.id});return}
+      if(k==="openP"){const p=S.products.find(y=>y.id===b.dataset.id);closeSheet();if(p){go({tab:"products",view:"list",id:null});setTimeout(()=>sheetProduct(p),50)}return}
+      if(!x)return;
+      if(k==="addP"){x._added=true;draw();await saveFoodToMine(x);return}
+      if(k==="addR"){x._added=true;draw();await addAIRecipe(x);return}
+      if(k==="editR"){b.disabled=true;await editAIRecipe(x)}});
+    $("#fdf").onsubmit=async ev=>{ev.preventDefault();if(busy)return;const q=$("#fdQ").value.trim();if(!q){$("#fdQ").focus();return}
+      findState={q,mine:findLocal(q),results:null};busy=true;$("#fdGo").disabled=true;draw();msg(`<span class="spin"></span>${esc(t("findThinking"))}`);
+      const v=r=>perServing(r);
+      try{const out=await S.api.callFn({mode:"find",q,lang,mine:{
+          products:S.products.slice(0,150).map(p=>({id:p.id,name:p.name,brand:p.brand,kcal:p.kcal,protein:p.protein,carbs:p.carbs,fat:p.fat})),
+          recipes:S.recipes.slice(0,150).map(r=>{const s=v(r);return {id:r.id,name:r.name,tags:r.tags,kcal:r0(s.kcal),protein:r1(s.protein),carbs:r1(s.carbs),fat:r1(s.fat)}})}});
+        findState.mine=[...new Set([...(out.mine||[]),...findState.mine])];findState.results=out.results||[];msg("");draw()}
+      catch(e){draw();msg(esc(e.code==="setup"?t("aiSetup"):e.code==="no_result"&&findState.mine.length?t("findOnlyMine"):errMsg(e)),"warn")}
+      finally{busy=false;const g=$("#fdGo");if(g)g.disabled=false}};
+    if(!findState.results)setTimeout(()=>$("#fdQ").focus(),60);
+  });
+}
+
 function sheetAsk(){
   if(!CLOUD){toast(t("aiDemo"));return}
   let busy=false;
@@ -1236,13 +1313,8 @@ function sheetAsk(){
     $("#askN").onclick=e=>{const b=e.target.closest("[data-n]");if(!b)return;askState.count=+b.dataset.n;$("#askN").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b))};
     $("#askf").querySelector(".chips").onclick=e=>{const b=e.target.closest("[data-ex]");if(b){$("#askQ").value=b.dataset.ex;$("#askQ").focus()}};
     res.onclick=async e=>{const b=e.target.closest("[data-ask]");if(!b)return;const r=askState.results[+b.dataset.i];if(!r)return;
-      const rec=normalizeRecipe({...r,source:""});rec.id=uuid();
-      if(b.dataset.ask==="edit"){b.disabled=true;rec.image=await Promise.race([findDishPicture(rec.name),wait(4000).then(()=>"")]).catch(()=>"");
-        S.draft=rec;closeSheet();$("#view").dataset.editing="";go({tab:"recipes",view:"edit",id:null});return}
-      r._added=true;draw();S.recipes=[...S.recipes,rec];saveCache();rerender();
-      const ok=await write("recipes",()=>S.api.saveRecipe(rec));if(ok)toast(t("added2")+" · "+rec.name);
-      if(ok){const pic=await findDishPicture(rec.name).catch(()=>"");if(pic){rec.image=pic;const i=S.recipes.findIndex(x=>x.id===rec.id);if(i>=0)S.recipes[i]={...S.recipes[i],image:pic};
-        saveCache();rerender();write("recipes",()=>S.api.saveRecipe(rec))}}};
+      if(b.dataset.ask==="edit"){b.disabled=true;await editAIRecipe(r);return}
+      r._added=true;draw();await addAIRecipe(r)};
     $("#askf").onsubmit=async ev=>{ev.preventDefault();if(busy)return;const q=$("#askQ").value.trim();if(!q){$("#askQ").focus();return}
       askState.q=q;busy=true;$("#askGo").disabled=true;askState.results=null;draw();msg(`<span class="spin"></span>${esc(t("askThinking"))}`);
       try{const out=await S.api.callFn({mode:"suggest",q,count:askState.count,lang,have:S.products.map(p=>p.name).slice(0,60)});
@@ -1403,6 +1475,7 @@ document.addEventListener("click",e=>{
     case "import":sheetImport();break;
     case "ai":sheetAI();break;
     case "ask":sheetAsk();break;
+    case "find":sheetFind();break;
     case "translate":if(r)translateRecipe(r,a);break;
     case "openProd":{const p=S.products.find(x=>x.id===a.dataset.id);if(p)sheetProduct(p);break}
     case "saveCommon":{const f=commonFoods().find(x=>x.id===a.dataset.id);if(f)saveFoodToMine(f);break}
