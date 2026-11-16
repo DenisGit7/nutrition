@@ -116,6 +116,14 @@ Pictures appear in the Products list, suggestions and the shopping list. Ways to
 the first photo you give the AI, **Add picture** on any product, or the photo from Open Food Facts.
 Products without a picture show a matching emoji or a coloured letter.
 
+## Updating to 1.4.0 (Ask AI for a recipe) — do once
+
+**AI function:** Edge Functions → `import-recipe` → **Code** → replace with the new
+`supabase/functions/import-recipe/index.ts` → **Deploy**. (No database change.)
+
+New on the Recipes tab: **Ask AI for a recipe** — type a question ("how to cook brown lentils"), pick 1–3 options,
+then **Add** a recipe straight to your list or **Edit first**.
+
 ---
 
 ## Adding recipes from a link (without AI import)

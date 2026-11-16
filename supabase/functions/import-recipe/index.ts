@@ -10,6 +10,7 @@
 //   { mode:"recipe",    url?, text?, images?: [{mime,data(base64)}], audio?: {mime,data} }  -> { recipe }
 //   { mode:"translate", recipe: {name, ingredients, steps, notes, tags} }                      -> { recipe }
 //   { mode:"product",   images?, text? }  (photo of a package / nutrition label)               -> { product }
+//   { mode:"suggest",   q, count?: 1-3, have?: [product names] }  (ask for recipe ideas)    -> { recipes }
 //   { mode:"off_search", q }  /  { mode:"off_barcode", code }   (Open Food Facts lookup)       -> { products }
 // Errors: { error, message }
 
@@ -164,6 +165,29 @@ function translatePrompt(lang: string, recipe: unknown): string {
 ${JSON.stringify(recipe)}`;
 }
 
+function suggestPrompt(lang: string, q: string, count: number, have: string[]): string {
+  const language = lang === "he" ? "Hebrew" : "English";
+  return `The user asks: "${q.replace(/"/g, "'")}"
+Answer with ${count} different practical home recipe${count > 1 ? "s" : ""} that answer the question (e.g. different cooking methods or flavours${count > 1 ? ", from simplest to more special" : ""}).
+${have.length ? `The household already has these products — prefer them when they fit, but don't force them: ${have.join(", ")}.
+` : ""}
+Reply with ONLY a JSON object:
+{"recipes": [ {
+  "name": "short name",
+  "summary": "one short sentence on what makes this variant different",
+  "servings": 2, "time": 30,
+  "tags": ["lunch", "vegan"],
+  "ingredients": [{"name": "Brown lentils", "amount": "1 cup (200 g)", "kcal": 680}],
+  "protein": 18, "carbs": 45, "fat": 6,
+  "steps": ["Short step", "Short step"],
+  "notes": "useful tip (soaking, storage, substitutions) or empty"
+} ]}
+Rules: write everything in ${language}; numbers as digits. "amount" includes units, preferably grams in brackets for dry foods.
+"kcal" = estimated calories of that ingredient line; protein/carbs/fat = estimated grams PER SERVING.
+Steps short and clear, one action each, at most 10. 1-4 tags.
+If the question is not about food or cooking, reply {"recipes": [], "reason": "short sentence in ${language}"}.`;
+}
+
 function productPrompt(lang: string): string {
   const language = lang === "he" ? "Hebrew" : "English";
   return `The images/text show a food product (package front, nutrition facts label, or both). Read the label carefully.
@@ -276,6 +300,31 @@ export async function handle(req: Request): Promise<Response> {
     return json({ products });
   }
   if (!key) return json({ error: "config", message: "GEMINI_API_KEY secret is missing in Supabase." }, 500);
+
+  // --- recipe ideas from a question ---
+  if (mode === "suggest") {
+    const q = String(body.q || "").trim().slice(0, 300);
+    if (!q) return json({ error: "empty", message: "Type what you'd like to cook." }, 422);
+    const count = Math.min(3, Math.max(1, Number(body.count) || 3));
+    const have = (Array.isArray(body.have) ? body.have : []).map((x: any) => String(x).slice(0, 60)).slice(0, 60);
+    try {
+      const out = await callGemini(key, [{ text: suggestPrompt(lang, q, count, have) }]);
+      const list = (Array.isArray(out?.recipes) ? out.recipes : []).filter((r: any) => r && r.name).slice(0, count).map((r: any) => ({
+        name: String(r.name).slice(0, 200), summary: String(r.summary || ""),
+        servings: Number(r.servings) || 2, time: r.time == null || r.time === "" ? null : Number(r.time) || null,
+        tags: Array.isArray(r.tags) ? r.tags.map(String).slice(0, 6) : [],
+        ingredients: (Array.isArray(r.ingredients) ? r.ingredients : []).map((i: any) => ({
+          name: String(i?.name || "").trim(), amount: String(i?.amount ?? "").trim(),
+          kcal: i?.kcal == null || i?.kcal === "" ? null : Math.round(Number(i.kcal)) || 0,
+        })).filter((i: any) => i.name),
+        protein: Number(r.protein) || null, carbs: Number(r.carbs) || null, fat: Number(r.fat) || null,
+        steps: (Array.isArray(r.steps) ? r.steps : []).map((x: any) => String(x).trim()).filter(Boolean),
+        notes: String(r.notes || ""),
+      }));
+      if (!list.length) return json({ error: "no_recipe", message: out?.reason || "No recipes found — try asking differently." }, 422);
+      return json({ recipes: list });
+    } catch (e) { return aiError(e); }
+  }
 
   // --- translate a saved recipe ---
   if (mode === "translate") {

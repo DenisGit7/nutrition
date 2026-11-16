@@ -15,7 +15,9 @@ needOnline:"Online search needs the synced version",offNote:"Data from Open Food
 translateTo:"Translate to English",translating:"Translating…",translated:"Translated",amountHint:"e.g. 150 g, 2, 1 cup",
 autoCalc:"calculated",video:"Add video (screen recording)",videoHint:"Record your screen while the reel plays, then add the recording here",
 preparingVideo:"Preparing video…",videoReady:"Video ready",videoNoAudio:"no sound found — using pictures only",videoFail:"Couldn't read this video — try screenshots",
-grams:"g",needDbUpdate:"Product saved without picture — run 003_product_images.sql in Supabase to enable pictures",findPicture:"Find picture online",choosePicture:"Choose a picture",noPictures:"No pictures found — try a shorter name, or take a photo",picSources:"Photos: Open Food Facts, Wikipedia",picture:"Picture",addPicture:"Add picture",changePicture:"Change",removePicture:"Remove",uploading:"Saving picture…",picFail:"Couldn't save the picture: ",commonHint:"{n} common foods are built in — type above to search them",today:"Today",recipes:"Recipes",shopping:"Shopping",settings:"Settings",search:"Search recipes or ingredients…",
+grams:"g",askAI:"Ask AI for a recipe",askSub:"e.g. \u201chow to cook brown lentils\u201d \u2014 get a few options to choose from",askPlaceholder:"What would you like to cook?",
+askGo:"Get recipes",askVariants:"Options",askThinking:"Thinking of recipes… (10–30 seconds)",addRecipe:"Add",added2:"Added ✓",editFirst:"Edit first",
+showMore:"Ingredients & steps",askEx1:"How to cook brown lentils",askEx2:"High-protein breakfast",askEx3:"Quick dinner with chicken breast",askEx4:"Healthy snack under 200 kcal",perServ:"per serving",needDbUpdate:"Product saved without picture — run 003_product_images.sql in Supabase to enable pictures",findPicture:"Find picture online",choosePicture:"Choose a picture",noPictures:"No pictures found — try a shorter name, or take a photo",picSources:"Photos: Open Food Facts, Wikipedia",picture:"Picture",addPicture:"Add picture",changePicture:"Change",removePicture:"Remove",uploading:"Saving picture…",picFail:"Couldn't save the picture: ",commonHint:"{n} common foods are built in — type above to search them",today:"Today",recipes:"Recipes",shopping:"Shopping",settings:"Settings",search:"Search recipes or ingredients…",
 noRecipes:"No recipes yet. Tap + to add one, or import a recipe Claude made for you.",noMatch:"No recipes match your search.",
 kcal:"kcal",perServing:"per serving",servings:"Servings",protein:"Protein",carbs:"Carbs",fat:"Fat",time:"Time (min)",min:"min",
 ingredients:"Ingredients",steps:"Steps",notes:"Notes",source:"Source",edit:"Edit",del:"Delete",delAgain:"Tap again to delete",
@@ -57,7 +59,9 @@ needOnline:"חיפוש ברשת זמין רק בגרסה המסונכרנת",off
 translateTo:"תרגום לעברית",translating:"מתרגם…",translated:"תורגם",amountHint:"למשל 150 גרם, 2, כוס",
 autoCalc:"מחושב",video:"הוספת סרטון (הקלטת מסך)",videoHint:"הקלט את המסך בזמן שהסרטון מתנגן, והוסף את ההקלטה כאן",
 preparingVideo:"מכין את הסרטון…",videoReady:"הסרטון מוכן",videoNoAudio:"לא נמצא קול — משתמש בתמונות בלבד",videoFail:"לא הצלחתי לקרוא את הסרטון — נסה צילומי מסך",
-grams:"גרם",needDbUpdate:"המוצר נשמר בלי תמונה — הרץ את 003_product_images.sql ב-Supabase כדי להפעיל תמונות",findPicture:"חיפוש תמונה ברשת",choosePicture:"בחירת תמונה",noPictures:"לא נמצאו תמונות — נסה שם קצר יותר, או צלם",picSources:"תמונות: Open Food Facts, ויקיפדיה",picture:"תמונה",addPicture:"הוספת תמונה",changePicture:"החלפה",removePicture:"הסרה",uploading:"שומר תמונה…",picFail:"לא הצלחתי לשמור את התמונה: ",commonHint:"{n} מזונות נפוצים כבר מובנים — הקלד למעלה כדי לחפש",today:"היום",recipes:"מתכונים",shopping:"קניות",settings:"הגדרות",search:"חיפוש מתכון או מצרך…",
+grams:"גרם",askAI:"לשאול את ה-AI על מתכון",askSub:"למשל \u201dאיך לבשל עדשים חומות\u201d \u2014 ותקבל כמה אפשרויות לבחירה",askPlaceholder:"מה תרצה לבשל?",
+askGo:"קבלת מתכונים",askVariants:"אפשרויות",askThinking:"חושב על מתכונים… (10–30 שניות)",addRecipe:"הוספה",added2:"נוסף ✓",editFirst:"עריכה קודם",
+showMore:"מצרכים ושלבים",askEx1:"איך לבשל עדשים חומות",askEx2:"ארוחת בוקר עשירה בחלבון",askEx3:"ארוחת ערב מהירה עם חזה עוף",askEx4:"חטיף בריא עד 200 קלוריות",perServ:"למנה",needDbUpdate:"המוצר נשמר בלי תמונה — הרץ את 003_product_images.sql ב-Supabase כדי להפעיל תמונות",findPicture:"חיפוש תמונה ברשת",choosePicture:"בחירת תמונה",noPictures:"לא נמצאו תמונות — נסה שם קצר יותר, או צלם",picSources:"תמונות: Open Food Facts, ויקיפדיה",picture:"תמונה",addPicture:"הוספת תמונה",changePicture:"החלפה",removePicture:"הסרה",uploading:"שומר תמונה…",picFail:"לא הצלחתי לשמור את התמונה: ",commonHint:"{n} מזונות נפוצים כבר מובנים — הקלד למעלה כדי לחפש",today:"היום",recipes:"מתכונים",shopping:"קניות",settings:"הגדרות",search:"חיפוש מתכון או מצרך…",
 noRecipes:"אין עדיין מתכונים. לחץ + כדי להוסיף, או ייבא מתכון ש-Claude הכין לך.",noMatch:"לא נמצאו מתכונים.",
 kcal:"קק״ל",perServing:"למנה",servings:"מנות",protein:"חלבון",carbs:"פחמימות",fat:"שומן",time:"זמן (דק׳)",min:"דק׳",
 ingredients:"מצרכים",steps:"אופן הכנה",notes:"הערות",source:"מקור",edit:"עריכה",del:"מחיקה",delAgain:"לחץ שוב למחיקה",
@@ -90,7 +94,7 @@ aiAddShots:"הוספת צילומי מסך",aiGo:"יצירת מתכון",aiWorki
 aiNeedInput:"הדבק קישור, טקסט או הוסף צילומי מסך.",aiDemo:"ייבוא עם AI זמין רק בגרסה המסונכרנת (Supabase).",
 aiSetup:"ייבוא עם AI עדיין לא הוגדר ב-Supabase (ראה README, שלב 6).",aiLinkWarn:"לא הצלחתי לפתוח את הקישור עצמו — המתכון נוצר מהטקסט/צילומי המסך.",aiLinkOnly:"האתר שיתף רק את הכותרת, בלי המתכון. העתק את טקסט הפוסט (עוד → העתקה) לתיבה למעלה, או הוסף צילומי מסך של המצרכים, ואז לחץ שוב על יצירת מתכון."}
 };
-const VERSION = "1.3.2";
+const VERSION = "1.4.0";
 
 /* =================== small utils =================== */
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},
@@ -121,6 +125,7 @@ const ICON={
   download:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg>',
   upload:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 21V9M7 14l5-5 5 5M4 3h16"/></svg>',
   phone:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg>',
+  chat:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M8.5 11h.01M12 11h.01M15.5 11h.01"/></svg>',
   sparkle:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>',
   box:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg>',
   camera:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>',
@@ -563,7 +568,8 @@ function viewList(){
     ||(r.ingredients||[]).some(i=>norm(i.name).includes(q)))).sort((a,b)=>(a.name||"").localeCompare(b.name||""));
   let h=`<div class="stack fadein"><div class="searchbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
     <input type="search" id="q" placeholder="${t("search")}" value="${esc(query)}"></div>`;
-  h+=`<button class="aibtn" data-act="ai">${ICON.sparkle}<span class="grow"><b>${t("aiImport")}</b><small>${t("aiSub")}</small></span></button>`;
+  h+=`<button class="aibtn" data-act="ai">${ICON.sparkle}<span class="grow"><b>${t("aiImport")}</b><small>${t("aiSub")}</small></span></button>
+    <button class="aibtn ask" data-act="ask">${ICON.chat}<span class="grow"><b>${t("askAI")}</b><small>${t("askSub")}</small></span></button>`;
   if(allTags.length>1)h+=`<div class="chips">${allTags.map(x=>`<button class="chip ${tagFilter===x?"on":""}" data-act="tag" data-tag="${esc(x)}">${esc(x)}</button>`).join("")}</div>`;
   if(!S.recipes.length)h+=`<div class="card empty"><div class="em">🥗</div>${t("noRecipes")}</div>`;
   else if(!list.length)h+=`<div class="empty">${t("noMatch")}</div>`;
@@ -1041,6 +1047,52 @@ async function videoAudio(file,maxSec=120,rate=12000){
   }catch(_){return null}finally{try{ctx.close()}catch(_){}}
 }
 
+/* =================== ask AI for recipe ideas =================== */
+let askState={q:"",count:3,results:null};
+function askCard(r,i){const ps=perServing(r);return `<div class="askcard" data-i="${i}">
+  <div class="row" style="align-items:flex-start"><div class="avatar" style="width:46px;height:46px;font-size:20px;border-radius:14px;background:${grad(r.name)}">${esc(initial(r.name))}</div>
+    <div class="grow"><b dir="auto">${esc(r.name)}</b>${r.summary?`<div class="muted small" dir="auto">${esc(r.summary)}</div>`:""}
+      <div class="meta" style="margin-top:4px">${r.time?`<span>${ICON.clock}${esc(r.time)} ${t("min")}</span>`:""}<span>${ICON.people}${esc(r.servings||1)}</span>
+        ${ps.kcal?`<span style="color:var(--kcal);font-weight:600">${r0(ps.kcal)} ${t("kcal")} ${t("perServ")}</span>`:""}${ps.protein?`<span>${t("protein")} ${r0(ps.protein)}g</span>`:""}</div></div></div>
+  <details><summary>${t("showMore")}</summary>
+    <ul class="ing">${(r.ingredients||[]).map(x=>`<li><span class="dot"></span><span class="grow" dir="auto">${esc(x.name)}</span><span class="muted"><bdi>${esc(x.amount||"")}</bdi></span></li>`).join("")}</ul>
+    <ol class="steps">${(r.steps||[]).map(x=>`<li><span dir="auto">${esc(x)}</span></li>`).join("")}</ol>
+    ${r.notes?`<div class="muted small" dir="auto" style="margin-top:6px">💡 ${esc(r.notes)}</div>`:""}</details>
+  <div class="grid2" style="margin-top:10px"><button type="button" class="btn sm ghost" data-ask="edit" data-i="${i}">${t("editFirst")}</button>
+    <button type="button" class="btn sm primary" data-ask="add" data-i="${i}" ${r._added?"disabled":""}>${r._added?t("added2"):ICON.plus+t("addRecipe")}</button></div></div>`}
+function sheetAsk(){
+  if(!CLOUD){toast(t("aiDemo"));return}
+  let busy=false;
+  const exs=[t("askEx1"),t("askEx2"),t("askEx3"),t("askEx4")];
+  openSheet(`<form class="stack" id="askf" autocomplete="off">
+    <div class="row"><span class="aiic ask">${ICON.chat}</span><h2 class="sec grow" style="font-size:19px;margin:0">${t("askAI")}</h2></div>
+    <textarea dir="auto" id="askQ" style="min-height:64px" placeholder="${t("askPlaceholder")}">${esc(askState.q)}</textarea>
+    <div class="chips">${exs.map(x=>`<button type="button" class="chip" data-ex="${esc(x)}">${esc(x)}</button>`).join("")}</div>
+    <div class="row"><span class="muted small grow">${t("askVariants")}</span><div class="seg" style="width:150px" id="askN">${[1,2,3].map(n=>`<button type="button" data-n="${n}" class="${askState.count===n?"on":""}">${n}</button>`).join("")}</div></div>
+    <button class="btn primary block" id="askGo">${ICON.sparkle}${t("askGo")}</button>
+    <div id="askMsg"></div><div id="askRes" class="stack"></div>
+    <button type="button" class="btn ghost block" id="askClose">${t("cancel")}</button>
+  </form>`,()=>{
+    const res=$("#askRes"),msg=(h,c="")=>$("#askMsg").innerHTML=h?`<div class="banner ${c}">${h}</div>`:"";
+    const draw=()=>{res.innerHTML=askState.results?askState.results.map(askCard).join(""):""};draw();
+    $("#askClose").onclick=()=>{if(!busy)closeSheet()};
+    $("#askN").onclick=e=>{const b=e.target.closest("[data-n]");if(!b)return;askState.count=+b.dataset.n;$("#askN").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b))};
+    $("#askf").querySelector(".chips").onclick=e=>{const b=e.target.closest("[data-ex]");if(b){$("#askQ").value=b.dataset.ex;$("#askQ").focus()}};
+    res.onclick=async e=>{const b=e.target.closest("[data-ask]");if(!b)return;const r=askState.results[+b.dataset.i];if(!r)return;
+      const rec=normalizeRecipe({...r,source:""});rec.id=uuid();
+      if(b.dataset.ask==="edit"){S.draft=rec;closeSheet();$("#view").dataset.editing="";go({tab:"recipes",view:"edit",id:null});return}
+      r._added=true;draw();S.recipes=[...S.recipes,rec];saveCache();rerender();
+      const ok=await write("recipes",()=>S.api.saveRecipe(rec));if(ok)toast(t("added2")+" · "+rec.name)};
+    $("#askf").onsubmit=async ev=>{ev.preventDefault();if(busy)return;const q=$("#askQ").value.trim();if(!q){$("#askQ").focus();return}
+      askState.q=q;busy=true;$("#askGo").disabled=true;askState.results=null;draw();msg(`<span class="spin"></span>${esc(t("askThinking"))}`);
+      try{const out=await S.api.callFn({mode:"suggest",q,count:askState.count,lang,have:S.products.map(p=>p.name).slice(0,60)});
+        askState.results=out.recipes||[];msg("");draw();res.scrollIntoView({behavior:"smooth",block:"start"})}
+      catch(e){msg(esc(e.code==="setup"?t("aiSetup"):errMsg(e)),"warn")}
+      finally{busy=false;const g=$("#askGo");if(g)g.disabled=false}};
+    if(!askState.results)setTimeout(()=>$("#askQ").focus(),60);
+  });
+}
+
 /* AI import */
 async function shrinkImage(file,max=1280){ // -> {mime,data(base64),preview} JPEG, longest side <= max
   const url=URL.createObjectURL(file);
@@ -1187,6 +1239,7 @@ document.addEventListener("click",e=>{
     case "tag":tagFilter=tagFilter===a.dataset.tag?"":a.dataset.tag;render();break;
     case "import":sheetImport();break;
     case "ai":sheetAI();break;
+    case "ask":sheetAsk();break;
     case "translate":if(r)translateRecipe(r,a);break;
     case "openProd":{const p=S.products.find(x=>x.id===a.dataset.id);if(p)sheetProduct(p);break}
     case "saveCommon":{const f=commonFoods().find(x=>x.id===a.dataset.id);if(f)saveFoodToMine(f);break}
