@@ -316,3 +316,10 @@ img.avatar{display:block}
 .mealcard .entry.mtotal .nc{font-weight:800}
 .mealcard .entry.mtotal .nk{color:var(--kcal);font-size:16px}
 .mealcard .entry.mtotal .xsp{width:24px;flex:none}
+/* v1.13 shopping categories */
+.catpick{border:1px solid var(--line);background:var(--bg);border-radius:10px;width:34px;height:34px;font-size:17px;cursor:pointer;flex:none;display:flex;align-items:center;justify-content:center;padding:0}
+.catgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.catbtn{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px;border-radius:14px;border:1px solid var(--line);background:var(--card);color:inherit;font:inherit;font-size:13px;cursor:pointer;text-align:center}
+.catbtn span{font-size:22px}
+.catbtn.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,var(--card));font-weight:600}
+.seg.nowrap{width:auto;flex:none}.seg.nowrap button{white-space:nowrap;padding-inline:14px}

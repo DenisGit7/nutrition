@@ -9,6 +9,7 @@
 // Requests (POST, JSON), all with lang: "en" | "he":
 //   { mode:"recipe",    url?, text?, images?: [{mime,data(base64)}], audio?: {mime,data} }  -> { recipe }
 //   { mode:"find", q, mine:{products:[…],recipes:[…]} }  -> { mine:[ids], results:[{type:"product"|"recipe",…}] }
+//   { mode:"categorize", items:[names] }  -> { categories:[veg|fruit|dairy|…|other] }
 //   { mode:"cooked", recipes:[{name,servings,steps,ingredients:[{name,amount,grams}]}] }  -> { recipes:[{cooked_g}] }
 //   { mode:"nutrition", ingredients:[{name,qty,unit,grams?}] }  -> { ingredients:[{grams,kcal,protein,carbs,fat}] }
 //   { mode:"translate", recipe: {name, ingredients, steps, notes, tags} }                      -> { recipe }
@@ -273,6 +274,17 @@ Ingredient "grams" are raw weights. Reply with ONLY a JSON object, same order an
 ${JSON.stringify(list)}`;
 }
 
+const SHOP_CATS = ["veg", "fruit", "dairy", "meat", "bakery", "grains", "pantry", "frozen", "snacks", "drinks", "home", "other"];
+function categorizePrompt(list: string[]): string {
+  return `Sort these shopping-list items into supermarket categories. Items can be in Hebrew or English.
+Categories: veg (vegetables, herbs, mushrooms), fruit (fresh fruit), dairy (milk, cheese, yogurt, eggs, butter), meat (meat, poultry, fish, tofu, deli),
+bakery (bread, pitas, cakes), grains (rice, pasta, legumes, flour, oats, cereals), pantry (oils, sauces, spices, canned food, sugar, baking, spreads, nuts),
+frozen (frozen food), snacks (sweets, chips, chocolate), drinks (water, juice, soda, coffee, tea, alcohol), home (cleaning, paper, toiletries, non-food), other.
+Reply with ONLY a JSON object, same order and count as the input: {"categories": ["veg"]}
+
+${JSON.stringify(list)}`;
+}
+
 function nutritionPrompt(list: unknown): string {
   return `For each ingredient line below, give its realistic weight in grams and its nutrition for that amount, using standard nutrition tables (USDA-like values).
 Dry foods weigh less than water: 1/2 cup rolled oats ≈ 40 g, 1 cup flour ≈ 125 g, 1 tbsp honey ≈ 21 g, 1 tsp cinnamon ≈ 2.6 g; liquids 1 cup ≈ 240 g.
@@ -489,6 +501,17 @@ export async function handle(req: Request): Promise<Response> {
       const mineIds = (Array.isArray(out?.mine) ? out.mine : []).map(String).filter((x: string) => ids.has(x));
       if (!results.length && !mineIds.length) return json({ error: "no_result", message: out?.reason || "Nothing found — try describing it differently." }, 422);
       return json({ mine: mineIds, results });
+    } catch (e) { return aiError(e); }
+  }
+
+  // --- shopping-list categories ---
+  if (mode === "categorize") {
+    const list = (Array.isArray(body.items) ? body.items : []).slice(0, 80).map((x: any) => String(x || "").slice(0, 80));
+    if (!list.length) return json({ categories: [] });
+    try {
+      const out = await callGemini(key, [{ text: categorizePrompt(list) }]);
+      const arr = Array.isArray(out?.categories) ? out.categories : [];
+      return json({ categories: list.map((_: any, k: number) => SHOP_CATS.includes(String(arr[k])) ? String(arr[k]) : "other") });
     } catch (e) { return aiError(e); }
   }
 

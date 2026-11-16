@@ -175,6 +175,14 @@ before 1.11 (counted as raw) are recalculated once as cooked grams.
 "+ Add meal" on the Today page; meals marked "Show every day" are saved in your settings and synced between your devices
 (until you run the script they are kept on that device only). Tap a meal's title to collapse or expand it.
 
+## Updating to 1.13.0 (shopping list by category) — do once
+
+1. **Database:** SQL Editor → New query → paste all of `supabase/008_shopping_categories.sql` → **Run**.
+2. **AI function:** paste the new `index.ts` → **Deploy** (contains `categorizePrompt`) — used only for items the app can't recognise by name.
+
+Shopping tab → **Sort: As added / By category**. Categories come from the item name (EN/HE), your product's category, or the AI;
+tap the category icon on an item to change it (remembered for that name on this device).
+
 **If the AI says a model "is no longer available":** paste the latest `index.ts` (it finds a working Gemini model by itself),
 or as a quick fix add a secret `GEMINI_MODEL` with the model name Google suggests in the message (Edge Functions → Secrets).
 

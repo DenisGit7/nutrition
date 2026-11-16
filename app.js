@@ -24,7 +24,7 @@ ingredients:"Ingredients",steps:"Steps",notes:"Notes",source:"Source",edit:"Edit
 save:"Save",cancel:"Cancel",newRecipe:"New recipe",editRecipe:"Edit recipe",name:"Name",ingName:"Ingredient",amount:"Amount",
 addIng:"+ Add ingredient",recalcAI:"Recalculate calories with AI",recalcing:"Calculating…",recalcNone:"Nothing to recalculate — all ingredients use your products' numbers",recalcDone:"Updated {n} ingredients",stepsHint:"one step per line",tags:"Tags (comma separated)",calcFromIng:"from ingredients",
 kcalServing:"Calories per serving",macrosServing:"Macros per serving (g)",addToday:"Add to today",added:"Added",saved:"Saved",deleted:"Deleted",
-goal:"Goal",left:"left",over:"over",eaten:"eaten",quickAdd:"Log food",whatAte:"What did you eat?",addMeal:"Add meal",mealName:"Meal name",everyDay:"Show every day",everyDayMeals:"Your every-day meals",mealEx1:"Snack 2",mealEx2:"Pre-workout",mealEx3:"Post-workout",mealEx4:"Late snack",needDbMeals2:"Saved on this device only — run 007_custom_meals.sql in Supabase to sync your meals",cookedW:"Cooked weight of the whole dish (g)",cookedWShort:"Cooked weight",calculating:"Calculating…",needKcal:"Type the calories, or pick the food again",per100:"Per 100 g",rawCol:"Raw",cookedCol:"Cooked",noCookedYet:"cooked weight not set yet",cookedWPh:"e.g. 1200",cookedWHint:"Weigh the finished dish (pot minus the empty pot). Logging by grams uses it, so grams count as cooked food. Leave empty and the AI estimates it.",estimate:"Estimate",cookedSet:"Cooked weight ≈ {g} g",cookedWord:"cooked",rawW:"raw ingredients",cookedWLogHint:"Grams count as cooked food. Weighed the pot? Type the real weight — it is saved in the recipe.",cookedWMissing:"Type the cooked weight of the whole dish, or switch to servings.",estimatingCooked:"Estimating the cooked weight…",needDbCooked:"Run 006_recipe_cooked_weight.sql in Supabase to save cooked weights in recipes",meal_breakfast:"Breakfast",meal_lunch:"Lunch",meal_dinner:"Dinner",meal_snack:"Snack",editEntry:"Edit meal entry",editAmountHint:"Changing the amount updates calories, protein, carbs and fat.",needDbMeals:"Saved without the meal — run 005_food_log_meals.sql in Supabase to keep meals",logSearch:"Search your recipes and products…",byGrams:"Grams",byServings:"Servings",servingsWord:"servings",servingWord:"serving",change:"Change",needDishW:"Type the cooked weight of the whole dish to count by grams, or switch to servings.",nothing:"Nothing logged yet for this day.",
+goal:"Goal",left:"left",over:"over",eaten:"eaten",quickAdd:"Log food",whatAte:"What did you eat?",sortBy:"Sort",sortAdded:"As added",sortCat:"By category",chooseCat:"Category",cat_veg:"Vegetables",cat_fruit:"Fruit",cat_dairy:"Dairy & eggs",cat_meat:"Meat & fish",cat_bakery:"Bakery",cat_grains:"Rice, pasta & legumes",cat_pantry:"Pantry",cat_frozen:"Frozen",cat_snacks:"Snacks & sweets",cat_drinks:"Drinks",cat_home:"Home & cleaning",cat_other:"Other",addMeal:"Add meal",mealName:"Meal name",everyDay:"Show every day",everyDayMeals:"Your every-day meals",mealEx1:"Snack 2",mealEx2:"Pre-workout",mealEx3:"Post-workout",mealEx4:"Late snack",needDbMeals2:"Saved on this device only — run 007_custom_meals.sql in Supabase to sync your meals",cookedW:"Cooked weight of the whole dish (g)",cookedWShort:"Cooked weight",calculating:"Calculating…",needKcal:"Type the calories, or pick the food again",per100:"Per 100 g",rawCol:"Raw",cookedCol:"Cooked",noCookedYet:"cooked weight not set yet",cookedWPh:"e.g. 1200",cookedWHint:"Weigh the finished dish (pot minus the empty pot). Logging by grams uses it, so grams count as cooked food. Leave empty and the AI estimates it.",estimate:"Estimate",cookedSet:"Cooked weight ≈ {g} g",cookedWord:"cooked",rawW:"raw ingredients",cookedWLogHint:"Grams count as cooked food. Weighed the pot? Type the real weight — it is saved in the recipe.",cookedWMissing:"Type the cooked weight of the whole dish, or switch to servings.",estimatingCooked:"Estimating the cooked weight…",needDbCooked:"Run 006_recipe_cooked_weight.sql in Supabase to save cooked weights in recipes",meal_breakfast:"Breakfast",meal_lunch:"Lunch",meal_dinner:"Dinner",meal_snack:"Snack",editEntry:"Edit meal entry",editAmountHint:"Changing the amount updates calories, protein, carbs and fat.",needDbMeals:"Saved without the meal — run 005_food_log_meals.sql in Supabase to keep meals",logSearch:"Search your recipes and products…",byGrams:"Grams",byServings:"Servings",servingsWord:"servings",servingWord:"serving",change:"Change",needDishW:"Type the cooked weight of the whole dish to count by grams, or switch to servings.",nothing:"Nothing logged yet for this day.",
 setGoal:"Daily calorie goal",fromRecipe:"From recipe",add:"Add",
 cloud:"Synced",local:"Demo mode — saved on this device only",offline:"Offline — showing saved copy",
 loading:"Loading…",needName:"Please enter a name",prev:"Previous day",next:"Next day",todayBtn:"Back to today",total:"Total",
@@ -68,7 +68,7 @@ ingredients:"מצרכים",steps:"אופן הכנה",notes:"הערות",source:"
 save:"שמירה",cancel:"ביטול",newRecipe:"מתכון חדש",editRecipe:"עריכת מתכון",name:"שם",ingName:"מצרך",amount:"כמות",
 addIng:"+ הוספת מצרך",recalcAI:"חישוב קלוריות מחדש עם AI",recalcing:"מחשב…",recalcNone:"אין מה לחשב — כל המצרכים מקושרים למוצרים שלך",recalcDone:"עודכנו {n} מצרכים",stepsHint:"שלב אחד בכל שורה",tags:"תגיות (מופרדות בפסיק)",calcFromIng:"מחושב מהמצרכים",
 kcalServing:"קלוריות למנה",macrosServing:"ערכים למנה (גרם)",addToday:"הוסף להיום",added:"נוסף",saved:"נשמר",deleted:"נמחק",
-goal:"יעד",left:"נותרו",over:"מעל",eaten:"נאכלו",quickAdd:"רישום אוכל",whatAte:"מה אכלת?",addMeal:"הוספת ארוחה",mealName:"שם הארוחה",everyDay:"להציג כל יום",everyDayMeals:"הארוחות הקבועות שלך",mealEx1:"נשנוש 2",mealEx2:"לפני אימון",mealEx3:"אחרי אימון",mealEx4:"נשנוש לילה",needDbMeals2:"נשמר רק במכשיר הזה — הרץ את 007_custom_meals.sql ב-Supabase כדי לסנכרן ארוחות",cookedW:"משקל כל המנה המבושלת (גרם)",cookedWShort:"משקל מבושל",calculating:"מחשב…",needKcal:"הקלד את הקלוריות, או בחר את המאכל שוב",per100:"ל-100 גרם",rawCol:"לא מבושל",cookedCol:"מבושל",noCookedYet:"משקל מבושל עוד לא הוגדר",cookedWPh:"למשל 1200",cookedWHint:"שקול את המנה המוכנה (הסיר פחות משקל הסיר הריק). רישום לפי גרמים משתמש בזה, כך שהגרמים נספרים כאוכל מבושל. השאר ריק וה-AI יעריך.",estimate:"הערכה",cookedSet:"משקל מבושל ≈ {g} גרם",cookedWord:"מבושל",rawW:"מצרכים לא מבושלים",cookedWLogHint:"הגרמים נספרים כאוכל מבושל. שקלת את הסיר? הקלד את המשקל האמיתי — הוא יישמר במתכון.",cookedWMissing:"הקלד את משקל כל המנה המבושלת, או עבור למנות.",estimatingCooked:"מעריך את המשקל המבושל…",needDbCooked:"הרץ את 006_recipe_cooked_weight.sql ב-Supabase כדי לשמור משקל מבושל במתכונים",meal_breakfast:"בוקר",meal_lunch:"צהריים",meal_dinner:"ערב",meal_snack:"נשנוש",editEntry:"עריכת רישום",editAmountHint:"שינוי הכמות מעדכן קלוריות, חלבון, פחמימות ושומן.",needDbMeals:"נשמר בלי הארוחה — הרץ את 005_food_log_meals.sql ב-Supabase כדי לשמור ארוחות",logSearch:"חיפוש במתכונים ובמוצרים שלך…",byGrams:"גרמים",byServings:"מנות",servingsWord:"מנות",servingWord:"מנה",change:"החלפה",needDishW:"הקלד את משקל כל המנה המבושלת כדי לחשב לפי גרמים, או עבור למנות.",nothing:"עדיין לא נרשם כלום ביום הזה.",
+goal:"יעד",left:"נותרו",over:"מעל",eaten:"נאכלו",quickAdd:"רישום אוכל",whatAte:"מה אכלת?",sortBy:"מיון",sortAdded:"לפי הוספה",sortCat:"לפי קטגוריה",chooseCat:"קטגוריה",cat_veg:"ירקות",cat_fruit:"פירות",cat_dairy:"מוצרי חלב וביצים",cat_meat:"בשר ודגים",cat_bakery:"מאפייה",cat_grains:"אורז, פסטה וקטניות",cat_pantry:"מזווה",cat_frozen:"קפואים",cat_snacks:"חטיפים ומתוקים",cat_drinks:"משקאות",cat_home:"בית וניקיון",cat_other:"אחר",addMeal:"הוספת ארוחה",mealName:"שם הארוחה",everyDay:"להציג כל יום",everyDayMeals:"הארוחות הקבועות שלך",mealEx1:"נשנוש 2",mealEx2:"לפני אימון",mealEx3:"אחרי אימון",mealEx4:"נשנוש לילה",needDbMeals2:"נשמר רק במכשיר הזה — הרץ את 007_custom_meals.sql ב-Supabase כדי לסנכרן ארוחות",cookedW:"משקל כל המנה המבושלת (גרם)",cookedWShort:"משקל מבושל",calculating:"מחשב…",needKcal:"הקלד את הקלוריות, או בחר את המאכל שוב",per100:"ל-100 גרם",rawCol:"לא מבושל",cookedCol:"מבושל",noCookedYet:"משקל מבושל עוד לא הוגדר",cookedWPh:"למשל 1200",cookedWHint:"שקול את המנה המוכנה (הסיר פחות משקל הסיר הריק). רישום לפי גרמים משתמש בזה, כך שהגרמים נספרים כאוכל מבושל. השאר ריק וה-AI יעריך.",estimate:"הערכה",cookedSet:"משקל מבושל ≈ {g} גרם",cookedWord:"מבושל",rawW:"מצרכים לא מבושלים",cookedWLogHint:"הגרמים נספרים כאוכל מבושל. שקלת את הסיר? הקלד את המשקל האמיתי — הוא יישמר במתכון.",cookedWMissing:"הקלד את משקל כל המנה המבושלת, או עבור למנות.",estimatingCooked:"מעריך את המשקל המבושל…",needDbCooked:"הרץ את 006_recipe_cooked_weight.sql ב-Supabase כדי לשמור משקל מבושל במתכונים",meal_breakfast:"בוקר",meal_lunch:"צהריים",meal_dinner:"ערב",meal_snack:"נשנוש",editEntry:"עריכת רישום",editAmountHint:"שינוי הכמות מעדכן קלוריות, חלבון, פחמימות ושומן.",needDbMeals:"נשמר בלי הארוחה — הרץ את 005_food_log_meals.sql ב-Supabase כדי לשמור ארוחות",logSearch:"חיפוש במתכונים ובמוצרים שלך…",byGrams:"גרמים",byServings:"מנות",servingsWord:"מנות",servingWord:"מנה",change:"החלפה",needDishW:"הקלד את משקל כל המנה המבושלת כדי לחשב לפי גרמים, או עבור למנות.",nothing:"עדיין לא נרשם כלום ביום הזה.",
 setGoal:"יעד קלוריות יומי",fromRecipe:"ממתכון",add:"הוסף",
 cloud:"מסונכרן",local:"מצב הדגמה — נשמר במכשיר הזה בלבד",offline:"אין חיבור — מוצג עותק שמור",
 loading:"טוען…",needName:"נא להזין שם",prev:"יום קודם",next:"יום הבא",todayBtn:"חזרה להיום",total:"סה״כ",
@@ -94,7 +94,7 @@ aiAddShots:"הוספת צילומי מסך",aiGo:"יצירת מתכון",aiWorki
 aiNeedInput:"הדבק קישור, טקסט או הוסף צילומי מסך.",aiDemo:"ייבוא עם AI זמין רק בגרסה המסונכרנת (Supabase).",
 aiSetup:"ייבוא עם AI עדיין לא הוגדר ב-Supabase (ראה README, שלב 6).",aiLinkWarn:"לא הצלחתי לפתוח את הקישור עצמו — המתכון נוצר מהטקסט/צילומי המסך.",aiLinkOnly:"האתר שיתף רק את הכותרת, בלי המתכון. העתק את טקסט הפוסט (עוד → העתקה) לתיבה למעלה, או הוסף צילומי מסך של המצרכים, ואז לחץ שוב על יצירת מתכון."}
 };
-const VERSION = "1.12.2";
+const VERSION = "1.13.0";
 
 /* =================== small utils =================== */
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},
@@ -153,7 +153,7 @@ function recipeToRow(r,hid){return {id:r.id,household_id:hid,name:r.name,serving
     if(i.food)o.food=i.food;return o}),
   kcal_per_serving:numOrNull(r.kcalPerServing),protein:numOrNull(r.protein),carbs:numOrNull(r.carbs),fat:numOrNull(r.fat),
   steps:r.steps||[],tags:r.tags||[],notes:r.notes||null,source:r.source||null,image:r.image||null,cooked_g:numOrNull(r.cookedG)}}
-const shopFromRow=r=>({id:r.id,name:r.name,amount:r.amount||"",done:!!r.done,recipes:r.recipes||[],createdAt:r.created_at});
+const shopFromRow=r=>({id:r.id,name:r.name,amount:r.amount||"",done:!!r.done,recipes:r.recipes||[],createdAt:r.created_at,category:r.category||""});
 const prodFromRow=r=>({id:r.id,updatedAt:r.updated_at,name:r.name,brand:r.brand||"",barcode:r.barcode||"",category:r.category||"",unit:r.unit||"g",
   serving_g:r.serving_g==null?null:num(r.serving_g),serving_name:r.serving_name||"",kcal:numOrNull(r.kcal),protein:numOrNull(r.protein),
   carbs:numOrNull(r.carbs),fat:numOrNull(r.fat),sugar:numOrNull(r.sugar),fiber:numOrNull(r.fiber),source:r.source||"",image:r.image||""});
@@ -237,8 +237,13 @@ const SupaBackend={
   async deleteRecipe(id){const {error}=await this.sb.from("recipes").delete().eq("id",id);if(error)throw error},
   async listShop(){const {data,error}=await this.sb.from("shopping_items").select("*").eq("household_id",this.household.id).order("created_at");if(error)throw error;return data.map(shopFromRow)},
   async insertShop(items){if(!items.length)return;const hid=this.household.id;
-    const {error}=await this.sb.from("shopping_items").insert(items.map(i=>({id:i.id,household_id:hid,name:i.name,amount:i.amount||null,done:!!i.done,recipes:i.recipes||[]})));if(error)throw error},
-  async updateShop(id,patch){const {error}=await this.sb.from("shopping_items").update(patch).eq("id",id);if(error)throw error},
+    let rows=items.map(i=>({id:i.id,household_id:hid,name:i.name,amount:i.amount||null,done:!!i.done,recipes:i.recipes||[],...(i.category?{category:i.category}:{})}));
+    let {error}=await this.sb.from("shopping_items").insert(rows);
+    if(error&&missingCol(error,["category"])){S.noShopCat=true;rows=rows.map(({category,...r})=>r);({error}=await this.sb.from("shopping_items").insert(rows))}
+    if(error)throw error},
+  async updateShop(id,patch){let {error}=await this.sb.from("shopping_items").update(patch).eq("id",id);
+    if(error&&"category" in patch&&missingCol(error,["category"])){S.noShopCat=true;const {category,...rest}=patch;if(!Object.keys(rest).length)return;({error}=await this.sb.from("shopping_items").update(rest).eq("id",id))}
+    if(error)throw error},
   async deleteShop(ids){if(!ids.length)return;const {error}=await this.sb.from("shopping_items").delete().in("id",ids);if(error)throw error},
   async listLog(day){const {data,error}=await this.sb.from("food_log").select("*").eq("user_id",this.user.id).eq("day",day).order("created_at");if(error)throw error;return data.map(logFromRow)},
   async addLog(e){const row={id:e.id,user_id:this.user.id,day:e.day,...logToRow(e)};
@@ -848,12 +853,52 @@ function viewToday(){
 }
 
 /* =================== views: shopping =================== */
-function shopRow(i){const pf=productFor(i.name);return `<div class="sitem ${i.done?"done":""}" data-shop="${esc(i.id)}">
+/* ---------- shopping categories (by name, the AI for unknown items, or set by hand) ---------- */
+const SHOP_CATS=["veg","fruit","dairy","meat","bakery","grains","pantry","frozen","snacks","drinks","home","other"];
+const CAT_IC={veg:"🥦",fruit:"🍎",dairy:"🧀",meat:"🍗",bakery:"🍞",grains:"🌾",pantry:"🫙",frozen:"🧊",snacks:"🍫",drinks:"🥤",home:"🧻",other:"🛒"};
+const CAT_KW=[
+  ["home",["toilet paper","paper towel","napkin","detergent","soap","shampoo","toothpaste","dish","bleach","sponge","trash bag","foil","baking paper","diaper","wipes","נייר טואלט","מגבות נייר","מפיות","אבקת כביסה","מרכך","סבון","שמפו","משחת שיניים","נוזל כלים","אקונומיקה","ספוג","שקיות אשפה","נייר כסף","נייר אפייה","חיתול","מגבונים","ניקוי"]],
+  ["frozen",["frozen","ice cream","קפוא","קפואה","קפואים","קפואות","גלידה","ice fruits"]],
+  ["drinks",["water","juice","soda","cola","beer","wine","coffee","tea","מים","מיץ","סודה","קולה","בירה","יין","קפה","תה","משקה"]],
+  ["snacks",["chocolate","chips","candy","cookie","biscuit","snack","bamba","bisli","wafer","שוקולד","צ'יפס","ציפס","ממתק","עוגיות","ביסקוויט","חטיף","במבה","ביסלי","ופל"]],
+  ["pantry",["peanut butter","tahini","hummus spread","tomato paste","canned","sauce","ketchup","mayo","mustard","oil","vinegar","salt","pepper","spice","paprika","cumin","turmeric","cinnamon","sugar","honey","jam","baking","yeast","vanilla","cocoa","nuts","almond","walnut","cashew","seeds","tuna","olives","pickles","soy sauce","stock","broth","חמאת בוטנים","טחינה","רסק","שימורים","קופסת","רוטב","קטשופ","מיונז","חרדל","שמן","חומץ","מלח","פלפל שחור","תבלין","פפריקה","כמון","כורכום","קינמון","סוכר","דבש","ריבה","שמרים","וניל","קקאו","אגוזי","שקדים","קשיו","גרעינים","זרעי","טונה","זיתים","חמוצים","סילאן","ציר","אבקת מרק"]],
+  ["bakery",["bread","pita","bun","roll","bagel","tortilla","croissant","cake","לחם","פיתה","פיתות","לחמניה","לחמניות","בייגל","טורטייה","קרואסון","עוגה","חלה"]],
+  ["grains",["rice","pasta","spaghetti","noodle","couscous","bulgur","quinoa","oat","flour","lentil","bean","chickpea","pea","cereal","granola","cornflakes","אורז","פסטה","ספגטי","אטריות","קוסקוס","בורגול","קינואה","שיבולת","קוואקר","קמח","עדשים","שעועית","חומוס","גרגרי","אפונה","מש","פתיתים","דגני","גרנולה","קורנפלקס"]],
+  ["dairy",["milk","cheese","yogurt","yoghurt","cottage","cream","butter","egg","labneh","labaneh","kefir","skyr","חלב","גבינה","גבינת","יוגורט","קוטג","שמנת","חמאה","ביצים","ביצה","לבנה","קפיר","סקייר","מעדן","בולגרית","צהובה"]],
+  ["meat",["chicken","beef","meat","turkey","lamb","fish","salmon","tuna steak","tofu","schnitzel","sausage","steak","ground","עוף","חזה","פרגית","בקר","בשר","הודו","כבש","דג","דגים","סלמון","טופו","שניצל","נקניק","סטייק","טחון","קציצות"]],
+  ["veg",["potato","sweet potato","tomato","cucumber","onion","garlic","carrot","pepper","lettuce","cabbage","spinach","broccoli","cauliflower","zucchini","eggplant","mushroom","parsley","cilantro","dill","mint","celery","corn","kale","beet","radish","pumpkin","squash","avocado","ginger","תפוח אדמה","תפוחי אדמה","בטטה","עגבני","מלפפון","בצל","שום","גזר","פלפל","חסה","כרוב","תרד","ברוקולי","כרובית","קישוא","חציל","פטריות","פטרוזיליה","כוסברה","שמיר","נענע","סלרי","תירס","קייל","סלק","צנון","דלעת","אבוקדו","ג'ינג'ר","ג׳ינג׳ר","ירקות"]],
+  ["fruit",["apple","banana","orange","lemon","lime","grape","strawberr","blueberr","raspberr","berry","mango","pineapple","melon","watermelon","peach","pear","plum","kiwi","date","pomegranate","cherry","תפוח","בננה","תפוז","לימון","ליים","ענבים","תות","אוכמניות","פטל","מנגו","אננס","מלון","אבטיח","אפרסק","אגס","שזיף","קיווי","תמר","רימון","דובדבן","פירות"]]];
+const catByName=n=>{const x=" "+norm(n)+" ";for(const [c,kws] of CAT_KW)if(kws.some(k=>x.includes(norm(k))))return c;return ""};
+const shopCatLocal=()=>LS.get("nt.shopCat",{});
+const shopCat=i=>{if(SHOP_CATS.includes(i.category))return i.category;const l=shopCatLocal()[norm(i.name)];if(SHOP_CATS.includes(l))return l;
+  const pf=productFor(i.name);if(pf&&SHOP_CATS.includes(pf.category))return pf.category;return catByName(i.name)||"other"};
+async function setShopCat(i,c){S.shop=S.shop.map(x=>x.id===i.id?{...x,category:c}:x);
+  const m=shopCatLocal();m[norm(i.name)]=c;LS.set("nt.shopCat",m);saveCache();rerender();   // also remembered by name on this device, for next time
+  if(CLOUD&&!S.noShopCat)await write("shop",()=>S.api.updateShop(i.id,{category:c}))}
+/* items no keyword knows → ask the AI once and save their category */
+let catBusy=false;const catTried=new Set();
+async function ensureShopCats(){if(!CLOUD||catBusy||S.phase!=="app")return;
+  const todo=S.shop.filter(i=>!i.done&&!SHOP_CATS.includes(i.category)&&!catTried.has(i.id));if(!todo.length)return;catBusy=true;
+  try{todo.forEach(i=>catTried.add(i.id));const known=todo.filter(i=>shopCat(i)!=="other"),unknown=todo.filter(i=>shopCat(i)==="other");
+    let ai=[];if(unknown.length){try{const r=await S.api.callFn({mode:"categorize",items:unknown.map(i=>i.name)});ai=(r&&r.categories)||[]}catch(_){}}
+    const set=[...known.map(i=>[i,shopCat(i)]),...unknown.map((i,k)=>[i,SHOP_CATS.includes(ai[k])?ai[k]:null])].filter(x=>x[1]);
+    if(unknown.length&&ai.length){S.shop=S.shop.map(x=>{const f=set.find(y=>y[0].id===x.id);return f?{...x,category:f[1]}:x});saveCache();rerender()}
+    if(!S.noShopCat)for(const [i,c] of set){try{await S.api.updateShop(i.id,{category:c})}catch(_){}if(S.noShopCat)break}
+  }finally{catBusy=false}}
+const ensureShopCatsSoon=()=>{if(ensureShopCatsSoon._t)return;ensureShopCatsSoon._t=setTimeout(()=>{ensureShopCatsSoon._t=null;ensureShopCats()},1200)};
+function sheetShopCat(i){const cur=shopCat(i);
+  openSheet(`<div class="stack"><h2 class="sec" style="font-size:19px;margin:0">${t("chooseCat")}</h2><div class="muted small" dir="auto">${esc(i.name)}</div>
+    <div class="catgrid">${SHOP_CATS.map(c=>`<button type="button" class="catbtn ${c===cur?"on":""}" data-cat="${c}"><span>${CAT_IC[c]}</span>${t("cat_"+c)}</button>`).join("")}</div>
+    <button class="btn ghost block" id="catC">${t("cancel")}</button></div>`,()=>{
+    $("#catC").onclick=closeSheet;$("#sheet").querySelector(".catgrid").onclick=e=>{const b=e.target.closest("[data-cat]");if(!b)return;closeSheet();setShopCat(i,b.dataset.cat)}})}
+function shopRow(i,byCat){const pf=productFor(i.name);return `<div class="sitem ${i.done?"done":""}" data-shop="${esc(i.id)}">
   <div class="check">${ICON.check}</div>${pf?thumbHTML(pf,34):""}
   <div class="grow"><div class="nm">${esc(i.name)}</div>${(i.recipes||[]).length?`<span class="src">${esc(i.recipes.join(" · "))}</span>`:""}</div>
   ${i.amount?`<span class="amt"><bdi>${esc(i.amount)}</bdi></span>`:""}
+  ${byCat&&!i.done?`<button class="catpick" data-act="shopCat" data-id="${esc(i.id)}" aria-label="${t("chooseCat")}" title="${t("chooseCat")}">${CAT_IC[shopCat(i)]}</button>`:""}
   <button class="x" data-act="rmShop" data-id="${esc(i.id)}" aria-label="remove">×</button></div>`}
 function viewShop(){
+  const byCat=LS.get("nt.shopSort","added")==="cat";if(byCat)ensureShopCatsSoon();
   const items=S.shop,open=items.filter(i=>!i.done),done=items.filter(i=>i.done),pct=items.length?done.length/items.length*100:0;
   return `<div class="stack fadein">
   <form class="addbar" id="shopForm" autocomplete="off"><div class="grow" style="position:relative"><input type="text" dir="auto" id="shopIn" data-food placeholder="${t("addItem")}" enterkeyhint="done" autocomplete="off"></div>
@@ -864,8 +909,11 @@ function viewShop(){
     <div class="row" style="margin-bottom:8px"><div class="grow small muted">${done.length} ${t("of")} ${items.length} ${t("bought")}</div>
       <button class="btn sm ghost" data-act="copyShop">${ICON.copy}${t("copy")}</button></div>
     <div class="progress"><i style="width:${pct}%"></i></div></div>
-  ${open.length?`<div class="card"><h2 class="sec">${t("toBuy")}<span class="n">${open.length}</span></h2>${open.map(shopRow).join("")}</div>`:""}
-  ${done.length?`<div class="card"><h2 class="sec">${t("inCart")}<span class="n">${done.length}</span></h2>${done.map(shopRow).join("")}</div>`:""}
+  ${open.length?`<div class="row" style="gap:8px"><span class="muted small grow">${t("sortBy")}</span><div class="seg nowrap" id="shopSort">
+      <button type="button" data-act="shopSort" data-v="added" class="${byCat?"":"on"}">${t("sortAdded")}</button><button type="button" data-act="shopSort" data-v="cat" class="${byCat?"on":""}">${t("sortCat")}</button></div></div>`:""}
+  ${open.length?(byCat?SHOP_CATS.map(c=>{const g=open.filter(i=>shopCat(i)===c);return g.length?`<div class="card"><h2 class="sec"><span style="margin-inline-end:6px">${CAT_IC[c]}</span>${t("cat_"+c)}<span class="n">${g.length}</span></h2>${g.map(i=>shopRow(i,true)).join("")}</div>`:""}).join("")
+      :`<div class="card"><h2 class="sec">${t("toBuy")}<span class="n">${open.length}</span></h2>${open.map(i=>shopRow(i,false)).join("")}</div>`):""}
+  ${done.length?`<div class="card"><h2 class="sec">${t("inCart")}<span class="n">${done.length}</span></h2>${done.map(i=>shopRow(i,false)).join("")}</div>`:""}
   <div class="grid2"><button class="btn ghost" data-act="clearDone" ${done.length?"":"disabled"}>${t("clearDone")}</button>
     <button class="btn danger" data-act="clearAll">${clearArm?t("clearAgain"):t("clearAll")}</button></div>`}
   </div>`;
@@ -1663,13 +1711,18 @@ document.addEventListener("click",e=>{
     case "logMeal":sheetQuick({meal:a.dataset.meal});break;
     case "toggleMeal":{const m=a.dataset.meal,c=mealClosed();LS.set("nt.mealClosed",c.includes(m)?c.filter(x=>x!==m):[...c,m]);render();break}
     case "addMeal":sheetAddMeal();break;
+    case "shopSort":LS.set("nt.shopSort",a.dataset.v);render();break;
+    case "shopCat":{const it=S.shop.find(x=>x.id===a.dataset.id);if(it)sheetShopCat(it);break}
     case "rmEntry":{const id=a.dataset.id,day=curDate;S.log[day]=(S.log[day]||[]).filter(x=>x.id!==id);rerender();write("log",()=>S.api.deleteLog(day,id));break}
     case "rmShop":removeShop([a.dataset.id]);break;
     case "clearDone":removeShop(S.shop.filter(i=>i.done).map(i=>i.id));break;
     case "clearAll":if(clearArm){clearArm=false;removeShop(S.shop.map(i=>i.id))}
       else{clearArm=true;render();setTimeout(()=>{if(clearArm){clearArm=false;if(route.tab==="shopping")render()}},3000)}break;
     case "shopFromRecipe":sheetPickRecipe();break;
-    case "copyShop":{const txt=`🛒 ${t("shopping")}\n`+S.shop.filter(i=>!i.done).map(i=>`• ${i.name}${i.amount?" — "+i.amount:""}`).join("\n");
+    case "copyShop":{const open=S.shop.filter(i=>!i.done),line=i=>`• ${i.name}${i.amount?" — "+i.amount:""}`;
+      const txt=`🛒 ${t("shopping")}\n`+(LS.get("nt.shopSort","added")==="cat"
+        ?SHOP_CATS.map(c=>{const g=open.filter(i=>shopCat(i)===c);return g.length?`\n${CAT_IC[c]} ${t("cat_"+c)}\n`+g.map(line).join("\n"):""}).join("")
+        :open.map(line).join("\n"));
       try{navigator.clipboard.writeText(txt).then(()=>toast(t("copied")),()=>toast(t("copyFail")))}catch(_){toast(t("copyFail"))}break}
     case "tag":tagFilter=tagFilter===a.dataset.tag?"":a.dataset.tag;render();break;
     case "import":sheetImport();break;

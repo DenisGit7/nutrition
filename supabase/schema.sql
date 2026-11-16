@@ -57,7 +57,8 @@ create table if not exists public.shopping_items (
   recipes      jsonb not null default '[]'::jsonb,       -- recipe names the item came from
   created_by   uuid default auth.uid() references auth.users(id) on delete set null,
   created_at   timestamptz not null default now(),
-  updated_at   timestamptz not null default now()
+  updated_at   timestamptz not null default now(),
+  category     text
 );
 
 -- Private to each person
