@@ -310,3 +310,9 @@ img.avatar{display:block}
 .mealcard .ename{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.25;font-size:15px}
 .mealcard .entry .grow .small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 @media (min-width:520px){.mealcard .nc{width:40px;font-size:13.5px}.mealcard .nk{width:44px}.mealcard .entry{gap:10px}}
+/* v1.12.2 meal total row */
+.mealcard .entry.mtotal{border-top:2px solid var(--line);border-bottom:0;padding:9px 0 4px;font-weight:700}
+.mealcard .entry.mtotal .grow{font-weight:700;padding-inline-start:42px}
+.mealcard .entry.mtotal .nc{font-weight:800}
+.mealcard .entry.mtotal .nk{color:var(--kcal);font-size:16px}
+.mealcard .entry.mtotal .xsp{width:24px;flex:none}

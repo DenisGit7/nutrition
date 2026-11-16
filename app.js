@@ -94,7 +94,7 @@ aiAddShots:"הוספת צילומי מסך",aiGo:"יצירת מתכון",aiWorki
 aiNeedInput:"הדבק קישור, טקסט או הוסף צילומי מסך.",aiDemo:"ייבוא עם AI זמין רק בגרסה המסונכרנת (Supabase).",
 aiSetup:"ייבוא עם AI עדיין לא הוגדר ב-Supabase (ראה README, שלב 6).",aiLinkWarn:"לא הצלחתי לפתוח את הקישור עצמו — המתכון נוצר מהטקסט/צילומי המסך.",aiLinkOnly:"האתר שיתף רק את הכותרת, בלי המתכון. העתק את טקסט הפוסט (עוד → העתקה) לתיבה למעלה, או הוסף צילומי מסך של המצרכים, ואז לחץ שוב על יצירת מתכון."}
 };
-const VERSION = "1.12.1";
+const VERSION = "1.12.2";
 
 /* =================== small utils =================== */
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},
@@ -832,7 +832,7 @@ function viewToday(){
     const shut=mealClosed().includes(m);
     return `<div class="card mealcard ${list.length?"":"nomeal"} ${shut?"shut":""}"><div class="mealhead" data-act="toggleMeal" data-meal="${esc(m)}" role="button" aria-expanded="${!shut}">
       <span class="chev">${shut?"›":"⌄"}</span><span class="mic">${mealIcon(m)}</span><b class="grow mname" dir="auto">${esc(mealLabel(m))}${shut&&list.length?`<span class="muted small" style="font-weight:500"> · ${list.length}</span>`:""}</b>
-      <span class="mealk"><b>${r0(k)}</b> ${t("kcal")}${pr?` · <span class="muted">${r0(pr)}g ${t("protein").toLowerCase()}</span>`:""}</span>
+      <span class="mealk"><b>${r0(k)}</b> ${t("kcal")}</span>
       <button class="iconbtn sm" data-act="logMeal" data-meal="${esc(m)}" aria-label="${t("add")}">${ICON.plus}</button></div>
     ${shut||!list.length?"":`<div class="entry mhcols"><span class="grow"></span><span class="nc p">${t("protein")[0]}</span><span class="nc c">${t("carbs")[0]}</span><span class="nc f">${t("fat")[0]}</span><span class="nk">${t("kcal")}</span><span class="xsp"></span></div>`}
     ${shut?"":list.map(e=>{const am=amountText(e),g=v=>{const x=num(v);return x>=10?r0(x):r1(x)};return `<div class="entry" data-act="editEntry" data-id="${esc(e.id)}" style="cursor:pointer"><div class="ic" style="background:${grad(e.name)}">${esc(initial(e.name))}</div>
@@ -840,7 +840,9 @@ function viewToday(){
       <div class="muted small">${am?esc(am):(e.servings&&e.servings!=1?esc(e.servings)+" ×":"")}</div></div>
       <span class="nc p">${g(e.protein)}</span><span class="nc c">${g(e.carbs)}</span><span class="nc f">${g(e.fat)}</span>
       <b class="nk" style="color:var(--kcal)">${r0(num(e.kcal))}</b>
-      <button class="x" data-act="rmEntry" data-id="${esc(e.id)}" aria-label="remove">×</button></div>`}).join("")}</div>`}).join("")}
+      <button class="x" data-act="rmEntry" data-id="${esc(e.id)}" aria-label="remove">×</button></div>`}).join("")}
+    ${shut||!list.length?"":(()=>{const sum=k=>list.reduce((a,e)=>a+num(e[k]),0),g=x=>x>=10?r0(x):r1(x);
+      return `<div class="entry mtotal"><span class="grow">${t("total")}</span><span class="nc p">${g(sum("protein"))}</span><span class="nc c">${g(sum("carbs"))}</span><span class="nc f">${g(sum("fat"))}</span><b class="nk">${r0(sum("kcal"))}</b><span class="xsp"></span></div>`})()}</div>`}).join("")}
   <button class="btn ghost block" data-act="addMeal">${ICON.plus}${t("addMeal")}</button>
   </div>`;
 }
