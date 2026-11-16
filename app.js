@@ -15,7 +15,7 @@ needOnline:"Online search needs the synced version",offNote:"Data from Open Food
 translateTo:"Translate to English",translating:"Translating…",translated:"Translated",amountHint:"e.g. 150 g, 2, 1 cup",
 autoCalc:"calculated",video:"Add video (screen recording)",videoHint:"Record your screen while the reel plays, then add the recording here",
 preparingVideo:"Preparing video…",videoReady:"Video ready",videoNoAudio:"no sound found — using pictures only",videoFail:"Couldn't read this video — try screenshots",
-grams:"g",findPicture:"Find picture online",choosePicture:"Choose a picture",noPictures:"No pictures found — try a shorter name, or take a photo",picSources:"Photos: Open Food Facts, Wikipedia",picture:"Picture",addPicture:"Add picture",changePicture:"Change",removePicture:"Remove",uploading:"Saving picture…",picFail:"Couldn't save the picture: ",commonHint:"{n} common foods are built in — type above to search them",today:"Today",recipes:"Recipes",shopping:"Shopping",settings:"Settings",search:"Search recipes or ingredients…",
+grams:"g",needDbUpdate:"Product saved without picture — run 003_product_images.sql in Supabase to enable pictures",findPicture:"Find picture online",choosePicture:"Choose a picture",noPictures:"No pictures found — try a shorter name, or take a photo",picSources:"Photos: Open Food Facts, Wikipedia",picture:"Picture",addPicture:"Add picture",changePicture:"Change",removePicture:"Remove",uploading:"Saving picture…",picFail:"Couldn't save the picture: ",commonHint:"{n} common foods are built in — type above to search them",today:"Today",recipes:"Recipes",shopping:"Shopping",settings:"Settings",search:"Search recipes or ingredients…",
 noRecipes:"No recipes yet. Tap + to add one, or import a recipe Claude made for you.",noMatch:"No recipes match your search.",
 kcal:"kcal",perServing:"per serving",servings:"Servings",protein:"Protein",carbs:"Carbs",fat:"Fat",time:"Time (min)",min:"min",
 ingredients:"Ingredients",steps:"Steps",notes:"Notes",source:"Source",edit:"Edit",del:"Delete",delAgain:"Tap again to delete",
@@ -57,7 +57,7 @@ needOnline:"חיפוש ברשת זמין רק בגרסה המסונכרנת",off
 translateTo:"תרגום לעברית",translating:"מתרגם…",translated:"תורגם",amountHint:"למשל 150 גרם, 2, כוס",
 autoCalc:"מחושב",video:"הוספת סרטון (הקלטת מסך)",videoHint:"הקלט את המסך בזמן שהסרטון מתנגן, והוסף את ההקלטה כאן",
 preparingVideo:"מכין את הסרטון…",videoReady:"הסרטון מוכן",videoNoAudio:"לא נמצא קול — משתמש בתמונות בלבד",videoFail:"לא הצלחתי לקרוא את הסרטון — נסה צילומי מסך",
-grams:"גרם",findPicture:"חיפוש תמונה ברשת",choosePicture:"בחירת תמונה",noPictures:"לא נמצאו תמונות — נסה שם קצר יותר, או צלם",picSources:"תמונות: Open Food Facts, ויקיפדיה",picture:"תמונה",addPicture:"הוספת תמונה",changePicture:"החלפה",removePicture:"הסרה",uploading:"שומר תמונה…",picFail:"לא הצלחתי לשמור את התמונה: ",commonHint:"{n} מזונות נפוצים כבר מובנים — הקלד למעלה כדי לחפש",today:"היום",recipes:"מתכונים",shopping:"קניות",settings:"הגדרות",search:"חיפוש מתכון או מצרך…",
+grams:"גרם",needDbUpdate:"המוצר נשמר בלי תמונה — הרץ את 003_product_images.sql ב-Supabase כדי להפעיל תמונות",findPicture:"חיפוש תמונה ברשת",choosePicture:"בחירת תמונה",noPictures:"לא נמצאו תמונות — נסה שם קצר יותר, או צלם",picSources:"תמונות: Open Food Facts, ויקיפדיה",picture:"תמונה",addPicture:"הוספת תמונה",changePicture:"החלפה",removePicture:"הסרה",uploading:"שומר תמונה…",picFail:"לא הצלחתי לשמור את התמונה: ",commonHint:"{n} מזונות נפוצים כבר מובנים — הקלד למעלה כדי לחפש",today:"היום",recipes:"מתכונים",shopping:"קניות",settings:"הגדרות",search:"חיפוש מתכון או מצרך…",
 noRecipes:"אין עדיין מתכונים. לחץ + כדי להוסיף, או ייבא מתכון ש-Claude הכין לך.",noMatch:"לא נמצאו מתכונים.",
 kcal:"קק״ל",perServing:"למנה",servings:"מנות",protein:"חלבון",carbs:"פחמימות",fat:"שומן",time:"זמן (דק׳)",min:"דק׳",
 ingredients:"מצרכים",steps:"אופן הכנה",notes:"הערות",source:"מקור",edit:"עריכה",del:"מחיקה",delAgain:"לחץ שוב למחיקה",
@@ -90,7 +90,7 @@ aiAddShots:"הוספת צילומי מסך",aiGo:"יצירת מתכון",aiWorki
 aiNeedInput:"הדבק קישור, טקסט או הוסף צילומי מסך.",aiDemo:"ייבוא עם AI זמין רק בגרסה המסונכרנת (Supabase).",
 aiSetup:"ייבוא עם AI עדיין לא הוגדר ב-Supabase (ראה README, שלב 6).",aiLinkWarn:"לא הצלחתי לפתוח את הקישור עצמו — המתכון נוצר מהטקסט/צילומי המסך.",aiLinkOnly:"האתר שיתף רק את הכותרת, בלי המתכון. העתק את טקסט הפוסט (עוד → העתקה) לתיבה למעלה, או הוסף צילומי מסך של המצרכים, ואז לחץ שוב על יצירת מתכון."}
 };
-const VERSION = "1.3.1";
+const VERSION = "1.3.2";
 
 /* =================== small utils =================== */
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},
@@ -228,12 +228,19 @@ const SupaBackend={
   async getSettings(){const {data}=await this.sb.from("settings").select("*").eq("user_id",this.user.id).maybeSingle();return {goal:2000,...(data||{})}},
   async saveSettings(s){const {error}=await this.sb.from("settings").upsert({user_id:this.user.id,...s});if(error)throw error},
   async listProducts(){const {data,error}=await this.sb.from("products").select("*").eq("household_id",this.household.id);if(error){if(/products/.test(error.message||""))return [];throw error}return data.map(prodFromRow)},
-  async saveProduct(p){const {data,error}=await this.sb.from("products").upsert(prodToRow(p,this.household.id)).select().single();if(error)throw error;return prodFromRow(data)},
+  async saveProduct(p){
+    let row=prodToRow(p,this.household.id);
+    let {data,error}=await this.sb.from("products").upsert(row).select().single();
+    // database not updated for pictures yet (003_product_images.sql) → save without the picture instead of failing
+    if(error&&/image/i.test(error.message||"")&&/column|schema cache/i.test(error.message||"")){
+      const {image,...rest}=row;({data,error}=await this.sb.from("products").upsert(rest).select().single());
+      if(!error)this.warn=t("needDbUpdate")}
+    if(error)throw error;return prodFromRow(data)},
   async deleteProduct(id){const {error}=await this.sb.from("products").delete().eq("id",id);if(error)throw error;
     this.sb.storage.from("product-images").remove([`${this.household.id}/${id}.jpg`]).catch(()=>{})},
   async uploadImage(blob,id){const path=`${this.household.id}/${id}.jpg`;
     const {error}=await this.sb.storage.from("product-images").upload(path,blob,{upsert:true,contentType:"image/jpeg",cacheControl:"86400"});
-    if(error)throw error;const {data}=this.sb.storage.from("product-images").getPublicUrl(path);return data.publicUrl+"?v="+Date.now()},
+    if(error){if(/bucket not found|not found/i.test(error.message||""))error.message=t("needDbUpdate");throw error}const {data}=this.sb.storage.from("product-images").getPublicUrl(path);return data.publicUrl+"?v="+Date.now()},
   async callFn(body){return this.importAI(body)},
   async importAI(body){
     const {data,error}=await this.sb.functions.invoke("import-recipe",{body});
@@ -975,12 +982,12 @@ function sheetProduct(p,opt={}){
         serving_g:v("pSg"),serving_name:$("#pSn").value.trim(),kcal:v("pK"),protein:v("pP"),carbs:v("pC"),fat:v("pF"),sugar:v("pSu"),fiber:v("pFi"),source:p.source||"manual",
         image:picBlob?image:image};
       const i=S.products.findIndex(x=>x.id===rec.id);if(i>=0)S.products[i]=rec;else S.products.push(rec);closeSheet();rerender();
-      const blob=picBlob;
+      const blob=picBlob;let warn="";
       write("products",async()=>{
-        if(blob){try{rec.image=await S.api.uploadImage(blob,rec.id)}catch(e){rec.image=(p.image||"");toast(t("picFail")+errMsg(e))}}
-        await S.api.saveProduct(rec);
+        if(blob){try{rec.image=await S.api.uploadImage(blob,rec.id)}catch(e){rec.image=(p.image||"");warn=t("picFail")+errMsg(e)}}
+        S.api.warn="";await S.api.saveProduct(rec);if(S.api.warn){warn=S.api.warn;rec.image=""}
         const k=S.products.findIndex(x=>x.id===rec.id);if(k>=0)S.products[k]={...rec};saveCache();rerender();
-      }).then(ok=>ok&&toast(t("saved")))};
+      }).then(ok=>{if(ok){if(warn){toast(warn);clearTimeout(toast._t);toast._t=setTimeout(()=>$("#toast").classList.remove("on"),6000)}else toast(t("saved"))}})};
   });
 }
 /* translate a recipe into the app language */

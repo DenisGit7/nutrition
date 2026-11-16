@@ -25,3 +25,6 @@ create policy "product images change" on storage.objects for update to authentic
   using (bucket_id = 'product-images' and public.is_member(((storage.foldername(name))[1])::uuid));
 create policy "product images delete" on storage.objects for delete to authenticated
   using (bucket_id = 'product-images' and public.is_member(((storage.foldername(name))[1])::uuid));
+
+-- make the new column visible to the app right away
+notify pgrst, 'reload schema';
