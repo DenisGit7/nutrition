@@ -169,6 +169,12 @@ Each recipe now has the cooked weight of the whole dish; logging a recipe by gra
 Existing recipes get an AI estimate automatically when the app opens; food-log entries of recipes logged by grams
 before 1.11 (counted as raw) are recalculated once as cooked grams.
 
+## Updating to 1.12.0 (your own meals) — do once
+
+**Database:** SQL Editor → New query → paste all of `supabase/007_custom_meals.sql` → **Run**.
+"+ Add meal" on the Today page; meals marked "Show every day" are saved in your settings and synced between your devices
+(until you run the script they are kept on that device only). Tap a meal's title to collapse or expand it.
+
 **If the AI says a model "is no longer available":** paste the latest `index.ts` (it finds a working Gemini model by itself),
 or as a quick fix add a secret `GEMINI_MODEL` with the model name Google suggests in the message (Edge Functions → Secrets).
 

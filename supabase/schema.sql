@@ -83,6 +83,7 @@ create table if not exists public.settings (
   user_id      uuid primary key default auth.uid() references auth.users(id) on delete cascade,
   goal         numeric not null default 2000,
   household_id uuid references public.households(id) on delete set null,
+  meals        jsonb not null default '[]'::jsonb,
   updated_at   timestamptz not null default now()
 );
 
