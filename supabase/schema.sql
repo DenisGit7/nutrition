@@ -289,3 +289,7 @@ create policy "product images change" on storage.objects for update to authentic
   using (bucket_id = 'product-images' and public.is_member(((storage.foldername(name))[1])::uuid));
 create policy "product images delete" on storage.objects for delete to authenticated
   using (bucket_id = 'product-images' and public.is_member(((storage.foldername(name))[1])::uuid));
+
+
+-- ===== included from 004_recipe_images.sql (v1.5.0) =====
+alter table public.recipes add column if not exists image text;

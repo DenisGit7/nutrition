@@ -102,7 +102,28 @@ function visibleText(html: string): string {
     .replace(/[ \t]+/g, " ").replace(/\n\s*\n+/g, "\n").trim();
 }
 
-async function fetchPage(url: string): Promise<{ ok: boolean; info: string }> {
+// picture of the dish: from the page's preview image or the recipe data
+function jsonLdImage(r: any): string {
+  let im = r?.image; if (Array.isArray(im)) im = im[0];
+  if (im && typeof im === "object") im = im.url || im.contentUrl || "";
+  return typeof im === "string" ? im : "";
+}
+async function fetchImage(url: string): Promise<{ mime: string; data: string } | null> {
+  if (!/^https?:\/\//.test(url)) return null;
+  try {
+    const ctrl = new AbortController(); const timer = setTimeout(() => ctrl.abort(), 10000);
+    const r = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0 (compatible; NutritionApp/1.5)" }, signal: ctrl.signal });
+    clearTimeout(timer);
+    const mime = (r.headers.get("content-type") || "").split(";")[0].trim();
+    if (!r.ok || !/^image\/(jpeg|png|webp|gif)$/.test(mime)) return null;
+    const buf = new Uint8Array(await r.arrayBuffer());
+    if (buf.length < 2000 || buf.length > 4_000_000) return null;
+    let bin = ""; for (let i = 0; i < buf.length; i += 0x8000) bin += String.fromCharCode(...buf.subarray(i, i + 0x8000));
+    return { mime, data: btoa(bin) };
+  } catch { return null; }
+}
+
+async function fetchPage(url: string): Promise<{ ok: boolean; info: string; image?: string }> {
   const social = /instagram\.com|facebook\.com|fb\.watch|tiktok\.com|threads\.net|x\.com|twitter\.com/i.test(url);
   // Social sites show the post caption to link-preview crawlers; recipe sites prefer a normal browser.
   const agents = social
@@ -119,12 +140,13 @@ async function fetchPage(url: string): Promise<{ ok: boolean; info: string }> {
       const title = meta(html, ["og:title", "twitter:title"]) || (html.match(/<title[^>]*>([^<]*)/i)?.[1] || "").trim();
       const desc = meta(html, ["og:description", "twitter:description", "description"]);
       const recipes = jsonLdRecipes(html);
+      const image = (recipes.length && jsonLdImage(recipes[0])) || meta(html, ["og:image", "og:image:secure_url", "twitter:image"]);
       let info = "";
       if (title) info += `Page title: ${title}\n`;
       if (desc) info += `Post caption / description: ${desc}\n`;
       if (recipes.length) info += `Structured recipe data from the page (schema.org JSON-LD):\n${JSON.stringify(recipes[0]).slice(0, MAX_TEXT)}\n`;
       else if (!social) info += `Page text:\n${visibleText(html).slice(0, MAX_TEXT)}\n`;
-      if (info.trim().length > 40) return { ok: true, info };
+      if (info.trim().length > 40 || image) return { ok: info.trim().length > 40, info, image: image ? new URL(image, url).toString() : "" };
     } catch { /* try next agent */ }
   }
   return { ok: false, info: "" };
@@ -209,7 +231,7 @@ If the picture is not a food product, reply {"found": false, "reason": "short se
 }
 
 // ---------- Open Food Facts (free product database) ----------
-const OFF_UA = "NutritionFamilyApp/1.3 (github.com/DenisGit7/nutrition)";
+const OFF_UA = "NutritionFamilyApp/1.5 (github.com/DenisGit7/nutrition)";
 function offProduct(p: any, lang: string) {
   const n = p?.nutriments || {};
   const num = (v: any) => (v === undefined || v === null || v === "" || isNaN(Number(v)) ? null : Math.round(Number(v) * 10) / 10);
@@ -352,7 +374,7 @@ export async function handle(req: Request): Promise<Response> {
   if (!url && text) url = (text.match(/https?:\/\/\S+/) || [""])[0];
 
   const parts: unknown[] = [];
-  let youtube: string | null = null, linkNote = "";
+  let youtube: string | null = null, linkNote = "", pageImage = "";
   if (url) {
     let u: URL | null = null;
     try { u = new URL(url); } catch { /* not a URL */ }
@@ -360,6 +382,8 @@ export async function handle(req: Request): Promise<Response> {
       youtube = youtubeUrl(u);
       if (youtube) parts.push({ file_data: { file_uri: youtube } });
       const page = await fetchPage(u.toString());
+      if (youtube) pageImage = `https://img.youtube.com/vi/${new URL(youtube).searchParams.get("v")}/hqdefault.jpg`;
+      else if (page.image) pageImage = page.image;
       if (page.ok) parts.push({ text: `Material from the link ${u}:\n${page.info}` });
       else if (!youtube) linkNote = "link_unreadable";
     }
@@ -418,7 +442,9 @@ export async function handle(req: Request): Promise<Response> {
       notes: String(out.notes || ""),
       source: url || "",
     };
-    return json({ recipe, linkNote });
+    // a copy of the dish photo (links from Instagram/Facebook stop working after a while)
+    const imageData = pageImage ? await fetchImage(pageImage) : null;
+    return json({ recipe: { ...recipe, image: imageData ? "" : pageImage, imageData }, linkNote });
   } catch (e) { return aiError(e); }
 }
 

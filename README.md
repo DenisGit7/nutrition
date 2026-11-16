@@ -124,6 +124,16 @@ Products without a picture show a matching emoji or a coloured letter.
 New on the Recipes tab: **Ask AI for a recipe** — type a question ("how to cook brown lentils"), pick 1–3 options,
 then **Add** a recipe straight to your list or **Edit first**.
 
+## Updating to 1.5.0 (recipe pictures) — do once
+
+1. **Database:** SQL Editor → New query → paste all of `supabase/004_recipe_images.sql` → **Run**
+   (run `003_product_images.sql` first if you haven't — it creates the photo storage).
+2. **AI function:** Edge Functions → `import-recipe` → **Code** → replace with the new
+   `supabase/functions/import-recipe/index.ts` → **Deploy**.
+
+Recipes now have a picture of the dish: from the link (recipe site / Instagram / Facebook preview, YouTube thumbnail),
+the first screenshot or video frame, a Wikipedia photo for "Ask AI" recipes, or your own photo / "Find picture online" in the editor.
+
 ---
 
 ## Adding recipes from a link (without AI import)
