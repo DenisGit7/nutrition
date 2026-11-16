@@ -15,7 +15,7 @@ needOnline:"Online search needs the synced version",offNote:"Data from Open Food
 translateTo:"Translate to English",translating:"Translating…",translated:"Translated",amountHint:"e.g. 150 g, 2, 1 cup",
 autoCalc:"calculated",video:"Add video (screen recording)",videoHint:"Record your screen while the reel plays, then add the recording here",
 preparingVideo:"Preparing video…",videoReady:"Video ready",videoNoAudio:"no sound found — using pictures only",videoFail:"Couldn't read this video — try screenshots",
-grams:"g",dishPicture:"Picture of the dish",needDbUpdateRecipe:"Recipe saved without picture — run 004_recipe_images.sql in Supabase to enable recipe pictures",fnOutdated:"The AI function in Supabase is an older version. Paste the new import-recipe code (Edge Functions → import-recipe → Code → Deploy).",askAI:"Ask AI for a recipe",askSub:"e.g. \u201chow to cook brown lentils\u201d \u2014 get a few options to choose from",askPlaceholder:"What would you like to cook?",
+grams:"g",qty:"Qty",unitCol:"Unit",gramsCol:"Grams",dishPicture:"Picture of the dish",needDbUpdateRecipe:"Recipe saved without picture — run 004_recipe_images.sql in Supabase to enable recipe pictures",fnOutdated:"The AI function in Supabase is an older version. Paste the new import-recipe code (Edge Functions → import-recipe → Code → Deploy).",askAI:"Ask AI for a recipe",askSub:"e.g. \u201chow to cook brown lentils\u201d \u2014 get a few options to choose from",askPlaceholder:"What would you like to cook?",
 askGo:"Get recipes",askVariants:"Options",askThinking:"Thinking of recipes… (10–30 seconds)",addRecipe:"Add",added2:"Added ✓",editFirst:"Edit first",
 showMore:"Ingredients & steps",askEx1:"How to cook brown lentils",askEx2:"High-protein breakfast",askEx3:"Quick dinner with chicken breast",askEx4:"Healthy snack under 200 kcal",perServ:"per serving",needDbUpdate:"Product saved without picture — run 003_product_images.sql in Supabase to enable pictures",findPicture:"Find picture online",choosePicture:"Choose a picture",noPictures:"No pictures found — try a shorter name, or take a photo",picSources:"Photos: Open Food Facts, Wikipedia",picture:"Picture",addPicture:"Add picture",changePicture:"Change",removePicture:"Remove",uploading:"Saving picture…",picFail:"Couldn't save the picture: ",commonHint:"{n} common foods are built in — type above to search them",today:"Today",recipes:"Recipes",shopping:"Shopping",settings:"Settings",search:"Search recipes or ingredients…",
 noRecipes:"No recipes yet. Tap + to add one, or import a recipe Claude made for you.",noMatch:"No recipes match your search.",
@@ -59,7 +59,7 @@ needOnline:"חיפוש ברשת זמין רק בגרסה המסונכרנת",off
 translateTo:"תרגום לעברית",translating:"מתרגם…",translated:"תורגם",amountHint:"למשל 150 גרם, 2, כוס",
 autoCalc:"מחושב",video:"הוספת סרטון (הקלטת מסך)",videoHint:"הקלט את המסך בזמן שהסרטון מתנגן, והוסף את ההקלטה כאן",
 preparingVideo:"מכין את הסרטון…",videoReady:"הסרטון מוכן",videoNoAudio:"לא נמצא קול — משתמש בתמונות בלבד",videoFail:"לא הצלחתי לקרוא את הסרטון — נסה צילומי מסך",
-grams:"גרם",dishPicture:"תמונה של המנה",needDbUpdateRecipe:"המתכון נשמר בלי תמונה — הרץ את 004_recipe_images.sql ב-Supabase כדי להפעיל תמונות למתכונים",fnOutdated:"פונקציית ה-AI ב-Supabase בגרסה ישנה. הדבק את הקוד החדש של import-recipe (Edge Functions ← import-recipe ← Code ← Deploy).",askAI:"לשאול את ה-AI על מתכון",askSub:"למשל \u201dאיך לבשל עדשים חומות\u201d \u2014 ותקבל כמה אפשרויות לבחירה",askPlaceholder:"מה תרצה לבשל?",
+grams:"גרם",qty:"כמות",unitCol:"יחידה",gramsCol:"גרם",dishPicture:"תמונה של המנה",needDbUpdateRecipe:"המתכון נשמר בלי תמונה — הרץ את 004_recipe_images.sql ב-Supabase כדי להפעיל תמונות למתכונים",fnOutdated:"פונקציית ה-AI ב-Supabase בגרסה ישנה. הדבק את הקוד החדש של import-recipe (Edge Functions ← import-recipe ← Code ← Deploy).",askAI:"לשאול את ה-AI על מתכון",askSub:"למשל \u201dאיך לבשל עדשים חומות\u201d \u2014 ותקבל כמה אפשרויות לבחירה",askPlaceholder:"מה תרצה לבשל?",
 askGo:"קבלת מתכונים",askVariants:"אפשרויות",askThinking:"חושב על מתכונים… (10–30 שניות)",addRecipe:"הוספה",added2:"נוסף ✓",editFirst:"עריכה קודם",
 showMore:"מצרכים ושלבים",askEx1:"איך לבשל עדשים חומות",askEx2:"ארוחת בוקר עשירה בחלבון",askEx3:"ארוחת ערב מהירה עם חזה עוף",askEx4:"חטיף בריא עד 200 קלוריות",perServ:"למנה",needDbUpdate:"המוצר נשמר בלי תמונה — הרץ את 003_product_images.sql ב-Supabase כדי להפעיל תמונות",findPicture:"חיפוש תמונה ברשת",choosePicture:"בחירת תמונה",noPictures:"לא נמצאו תמונות — נסה שם קצר יותר, או צלם",picSources:"תמונות: Open Food Facts, ויקיפדיה",picture:"תמונה",addPicture:"הוספת תמונה",changePicture:"החלפה",removePicture:"הסרה",uploading:"שומר תמונה…",picFail:"לא הצלחתי לשמור את התמונה: ",commonHint:"{n} מזונות נפוצים כבר מובנים — הקלד למעלה כדי לחפש",today:"היום",recipes:"מתכונים",shopping:"קניות",settings:"הגדרות",search:"חיפוש מתכון או מצרך…",
 noRecipes:"אין עדיין מתכונים. לחץ + כדי להוסיף, או ייבא מתכון ש-Claude הכין לך.",noMatch:"לא נמצאו מתכונים.",
@@ -94,7 +94,7 @@ aiAddShots:"הוספת צילומי מסך",aiGo:"יצירת מתכון",aiWorki
 aiNeedInput:"הדבק קישור, טקסט או הוסף צילומי מסך.",aiDemo:"ייבוא עם AI זמין רק בגרסה המסונכרנת (Supabase).",
 aiSetup:"ייבוא עם AI עדיין לא הוגדר ב-Supabase (ראה README, שלב 6).",aiLinkWarn:"לא הצלחתי לפתוח את הקישור עצמו — המתכון נוצר מהטקסט/צילומי המסך.",aiLinkOnly:"האתר שיתף רק את הכותרת, בלי המתכון. העתק את טקסט הפוסט (עוד → העתקה) לתיבה למעלה, או הוסף צילומי מסך של המצרכים, ואז לחץ שוב על יצירת מתכון."}
 };
-const VERSION = "1.5.2";
+const VERSION = "1.6.0";
 
 /* =================== small utils =================== */
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},
@@ -148,6 +148,7 @@ function recipeFromRow(r){return {id:r.id,name:r.name,servings:num(r.servings)||
   notes:r.notes||"",source:r.source||"",image:r.image||"",createdAt:r.created_at,updatedAt:r.updated_at}}
 function recipeToRow(r,hid){return {id:r.id,household_id:hid,name:r.name,servings:num(r.servings)||1,time_min:numOrNull(r.time),
   ingredients:(r.ingredients||[]).map(i=>{const o={name:i.name||"",amount:i.amount||"",kcal:numOrNull(i.kcal)};
+    if(i.qty!=null)o.qty=numOrNull(i.qty);if(i.unit)o.unit=String(i.unit);if(i.grams!=null)o.grams=numOrNull(i.grams);
     if(i.protein!=null)o.protein=numOrNull(i.protein);if(i.carbs!=null)o.carbs=numOrNull(i.carbs);if(i.fat!=null)o.fat=numOrNull(i.fat);
     if(i.food)o.food=i.food;return o}),
   kcal_per_serving:numOrNull(r.kcalPerServing),protein:numOrNull(r.protein),carbs:numOrNull(r.carbs),fat:numOrNull(r.fat),
@@ -637,11 +638,49 @@ function viewDetail(r){
   </div>`;
 }
 const rowFood=new WeakMap();
-function ingRow(i={}){return `<div class="ingrow ${i.food?"auto":""}" data-ing='${esc(JSON.stringify({p:i.protein??null,c:i.carbs??null,f:i.fat??null,food:i.food||null}))}'>
-  <input type="text" dir="auto" class="in-name" data-food placeholder="${t("ingName")}" value="${esc(i.name||"")}" autocomplete="off">
-  <input type="text" dir="auto" class="in-amt" placeholder="${t("amount")}" value="${esc(i.amount||"")}">
-  <input type="number" step="any" inputmode="decimal" class="in-kcal" placeholder="${t("kcal")}" value="${esc(i.kcal??"")}">
-  <button class="x" type="button" data-act="rmIng" aria-label="remove">×</button></div>`}
+/* ---------- amounts: qty + unit + grams ---------- */
+const UNIT_G={g:1,gr:1,gram:1,grams:1,"גרם":1,"גר":1,"ג":1,kg:1000,kilo:1000,"קג":1000,"קילו":1000,ml:1,"מל":1,"מיליליטר":1,
+  l:1000,liter:1000,litre:1000,"ליטר":1000,cup:240,cups:240,"כוס":240,"כוסות":240,tbsp:15,tablespoon:15,tablespoons:15,"כף":15,"כפות":15,
+  tsp:5,teaspoon:5,teaspoons:5,"כפית":5,"כפיות":5,pinch:0.5,"קורט":0.5};
+const WEIGHT_UNITS=new Set(["g","gr","gram","grams","גרם","גר","ג","kg","kilo","קג","קילו","ml","מל","מיליליטר","l","liter","litre","ליטר"]);
+const PIECE_UNITS=new Set(["piece","pieces","pcs","unit","units","יחידה","יחידות","serving","servings","מנה","מנות"]);
+const unitKey=u=>String(u||"").trim().toLowerCase().replace(/[.״"׳']/g,"").split(/\s+/)[0]||"";
+const sameUnit=(a,b)=>{a=unitKey(a);b=unitKey(b);return a===b||(a.length>=3&&b.length>=3&&a.slice(0,3)===b.slice(0,3))};
+function unitFactor(u,food){const k=unitKey(u);
+  if(k in UNIT_G)return UNIT_G[k];
+  if(food&&food.serving_g&&(!k||PIECE_UNITS.has(k)||sameUnit(k,food.serving_name)||sameUnit(k,food.serving_alt)))return food.serving_g;
+  return null}
+const parseQty=v=>{const s=fixFrac(String(v||"")).replace(",",".").replace(/חצי|half/i,"0.5");const f=s.match(/(\d+)\s*\/\s*(\d+)/);if(f)return +f[1]/+f[2];
+  const m=s.match(/\d+(\.\d+)?/);if(m)return +m[0];const w={"אחד":1,"אחת":1,"שתי":2,"שני":2,"שתיים":2,"שלוש":3,"ארבע":4,one:1,two:2,three:3,four:4};
+  const x=s.toLowerCase().split(/\s+/).find(z=>w[z]);return x?w[x]:null};
+const fmtQty=q=>q==null||q===""?"":String(Math.round(q*100)/100);
+function parseAmount(text){
+  const s=fixFrac(String(text||"")).trim();if(!s)return {qty:null,unit:"",grams:null};
+  const gm=s.match(/\((?:~|כ-?)?\s*(\d+(?:[.,]\d+)?)\s*(?:g|gr|gram|grams|גרם|גר|ג׳|ג'|ml|מ"ל|מל)\s*\)/i);
+  const rest=s.replace(/\(.*?\)/g," ").trim();
+  let qty=parseQty(rest);
+  const unit=rest.replace(/^\s*(\d+(?:[.,]\d+)?(?:\s*\/\s*\d+)?|חצי|half|אחד|אחת|שתי|שני|שתיים|שלוש|ארבע|one|two|three|four)\s*/i,"").trim();
+  if(qty==null&&unit)qty=1;
+  const f=unitFactor(unit,null);
+  const grams=gm?parseFloat(gm[1].replace(",",".")):(f!=null&&qty!=null?Math.round(qty*f*10)/10:null);
+  return {qty,unit,grams};
+}
+function composeAmount(qty,unit,grams){
+  const q=fmtQty(qty),u=String(unit||"").trim();let out=[q,u].filter(Boolean).join(" ");
+  if(grams&&!WEIGHT_UNITS.has(unitKey(u)))out+=(out?" ":"")+`(${fmtQty(grams)} ${t("grams")})`;
+  return out}
+function ingRow(i={}){
+  const a=(i.qty!=null||i.unit)?{qty:i.qty,unit:i.unit||"",grams:i.grams??null}:parseAmount(i.amount);
+  return `<div class="ingrow v2 ${i.food?"auto":""}" data-ing='${esc(JSON.stringify({p:i.protein??null,c:i.carbs??null,f:i.fat??null,food:i.food||null}))}'>
+  <div class="ing-top"><input type="text" dir="auto" class="in-name" data-food placeholder="${t("ingName")}" value="${esc(i.name||"")}" autocomplete="off">
+    <button class="x" type="button" data-act="rmIng" aria-label="remove">×</button></div>
+  <div class="ing-cells">
+    <input type="text" inputmode="decimal" class="in-qty" placeholder="${t("qty")}" value="${esc(fmtQty(a.qty))}">
+    <input type="text" dir="auto" class="in-unit" list="unitList" placeholder="${t("unitCol")}" value="${esc(a.unit||"")}" autocomplete="off">
+    <input type="number" step="any" inputmode="decimal" class="in-g" placeholder="${t("gramsCol")}" value="${esc(a.grams!=null?fmtQty(a.grams):"")}">
+    <input type="number" step="any" inputmode="decimal" class="in-kcal" placeholder="${t("kcal")}" value="${esc(i.kcal??"")}">
+  </div></div>`}
+const UNIT_LIST={he:["גרם","ק״ג","מ״ל","ליטר","כוס","כף","כפית","יחידה","קורט","חבילה","פרוסה","שיניים"],en:["g","kg","ml","l","cup","tbsp","tsp","piece","pinch","package","slice","cloves"]};
 function viewEdit(r){r=r||S.draft||{servings:1,ingredients:[{},{},{}],steps:[]};S.draft=null;
   return `<form id="editForm" class="stack fadein" autocomplete="off">
   <div class="card"><div class="row" id="rPicRow"><span id="rPicBox">${r.image?`<img class="pthumb" style="width:84px;height:84px;border-radius:18px" src="${esc(r.image)}" alt="">`:`<span class="pthumb ph" style="width:84px;height:84px;border-radius:18px;font-size:30px;background:${grad(r.name||"?")}">${ICON.camera}</span>`}</span>
@@ -657,7 +696,9 @@ function viewEdit(r){r=r||S.draft||{servings:1,ingredients:[{},{},{}],steps:[]};
       <div><label class="f">${t("time")}</label><input type="number" step="any" inputmode="numeric" name="time" value="${esc(r.time??"")}"></div>
     </div></div>
   <div class="card"><h2 class="sec">${t("ingredients")}</h2>
+    <div class="ing-head"><span>${t("qty")}</span><span>${t("unitCol")}</span><span>${t("gramsCol")}</span><span>${t("kcal")}</span></div>
     <div id="ings">${(r.ingredients&&r.ingredients.length?r.ingredients:[{}]).map(ingRow).join("")}</div>
+    <datalist id="unitList">${(UNIT_LIST[lang]||UNIT_LIST.en).map(u=>`<option value="${esc(u)}">`).join("")}</datalist>
     <button type="button" class="btn block" data-act="addIng">${t("addIng")}</button>
     <div class="muted small" style="margin-top:8px" id="ingSum"></div></div>
   <div class="card"><h2 class="sec">${t("kcalServing")}</h2>
@@ -676,18 +717,31 @@ function viewEdit(r){r=r||S.draft||{servings:1,ingredients:[{},{},{}],steps:[]};
     <button type="submit" class="btn primary">${t("save")}</button></div>
   </form>`}
 function rowState(row){if(!rowFood.has(row)){let d={};try{d=JSON.parse(row.dataset.ing||"{}")}catch(_){}rowFood.set(row,d)}return rowFood.get(row)}
-function recalcRow(row){const st=rowState(row),amt=row.querySelector(".in-amt").value;
-  if(st.food){const n=foodNutrition(st.food,amt);
-    if(n){row.querySelector(".in-kcal").value=n.kcal;st.p=n.protein;st.c=n.carbs;st.f=n.fat;row.classList.add("auto");
-      st.base={amt,kcal:n.kcal,p:n.protein,c:n.carbs,f:n.fat};return}}   // remember as new starting point
-  // not linked to a product: scale the original calories by the change in amount
-  if(st.base&&st.base.kcal!=null){const k=qtyRatio(st.base.amt,amt);
-    if(k){row.querySelector(".in-kcal").value=Math.round(st.base.kcal*k);
-      if(st.base.p!=null)st.p=r1(st.base.p*k);if(st.base.c!=null)st.c=r1(st.base.c*k);if(st.base.f!=null)st.f=r1(st.base.f*k)}}}
-/* remember each row's starting amount/kcal and the recipe's starting per-serving numbers */
+function rowVals(row){return {qEl:row.querySelector(".in-qty"),uEl:row.querySelector(".in-unit"),gEl:row.querySelector(".in-g"),kEl:row.querySelector(".in-kcal")}}
+/* src: "qty" | "unit" | "g" | "init" — what the user just changed */
+function recalcRow(row,src="qty"){
+  const st=rowState(row),{qEl,uEl,gEl,kEl}=rowVals(row),q=parseQty(qEl.value),u=uEl.value;
+  // 1) grams
+  if(src==="g"){const g=numOrNull(gEl.value),f=unitFactor(u,st.food);
+    if(g!=null&&f&&WEIGHT_UNITS.has(unitKey(u)))qEl.value=fmtQty(g/f)}       // weight units: keep qty in step with grams
+  else{const f=unitFactor(u,st.food);
+    if(q!=null&&f!=null)gEl.value=fmtQty(q*f);
+    else if(src!=="init"&&q!=null&&st.base&&st.base.grams&&st.base.qty&&sameUnit(u,st.base.unit))gEl.value=fmtQty(st.base.grams*q/st.base.qty)}
+  // 2) calories
+  const g=numOrNull(gEl.value);
+  if(st.food&&g){const k=g/100,m=v=>v==null||v===""?null:r1(num(v)*k);
+    kEl.value=Math.round(num(st.food.kcal)*k);st.p=m(st.food.protein);st.c=m(st.food.carbs);st.f=m(st.food.fat);row.classList.add("auto");
+    st.base={qty:q,unit:u,grams:g,kcal:numOrNull(kEl.value),p:st.p,c:st.c,f:st.f};return}
+  if(st.base&&st.base.kcal!=null){let k=null;
+    if(g&&st.base.grams)k=g/st.base.grams;
+    else if(q&&st.base.qty&&sameUnit(u,st.base.unit))k=q/st.base.qty;
+    if(k!=null){kEl.value=Math.round(st.base.kcal*k);
+      st.p=st.base.p!=null?r1(st.base.p*k):st.p;st.c=st.base.c!=null?r1(st.base.c*k):st.c;st.f=st.base.f!=null?r1(st.base.f*k):st.f}}
+}
+/* remember each row's starting values and the recipe's starting per-serving numbers */
 function captureBaseline(){const f=$("#editForm");if(!f)return;
-  let tot=0;f.querySelectorAll(".ingrow").forEach(row=>{const st=rowState(row),kc=numOrNull(row.querySelector(".in-kcal").value);
-    st.base={amt:row.querySelector(".in-amt").value,kcal:kc,p:st.p,c:st.c,f:st.f};tot+=num(kc)});
+  let tot=0;f.querySelectorAll(".ingrow").forEach(row=>{const st=rowState(row),{qEl,uEl,gEl,kEl}=rowVals(row),kc=numOrNull(kEl.value);
+    st.base={qty:parseQty(qEl.value),unit:uEl.value,grams:numOrNull(gEl.value),kcal:kc,p:st.p,c:st.c,f:st.f};tot+=num(kc)});
   f._base={tot,serv:Math.max(1,num(f.servings.value)||1),kps:numOrNull(f.kcalPerServing.value),
     protein:numOrNull(f.protein.value),carbs:numOrNull(f.carbs.value),fat:numOrNull(f.fat.value)};f._manual={}}
 function closeSuggest(){document.querySelectorAll(".suggest").forEach(x=>x.remove())}
@@ -1093,7 +1147,9 @@ async function translateRecipe(r,btn){
   try{const res=await S.api.callFn({mode:"translate",lang,recipe:{name:r.name,ingredients:r.ingredients,steps:r.steps,notes:r.notes,tags:r.tags}});
     const tr=res.recipe||{};
     const rec={...r,name:tr.name||r.name,notes:tr.notes??r.notes,tags:tr.tags||r.tags,steps:tr.steps||r.steps,
-      ingredients:(r.ingredients||[]).map((i,k)=>({...i,name:(tr.ingredients&&tr.ingredients[k]&&tr.ingredients[k].name)||i.name,amount:(tr.ingredients&&tr.ingredients[k]&&tr.ingredients[k].amount!=null)?tr.ingredients[k].amount:i.amount}))};
+      ingredients:(r.ingredients||[]).map((i,k)=>{const ta=(tr.ingredients&&tr.ingredients[k]&&tr.ingredients[k].amount!=null)?tr.ingredients[k].amount:i.amount;
+        const pa=parseAmount(ta);const o={...i,name:(tr.ingredients&&tr.ingredients[k]&&tr.ingredients[k].name)||i.name,amount:ta};
+        if(i.qty!=null||i.unit){o.qty=pa.qty??i.qty;o.unit=pa.unit||i.unit;o.amount=composeAmount(o.qty,o.unit,i.grams)}return o})};
     const i=S.recipes.findIndex(x=>x.id===r.id);if(i>=0)S.recipes[i]=rec;saveCache();rerender();
     const ok=await write("recipes",()=>S.api.saveRecipe(rec));if(ok)toast(t("translated"));
   }catch(e){toast(e.code==="setup"?t("aiSetup"):errMsg(e));btn.disabled=false;btn.innerHTML=old}
@@ -1363,9 +1419,11 @@ document.addEventListener("input",e=>{
   if(el.classList&&el.classList.contains("in-name")){const row=el.closest(".ingrow");const st=rowState(row);
     if(st.food){st.food=null;st.p=st.c=st.f=null;row.classList.remove("auto")}}
   if(el.hasAttribute&&el.hasAttribute("data-food"))openFoodSuggest(el);
-  if(el.classList&&el.classList.contains("in-amt")){recalcRow(el.closest(".ingrow"))}
-  if(el.classList&&el.classList.contains("in-kcal")){const row=el.closest(".ingrow"),st=rowState(row);row.classList.remove("auto");
-    st.base={amt:row.querySelector(".in-amt").value,kcal:numOrNull(el.value),p:null,c:null,f:null};st.p=st.c=st.f=null}
+  if(el.classList&&el.classList.contains("in-qty"))recalcRow(el.closest(".ingrow"),"qty");
+  if(el.classList&&el.classList.contains("in-unit"))recalcRow(el.closest(".ingrow"),"unit");
+  if(el.classList&&el.classList.contains("in-g"))recalcRow(el.closest(".ingrow"),"g");
+  if(el.classList&&el.classList.contains("in-kcal")){const row=el.closest(".ingrow"),st=rowState(row),{qEl,uEl,gEl}=rowVals(row);row.classList.remove("auto");
+    st.food=null;st.base={qty:parseQty(qEl.value),unit:uEl.value,grams:numOrNull(gEl.value),kcal:numOrNull(el.value),p:null,c:null,f:null};st.p=st.c=st.f=null}
   const ef=el.closest&&el.closest("#editForm");
   if(ef&&["protein","carbs","fat","kcalPerServing"].includes(el.name)){ef._manual=ef._manual||{};ef._manual[el.name]=true;return}
   if(ef)updIngSum()});
@@ -1378,7 +1436,9 @@ function foodListFor(el){const q=el.value.trim();
 function openFoodSuggest(el){showSuggest(el,foodListFor(el),food=>el.dispatchEvent(new CustomEvent("foodpick",{detail:food,bubbles:true})))}
 document.addEventListener("foodpick",e=>{const el=e.target,food=e.detail;
   if(el.classList.contains("in-name")){const row=el.closest(".ingrow"),st=rowState(row);el.value=food.name;st.food=foodSnap(food);
-    const amt=row.querySelector(".in-amt");if(!amt.value.trim())amt.value=defaultAmount(food);recalcRow(row);updIngSum();amt.focus();amt.select&&amt.select()}
+    const {qEl,uEl}=rowVals(row);
+    if(!qEl.value.trim()){if(food.serving_g&&food.serving_name){qEl.value="1";uEl.value=food.serving_name}else{qEl.value="100";uEl.value=food.unit==="ml"?(lang==="he"?"מ״ל":"ml"):(lang==="he"?"גרם":"g")}}
+    recalcRow(row,"qty");updIngSum();qEl.focus();qEl.select&&qEl.select()}
   else if(el.id==="shopIn"){el.value=food.name+" - ";el.focus();try{el.setSelectionRange(el.value.length,el.value.length)}catch(_){}}
 });
 /* link ingredients whose name matches one of your products (e.g. after AI import) */
@@ -1386,7 +1446,9 @@ function autoLinkRows(){const f=$("#editForm");if(!f)return;let changed=false;
   f.querySelectorAll(".ingrow").forEach(row=>{const st=rowState(row);if(st.food)return;const nm=norm(row.querySelector(".in-name").value);if(!nm)return;
     const mine=S.products.find(p=>norm(p.name)===nm);const com=!mine&&commonFoods().find(c=>norm(c.name)===nm||norm(c.alt)===nm);
     const food=mine||com;if(!food)return;const kcalEl=row.querySelector(".in-kcal");
-    if(mine||!kcalEl.value.trim()){st.food=foodSnap(food);if(foodNutrition(st.food,row.querySelector(".in-amt").value)){recalcRow(row);changed=true}else if(!mine)st.food=null}});
+    if(mine||!kcalEl.value.trim()){st.food=foodSnap(food);const {qEl,uEl,gEl}=rowVals(row);
+      const canWeigh=numOrNull(gEl.value)||(parseQty(qEl.value)!=null&&unitFactor(uEl.value,st.food)!=null);
+      if(canWeigh){recalcRow(row,"init");changed=true}else if(!mine)st.food=null}});
   if(changed)updIngSum()}
 document.addEventListener("submit",e=>{
   const id=e.target.id;
@@ -1414,7 +1476,8 @@ document.addEventListener("submit",e=>{
   const f=e.target,name=f.rname.value.trim();if(!name){toast(t("needName"));return}
   const old=route.id?S.recipes.find(x=>x.id===route.id):null;
   const ings=[...f.querySelectorAll(".ingrow")].map(row=>{const st=rowState(row);
-    const o={name:row.querySelector(".in-name").value.trim(),amount:row.querySelector(".in-amt").value.trim(),kcal:numOrNull(row.querySelector(".in-kcal").value)};
+    const {qEl,uEl,gEl,kEl}=rowVals(row),qty=parseQty(qEl.value),unit=uEl.value.trim(),grams=numOrNull(gEl.value);
+    const o={name:row.querySelector(".in-name").value.trim(),qty,unit,grams,amount:composeAmount(qty,unit,grams),kcal:numOrNull(kEl.value)};
     if(st.food){o.food=st.food;if(st.p!=null)o.protein=st.p;if(st.c!=null)o.carbs=st.c;if(st.f!=null)o.fat=st.f}
     else{if(st.p!=null)o.protein=st.p;if(st.c!=null)o.carbs=st.c;if(st.f!=null)o.fat=st.f}
     return o}).filter(i=>i.name);
@@ -1433,7 +1496,9 @@ $("#backBtn").onclick=()=>{
 $("#gearBtn").onclick=()=>{route.prevTab=["today","recipes","shopping","products"].includes(route.tab)?route.tab:"recipes";go({tab:"settings",view:"list"});
   if(CLOUD&&S.household)SupaBackend.members().then(m=>{S.members=m;if(route.tab==="settings")rerender()}).catch(()=>{})};
 $("#fab").onclick=()=>{if(route.tab==="today")sheetQuick();else if(route.tab==="products")sheetProduct(null);else{$("#view").dataset.editing="";go({view:"edit",id:null})}};
-$("#langBtn").onclick=()=>{lang=lang==="he"?"en":"he";LS.set("nt.lang",lang);$("#view").dataset.editing="";render()};
+$("#langBtn").onclick=()=>{lang=lang==="he"?"en":"he";LS.set("nt.lang",lang);
+  if(route.tab==="recipes"&&route.view==="edit"){applyChrome();toast(lang==="he"?"השפה תתעדכן בטופס אחרי השמירה":"The form switches language after saving");return}  // keep what's typed
+  $("#view").dataset.editing="";render()};
 $("#themeBtn").onclick=()=>{theme=theme==="dark"?"light":"dark";LS.set("nt.theme",theme);applyChrome()};
 const TABS=["today","recipes","shopping","products"];
 window.addEventListener("hashchange",()=>{const h=location.hash.slice(1);if(TABS.includes(h)&&h!==route.tab)go({tab:h,view:"list",id:null})});
