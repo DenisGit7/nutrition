@@ -263,3 +263,12 @@ img.avatar{display:block}
 .tbadge.sm{font-size:10.5px;padding:1px 7px;vertical-align:middle}
 .tbadge.prod{background:rgba(91,141,239,.16);color:#5b8def}
 .tbadge.rec{background:rgba(46,125,91,.16);color:#3aa173}
+/* v1.10 meals */
+.seg.meals button{display:flex;flex-direction:column;align-items:center;gap:1px;font-size:12.5px;padding:7px 2px;line-height:1.15}
+.seg.meals button span{font-size:17px}
+.mealcard{padding-top:12px;padding-bottom:6px}
+.mealhead{display:flex;align-items:center;gap:8px;padding-bottom:6px}
+.mealhead .mic{font-size:18px}
+.mealhead + .entry{border-top:1px solid var(--line)}
+.iconbtn.sm{width:32px;height:32px;border-radius:10px}
+.iconbtn.sm svg{width:16px;height:16px}

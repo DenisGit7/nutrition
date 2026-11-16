@@ -154,6 +154,12 @@ the first screenshot or video frame, a Wikipedia photo for "Ask AI" recipes, or 
 ("high-protein yogurt", "dinner under 400 kcal with 30 g protein"). Shows matching saved items first, then new suggestions,
 each marked Product or Recipe with the matching Add button.
 
+## Updating to 1.10.0 (meals in the food log) — do once
+
+**Database:** SQL Editor → New query → paste all of `supabase/005_food_log_meals.sql` → **Run**.
+It adds meal + amount to the food log and puts your existing entries into a meal by the time they were logged.
+Until you run it, entries still save, but without the meal (the app shows a reminder).
+
 **If the AI says a model "is no longer available":** paste the latest `index.ts` (it finds a working Gemini model by itself),
 or as a quick fix add a secret `GEMINI_MODEL` with the model name Google suggests in the message (Edge Functions → Secrets).
 

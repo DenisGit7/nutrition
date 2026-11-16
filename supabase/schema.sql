@@ -71,6 +71,9 @@ create table if not exists public.food_log (
   protein    numeric not null default 0,
   carbs      numeric not null default 0,
   fat        numeric not null default 0,
+  meal       text,
+  amount     numeric,
+  amount_unit text,
   created_at timestamptz not null default now()
 );
 
