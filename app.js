@@ -24,7 +24,7 @@ ingredients:"Ingredients",steps:"Steps",notes:"Notes",source:"Source",edit:"Edit
 save:"Save",cancel:"Cancel",newRecipe:"New recipe",editRecipe:"Edit recipe",name:"Name",ingName:"Ingredient",amount:"Amount",
 addIng:"+ Add ingredient",recalcAI:"Recalculate calories with AI",recalcing:"Calculating…",recalcNone:"Nothing to recalculate — all ingredients use your products' numbers",recalcDone:"Updated {n} ingredients",stepsHint:"one step per line",tags:"Tags (comma separated)",calcFromIng:"from ingredients",
 kcalServing:"Calories per serving",macrosServing:"Macros per serving (g)",addToday:"Add to today",added:"Added",saved:"Saved",deleted:"Deleted",
-goal:"Goal",left:"left",over:"over",eaten:"eaten",quickAdd:"Log food",whatAte:"What did you eat?",nothing:"Nothing logged yet for this day.",
+goal:"Goal",left:"left",over:"over",eaten:"eaten",quickAdd:"Log food",whatAte:"What did you eat?",logSearch:"Search your recipes and products…",byGrams:"Grams",byServings:"Servings",servingsWord:"servings",servingWord:"serving",change:"Change",dishWeight:"Whole dish weight (g)",dishWeightHint:"Sum of the ingredients. If you weigh the cooked dish, type that weight — it is remembered on this device.",needDishW:"Type the whole dish weight to count by grams, or switch to servings.",nothing:"Nothing logged yet for this day.",
 setGoal:"Daily calorie goal",fromRecipe:"From recipe",add:"Add",
 cloud:"Synced",local:"Demo mode — saved on this device only",offline:"Offline — showing saved copy",
 loading:"Loading…",needName:"Please enter a name",prev:"Previous day",next:"Next day",todayBtn:"Back to today",total:"Total",
@@ -68,7 +68,7 @@ ingredients:"מצרכים",steps:"אופן הכנה",notes:"הערות",source:"
 save:"שמירה",cancel:"ביטול",newRecipe:"מתכון חדש",editRecipe:"עריכת מתכון",name:"שם",ingName:"מצרך",amount:"כמות",
 addIng:"+ הוספת מצרך",recalcAI:"חישוב קלוריות מחדש עם AI",recalcing:"מחשב…",recalcNone:"אין מה לחשב — כל המצרכים מקושרים למוצרים שלך",recalcDone:"עודכנו {n} מצרכים",stepsHint:"שלב אחד בכל שורה",tags:"תגיות (מופרדות בפסיק)",calcFromIng:"מחושב מהמצרכים",
 kcalServing:"קלוריות למנה",macrosServing:"ערכים למנה (גרם)",addToday:"הוסף להיום",added:"נוסף",saved:"נשמר",deleted:"נמחק",
-goal:"יעד",left:"נותרו",over:"מעל",eaten:"נאכלו",quickAdd:"רישום אוכל",whatAte:"מה אכלת?",nothing:"עדיין לא נרשם כלום ביום הזה.",
+goal:"יעד",left:"נותרו",over:"מעל",eaten:"נאכלו",quickAdd:"רישום אוכל",whatAte:"מה אכלת?",logSearch:"חיפוש במתכונים ובמוצרים שלך…",byGrams:"גרמים",byServings:"מנות",servingsWord:"מנות",servingWord:"מנה",change:"החלפה",dishWeight:"משקל כל המנה (גרם)",dishWeightHint:"סכום המצרכים. אם שקלת את המנה המבושלת, הקלד את המשקל — הוא נשמר במכשיר הזה.",needDishW:"הקלד את משקל כל המנה כדי לחשב לפי גרמים, או עבור למנות.",nothing:"עדיין לא נרשם כלום ביום הזה.",
 setGoal:"יעד קלוריות יומי",fromRecipe:"ממתכון",add:"הוסף",
 cloud:"מסונכרן",local:"מצב הדגמה — נשמר במכשיר הזה בלבד",offline:"אין חיבור — מוצג עותק שמור",
 loading:"טוען…",needName:"נא להזין שם",prev:"יום קודם",next:"יום הבא",todayBtn:"חזרה להיום",total:"סה״כ",
@@ -94,7 +94,7 @@ aiAddShots:"הוספת צילומי מסך",aiGo:"יצירת מתכון",aiWorki
 aiNeedInput:"הדבק קישור, טקסט או הוסף צילומי מסך.",aiDemo:"ייבוא עם AI זמין רק בגרסה המסונכרנת (Supabase).",
 aiSetup:"ייבוא עם AI עדיין לא הוגדר ב-Supabase (ראה README, שלב 6).",aiLinkWarn:"לא הצלחתי לפתוח את הקישור עצמו — המתכון נוצר מהטקסט/צילומי המסך.",aiLinkOnly:"האתר שיתף רק את הכותרת, בלי המתכון. העתק את טקסט הפוסט (עוד → העתקה) לתיבה למעלה, או הוסף צילומי מסך של המצרכים, ואז לחץ שוב על יצירת מתכון."}
 };
-const VERSION = "1.8.1";
+const VERSION = "1.9.0";
 
 /* =================== small utils =================== */
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},
@@ -898,22 +898,7 @@ async function addEntry(day,e){
   S.log[day]=[...S.log[day],e];rerender();
   await write("log",()=>S.api.addLog(e));
 }
-function sheetAddRecipe(r){
-  const ps=perServing(r);
-  openSheet(`<div class="stack"><h2 class="sec" style="font-size:19px">${esc(r.name)}</h2>
-    <label class="f">${t("servings")}</label>
-    <div class="row"><button class="iconbtn" id="sm">−</button><input type="number" step="any" inputmode="decimal" id="sv" value="1" step="0.5" style="text-align:center;font-size:20px;font-weight:600">
-      <button class="iconbtn" id="sp">+</button></div>
-    <div id="svk" style="text-align:center;font-size:22px;font-weight:700;color:var(--kcal)"></div>
-    <div class="grid2"><button class="btn ghost" id="sc">${t("cancel")}</button><button class="btn primary" id="sa">${t("add")}</button></div></div>`,()=>{
-    const sv=$("#sv"),upd=()=>$("#svk").textContent=r0(ps.kcal*num(sv.value))+" "+t("kcal");upd();
-    sv.oninput=upd;$("#sm").onclick=()=>{sv.value=Math.max(.5,num(sv.value)-.5);upd()};$("#sp").onclick=()=>{sv.value=num(sv.value)+.5;upd()};
-    $("#sc").onclick=closeSheet;
-    $("#sa").onclick=()=>{const n=num(sv.value)||1;closeSheet();
-      addEntry(dkey(new Date()),{recipeId:r.id,name:r.name,servings:n,kcal:r1(ps.kcal*n),protein:r1(ps.protein*n),carbs:r1(ps.carbs*n),fat:r1(ps.fat*n)});
-      toast(t("added")+" · "+t("today"))};
-  });
-}
+function sheetAddRecipe(r){sheetQuick({recipe:r,day:dkey(new Date())})}
 function sheetShopIngs(r){
   const ings=(r.ingredients||[]).filter(i=>i.name);
   if(!ings.length){toast(t("noIngs"));return}
@@ -945,30 +930,80 @@ function sheetPickRecipe(){
     $("#sheet").querySelectorAll("[data-rid]").forEach(el=>el.onclick=()=>{const r=S.recipes.find(x=>x.id===el.dataset.rid);if(r)sheetShopIngs(r)});
   });
 }
-function sheetQuick(){
-  const opts=[...S.recipes].sort((a,b)=>(a.name||"").localeCompare(b.name||""));
-  openSheet(`<form class="stack" id="qf"><h2 class="sec" style="font-size:19px">${t("quickAdd")}</h2>
-    ${opts.length?`<div><label class="f">${t("fromRecipe")}</label><select id="qr"><option value="">—</option>${opts.map(r=>`<option value="${esc(r.id)}">${esc(r.name)}</option>`).join("")}</select></div>`:""}
-    <div style="position:relative"><label class="f">${t("whatAte")}</label><input type="text" dir="auto" id="qn" data-food autocomplete="off" placeholder="${t("searchProducts")}"></div>
-    <div><label class="f">${t("amount")}</label><input type="text" dir="auto" id="qa" placeholder="${t("amountHint")}"></div>
+/* ---------- log food: pick a recipe or product, enter grams (or servings) → calories for the day ---------- */
+const dishW={get(id){try{return num(JSON.parse(localStorage.getItem("nt.dishw")||"{}")[id])||null}catch(_){return null}},
+  set(id,g){try{const o=JSON.parse(localStorage.getItem("nt.dishw")||"{}");if(g)o[id]=g;else delete o[id];localStorage.setItem("nt.dishw",JSON.stringify(o))}catch(_){}}};
+function recipeWeight(r){const ings=(r.ingredients||[]).filter(i=>i.name);if(!ings.length)return null;
+  let g=0;for(const i of ings){const x=numOrNull(i.grams);if(x==null){if(num(i.kcal)>0)return null;continue}g+=x}return g>0?Math.round(g):null}
+function recipeTotals(r){const ps=perServing(r),sv=Math.max(1,num(r.servings)||1);return {kcal:ps.kcal*sv,protein:ps.protein*sv,carbs:ps.carbs*sv,fat:ps.fat*sv,sv}}
+function logPickList(q){q=norm(q);
+  const recs=S.recipes.filter(r=>!q||norm(r.name).includes(q)||(r.tags||[]).some(x=>norm(x).includes(q))).slice(0,q?5:4).map(r=>({kind:"recipe",r}));
+  const foods=(q?searchFoods(q,8):S.products.slice(0,6).map(p=>({...p,mine:true}))).map(f=>({kind:"food",f}));
+  return [...recs,...foods]}
+function logPickHTML(list){return list.length?`<div class="suggest" style="position:static;margin-top:6px">${list.map((x,i)=>x.kind==="recipe"
+  ?`<button type="button" data-lp="${i}">${x.r.image?`<img class="pthumb" style="width:30px;height:30px" src="${esc(x.r.image)}" alt="">`:`<span class="pthumb ph" style="width:30px;height:30px;font-size:13px;background:${grad(x.r.name)}">${esc(initial(x.r.name))}</span>`}
+     <span class="grow"><b dir="auto">${esc(x.r.name)}</b> <span class="tbadge rec sm">${t("typeRecipe")}</span></span><span class="muted small">${r0(perServing(x.r).kcal)} ${t("kcal")} ${t("perServ")}</span></button>`
+  :`<button type="button" data-lp="${i}">${thumbHTML(x.f,30)}<span class="grow"><b dir="auto">${esc(x.f.name)}</b>${x.f.brand?` <span class="muted small">${esc(x.f.brand)}</span>`:""}${x.f.mine?` <span class="mine">★</span>`:""}</span>
+     <span class="muted small">${r0(num(x.f.kcal))} ${t("kcal")}/100</span></button>`).join("")}</div>`:""}
+function sheetQuick(opt={}){
+  const day=opt.day||curDate;let sel=null,mode="g",list=[],mac={c:null,f:null};
+  openSheet(`<form class="stack" id="qf" autocomplete="off"><h2 class="sec" style="font-size:19px;margin:0">${t("quickAdd")}</h2>
+    <div><label class="f">${t("whatAte")}</label><input type="search" dir="auto" id="qn" placeholder="${t("logSearch")}"><div id="qlist"></div></div>
+    <div id="qsel"></div>
     <div class="grid2"><div><label class="f">${t("kcal")}</label><input type="number" step="any" inputmode="decimal" id="qk"></div>
       <div><label class="f">${t("protein")} (g)</label><input type="number" step="any" inputmode="decimal" id="qp"></div></div>
+    <div class="muted small" id="qmac"></div>
     <div class="grid2"><button type="button" class="btn ghost" id="qc">${t("cancel")}</button><button class="btn primary">${t("add")}</button></div></form>`,()=>{
     $("#qc").onclick=closeSheet;
-    let qfood=null,qmac={c:0,f:0};
-    const qcalc=()=>{if(!qfood)return;const n=foodNutrition(qfood,$("#qa").value);if(n){$("#qk").value=n.kcal;$("#qp").value=n.protein;qmac={c:n.carbs,f:n.fat}}};
-    $("#qn").addEventListener("input",()=>{qfood=null});
-    $("#qn").addEventListener("foodpick",e=>{const food=e.detail;qfood=foodSnap(food);$("#qn").value=food.name;
-      if(!$("#qa").value.trim())$("#qa").value=defaultAmount(food);qcalc();$("#qa").focus()});
-    $("#qa").oninput=qcalc;
-    const qr=$("#qr");if(qr)qr.onchange=()=>{const r=S.recipes.find(x=>x.id===qr.value);if(r){qfood=null;const ps=perServing(r);$("#qn").value=r.name;$("#qa").value="1";$("#qk").value=r0(ps.kcal);$("#qp").value=r1(ps.protein);qmac={c:r1(ps.carbs),f:r1(ps.fat)}}};
-    $("#qa").addEventListener("input",()=>{const r=qr&&qr.value?S.recipes.find(x=>x.id===qr.value):null;if(r&&$("#qn").value===r.name){const ps=perServing(r),n=num($("#qa").value)||1;
-      $("#qk").value=r0(ps.kcal*n);$("#qp").value=r1(ps.protein*n)}});
+    const showList=()=>{list=logPickList($("#qn").value);$("#qlist").innerHTML=sel?"":logPickHTML(list)};
+    // per-gram / per-serving nutrition of the selection
+    const unitVals=()=>{if(!sel)return null;
+      if(sel.kind==="food"){const f=sel.f,k=mode==="s"?num(f.serving_g)/100:1/100;return {kcal:num(f.kcal)*k,protein:numOrNull(f.protein)!=null?num(f.protein)*k:null,carbs:numOrNull(f.carbs)!=null?num(f.carbs)*k:null,fat:numOrNull(f.fat)!=null?num(f.fat)*k:null}}
+      const T=recipeTotals(sel.r);if(mode==="s")return {kcal:T.kcal/T.sv,protein:T.protein/T.sv,carbs:T.carbs/T.sv,fat:T.fat/T.sv};
+      const w=num($("#qw")&&$("#qw").value);if(!w)return null;return {kcal:T.kcal/w,protein:T.protein/w,carbs:T.carbs/w,fat:T.fat/w}};
+    const calc=()=>{const u=unitVals(),n=num($("#qg")&&$("#qg").value);
+      if(!u||!n){$("#qmac").textContent=sel&&sel.kind==="recipe"&&mode==="g"&&!num($("#qw").value)?t("needDishW"):"";return}
+      $("#qk").value=Math.round(u.kcal*n);$("#qp").value=u.protein!=null?r1(u.protein*n):"";mac={c:u.carbs!=null?r1(u.carbs*n):null,f:u.fat!=null?r1(u.fat*n):null};
+      $("#qmac").textContent=[mac.c!=null?`${t("carbs")} ${mac.c} g`:"",mac.f!=null?`${t("fat")} ${mac.f} g`:""].filter(Boolean).join(" · ")};
+    const drawSel=()=>{const box=$("#qsel");if(!sel){box.innerHTML="";return}
+      const isR=sel.kind==="recipe",f=sel.f,r=sel.r,canS=isR||num(f&&f.serving_g)>0;if(!canS)mode="g";
+      const sName=isR?t("servingsWord"):(f.serving_name||t("servingWord"));
+      const chips=mode==="g"?(isR?[100,200,300,400]:[30,50,100,150,200]):[0.5,1,1.5,2];
+      box.innerHTML=`<div class="card" style="padding:12px;background:var(--bg)"><div class="row">
+          ${isR?(r.image?`<img class="pthumb" style="width:44px;height:44px" src="${esc(r.image)}" alt="">`:`<span class="pthumb ph" style="width:44px;height:44px;background:${grad(r.name)}">${esc(initial(r.name))}</span>`):thumbHTML(f,44)}
+          <div class="grow"><b dir="auto">${esc(isR?r.name:f.name)}</b> <span class="tbadge ${isR?"rec":"prod"} sm">${isR?t("typeRecipe"):t("typeProduct")}</span>
+            <div class="muted small">${isR?`${r0(perServing(r).kcal)} ${t("kcal")} ${t("perServ")}`:`${r0(num(f.kcal))} ${t("kcal")} / 100${f.unit==="ml"?"ml":"g"}`}</div></div>
+          <button type="button" class="iconbtn" id="qx" aria-label="${t("change")}">×</button></div>
+        ${canS?`<div class="seg" id="qm" style="margin-top:10px"><button type="button" data-m="g" class="${mode==="g"?"on":""}">${t("byGrams")}</button><button type="button" data-m="s" class="${mode==="s"?"on":""}">${isR?t("byServings"):esc(sName)}</button></div>`:""}
+        <label class="f" style="margin-top:10px">${mode==="g"?(f&&f.unit==="ml"?"ml":t("gramsCol")):(isR?t("servings"):esc(sName)+(f.serving_g?` (${r0(f.serving_g)} g)`:""))}</label>
+        <input type="number" step="any" inputmode="decimal" id="qg" style="font-size:20px;font-weight:600;text-align:center">
+        <div class="chips" style="margin-top:6px">${chips.map(c=>`<button type="button" class="chip" data-qc="${c}">${c}${mode==="g"?" g":""}</button>`).join("")}</div>
+        ${isR&&mode==="g"?`<label class="f" style="margin-top:10px">${t("dishWeight")}</label><input type="number" step="any" inputmode="decimal" id="qw" value="${esc(dishW.get(r.id)||recipeWeight(r)||"")}">
+          <div class="muted small" style="margin-top:4px">${t("dishWeightHint")}</div>`:""}
+      </div>`;
+      $("#qx").onclick=()=>{sel=null;$("#qn").value="";$("#qk").value="";$("#qp").value="";$("#qmac").textContent="";drawSel();showList();$("#qn").focus()};
+      const qm=$("#qm");if(qm)qm.onclick=e=>{const b=e.target.closest("[data-m]");if(!b||b.dataset.m===mode)return;mode=b.dataset.m;drawSel();$("#qg").value=mode==="s"?1:"";calc();$("#qg").focus()};
+      box.querySelector(".chips").onclick=e=>{const b=e.target.closest("[data-qc]");if(b){$("#qg").value=b.dataset.qc;calc()}};
+      $("#qg").oninput=calc;const qw=$("#qw");if(qw)qw.oninput=()=>{dishW.set(r.id,num(qw.value)||null);calc()};
+      calc()};
+    const pick=x=>{sel=x;mode=x.kind==="recipe"&&!recipeWeight(x.r)&&!dishW.get(x.r.id)?"s":"g";
+      $("#qn").value=x.kind==="recipe"?x.r.name:x.f.name;$("#qlist").innerHTML="";drawSel();
+      const w=x.kind==="recipe"?num($("#qw")&&$("#qw").value):0;
+      $("#qg").value=mode==="s"?1:(x.kind==="food"?(x.f.serving_g?r0(x.f.serving_g):100):(w?r0(w/Math.max(1,num(x.r.servings)||1)):""));calc();$("#qg").focus();$("#qg").select&&$("#qg").select()};
+    $("#qn").addEventListener("input",()=>{if(sel){sel=null;drawSel()}showList()});
+    $("#qn").addEventListener("focus",()=>{if(!sel)showList()});
+    $("#qlist").addEventListener("pointerdown",e=>e.preventDefault());
+    $("#qlist").onclick=e=>{const b=e.target.closest("[data-lp]");if(b)pick(list[+b.dataset.lp])};
+    $("#qk").addEventListener("input",()=>{mac={c:null,f:null};$("#qmac").textContent=""});
     $("#qf").onsubmit=ev=>{ev.preventDefault();const name=$("#qn").value.trim();if(!name){toast(t("needName"));return}
-      const r=qr&&qr.value?S.recipes.find(x=>x.id===qr.value):null,ps=r?perServing(r):null,same=ps&&r.name===name;
-      const servings=r&&same?(num($("#qa").value)||1):1;
-      closeSheet();addEntry(curDate,{recipeId:r?r.id:null,name:qfood&&$("#qa").value.trim()?`${name} (${$("#qa").value.trim()})`:name,servings,kcal:num($("#qk").value),protein:num($("#qp").value),
-        carbs:same?r1(ps.carbs*servings):qmac.c,fat:same?r1(ps.fat*servings):qmac.f});toast(t("added"))};
+      const n=num($("#qg")&&$("#qg").value);let label=name,servings=1,recipeId=null;
+      if(sel&&n){const unit=mode==="g"?(sel.kind==="food"&&sel.f.unit==="ml"?"ml":"g"):"";
+        label=mode==="g"?`${name} (${r0(n)} ${unit})`:(sel.kind==="recipe"?name:`${name} (${fmtQty(n)} ${sel.f.serving_name||t("servingWord")})`);
+        if(sel.kind==="recipe"){recipeId=sel.r.id;const T=recipeTotals(sel.r),w=num($("#qw")&&$("#qw").value);
+          servings=mode==="s"?n:(w?r1(n/(w/T.sv)):1)}}
+      closeSheet();addEntry(day,{recipeId,name:label,servings,kcal:num($("#qk").value),protein:num($("#qp").value),carbs:num(mac.c),fat:num(mac.f)});
+      toast(t("added")+(day!==curDate||route.tab!=="today"?" · "+t("today"):""))};
+    if(opt.recipe)pick({kind:"recipe",r:opt.recipe});else setTimeout(()=>{$("#qn").focus();showList()},60);
   });
 }
 function sheetGoal(){
