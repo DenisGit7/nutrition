@@ -94,7 +94,7 @@ aiAddShots:"הוספת צילומי מסך",aiGo:"יצירת מתכון",aiWorki
 aiNeedInput:"הדבק קישור, טקסט או הוסף צילומי מסך.",aiDemo:"ייבוא עם AI זמין רק בגרסה המסונכרנת (Supabase).",
 aiSetup:"ייבוא עם AI עדיין לא הוגדר ב-Supabase (ראה README, שלב 6).",aiLinkWarn:"לא הצלחתי לפתוח את הקישור עצמו — המתכון נוצר מהטקסט/צילומי המסך.",aiLinkOnly:"האתר שיתף רק את הכותרת, בלי המתכון. העתק את טקסט הפוסט (עוד → העתקה) לתיבה למעלה, או הוסף צילומי מסך של המצרכים, ואז לחץ שוב על יצירת מתכון."}
 };
-const VERSION = "1.5.0";
+const VERSION = "1.5.1";
 
 /* =================== small utils =================== */
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},
@@ -442,6 +442,15 @@ function amountToGrams(text,food){
   if(isU(["cup","cups","כוס","כוסות"]))return n*240;
   return null;
 }
+/* ratio between two amount texts ("200 g"→"400 g" = 2, "1 cup"→"2 cups" = 2); null if not comparable */
+function qtyRatio(from,to){
+  const g0=amountToGrams(from,{}),g1=amountToGrams(to,{});
+  if(g0&&g1)return g1/g0;
+  const num=t=>{let s=String(t||"").toLowerCase().replace(",",".").replace(/\bhalf\b|חצי/g,"0.5");const f=s.match(/(\d+)\s*\/\s*(\d+)/);if(f)return +f[1]/+f[2];const m=s.match(/\d+(\.\d+)?/);return m?+m[0]:null};
+  const unit=t=>String(t||"").toLowerCase().replace(/[\d.,\/\s]+/g," ").trim().slice(0,3);
+  const a=num(from),b=num(to);if(a&&b&&unit(from)===unit(to))return b/a;
+  return null;
+}
 function foodNutrition(food,amount){
   const g=amountToGrams(amount,food);if(g==null)return null;const k=g/100;
   return {grams:Math.round(g),kcal:Math.round(num(food.kcal)*k),protein:r1(num(food.protein)*k),carbs:r1(num(food.carbs)*k),fat:r1(num(food.fat)*k)};
@@ -505,7 +514,7 @@ function render(){
     $("#title").textContent="";v.innerHTML=viewDetail(r);return}
   if(route.view==="edit"){const r=route.id?S.recipes.find(x=>x.id===route.id):null;
     $("#title").textContent=r?t("editRecipe"):t("newRecipe");
-    if(!v.querySelector("#editForm")||v.dataset.editing!==(route.id||"new")){v.innerHTML=viewEdit(r);v.dataset.editing=route.id||"new";autoLinkRows();updIngSum();bindRecipePic()}return}
+    if(!v.querySelector("#editForm")||v.dataset.editing!==(route.id||"new")){v.innerHTML=viewEdit(r);v.dataset.editing=route.id||"new";captureBaseline();autoLinkRows();updIngSum();bindRecipePic()}return}
 }
 
 /* =================== install banner =================== */
@@ -652,9 +661,19 @@ function viewEdit(r){r=r||S.draft||{servings:1,ingredients:[{},{},{}],steps:[]};
     <button type="submit" class="btn primary">${t("save")}</button></div>
   </form>`}
 function rowState(row){if(!rowFood.has(row)){let d={};try{d=JSON.parse(row.dataset.ing||"{}")}catch(_){}rowFood.set(row,d)}return rowFood.get(row)}
-function recalcRow(row){const st=rowState(row);if(!st.food)return;
-  const n=foodNutrition(st.food,row.querySelector(".in-amt").value);
-  if(n){row.querySelector(".in-kcal").value=n.kcal;st.p=n.protein;st.c=n.carbs;st.f=n.fat;row.classList.add("auto")}}
+function recalcRow(row){const st=rowState(row),amt=row.querySelector(".in-amt").value;
+  if(st.food){const n=foodNutrition(st.food,amt);
+    if(n){row.querySelector(".in-kcal").value=n.kcal;st.p=n.protein;st.c=n.carbs;st.f=n.fat;row.classList.add("auto")}return}
+  // not linked to a product: scale the original calories by the change in amount
+  if(st.base&&st.base.kcal!=null){const k=qtyRatio(st.base.amt,amt);
+    if(k){row.querySelector(".in-kcal").value=Math.round(st.base.kcal*k);
+      if(st.base.p!=null)st.p=r1(st.base.p*k);if(st.base.c!=null)st.c=r1(st.base.c*k);if(st.base.f!=null)st.f=r1(st.base.f*k)}}}
+/* remember each row's starting amount/kcal and the recipe's starting per-serving numbers */
+function captureBaseline(){const f=$("#editForm");if(!f)return;
+  let tot=0;f.querySelectorAll(".ingrow").forEach(row=>{const st=rowState(row),kc=numOrNull(row.querySelector(".in-kcal").value);
+    st.base={amt:row.querySelector(".in-amt").value,kcal:kc,p:st.p,c:st.c,f:st.f};tot+=num(kc)});
+  f._base={tot,serv:Math.max(1,num(f.servings.value)||1),kps:numOrNull(f.kcalPerServing.value),
+    protein:numOrNull(f.protein.value),carbs:numOrNull(f.carbs.value),fat:numOrNull(f.fat.value)};f._manual={}}
 function closeSuggest(){document.querySelectorAll(".suggest").forEach(x=>x.remove())}
 function showSuggest(input,list,onPick){closeSuggest();if(!list.length)return;
   input.insertAdjacentHTML("afterend",suggestHTML(list));const box=input.nextElementSibling;
@@ -669,6 +688,12 @@ function updIngSum(){const f=$("#editForm");if(!f)return;
   const tot={protein:0,carbs:0,fat:0},have={};
   f.querySelectorAll(".ingrow").forEach(row=>{const st=rowState(row);[["protein","p"],["carbs","c"],["fat","f"]].forEach(([k,a])=>{if(st[a]!=null){tot[k]+=num(st[a]);have[k]=1}})});
   ["protein","carbs","fat"].forEach(k=>{const el=f.elements.namedItem(k);if(el)el.placeholder=have[k]?String(r1(tot[k]/sv)):t(k)});
+  // recipe-level numbers (e.g. from the AI) follow the ingredients and servings unless typed by hand
+  const b=f._base;if(!b)return;
+  const k=(b.tot>0&&s>0?s/b.tot:1)*(b.serv/sv);
+  if(b.kps!=null&&!f._manual.kcalPerServing)f.kcalPerServing.value=Math.round(b.kps*k)||"";
+  ["protein","carbs","fat"].forEach(key=>{if(b[key]==null||f._manual[key])return;
+    const el=f.elements.namedItem(key);if(have[key]){el.value="";return}el.value=r1(b[key]*k)});
 }
 
 /* =================== views: today =================== */
@@ -1322,7 +1347,9 @@ document.addEventListener("input",e=>{
   if(el.hasAttribute&&el.hasAttribute("data-food"))openFoodSuggest(el);
   if(el.classList&&el.classList.contains("in-amt")){recalcRow(el.closest(".ingrow"))}
   if(el.classList&&el.classList.contains("in-kcal")){const row=el.closest(".ingrow");row.classList.remove("auto")}
-  if(el.closest("#editForm"))updIngSum()});
+  const ef=el.closest&&el.closest("#editForm");
+  if(ef&&["protein","carbs","fat","kcalPerServing"].includes(el.name)){ef._manual=ef._manual||{};ef._manual[el.name]=true;return}
+  if(ef)updIngSum()});
 document.addEventListener("focusout",e=>{if(e.target.hasAttribute&&e.target.hasAttribute("data-food"))setTimeout(()=>{if(!document.activeElement||!document.activeElement.hasAttribute("data-food"))closeSuggest()},180)});
 document.addEventListener("focusin",e=>{if(e.target.hasAttribute&&e.target.hasAttribute("data-food"))openFoodSuggest(e.target)});
 /* one suggestion list for every food field: your products first (shown as soon as the field is tapped), then common foods */
