@@ -32,7 +32,8 @@ const MODELS = [
   "gemini-3.5-flash",
   "gemini-3.5-flash-lite",
 ].filter(Boolean) as string[];
-let goodModel = "";   // remembered while this function instance stays warm
+let goodModel = "";
+const noThinkCfg = new Set<string>();   // remembered while this function instance stays warm
 
 // newest "flash" models this key can use (stable before preview, full before lite)
 async function discoverModels(key: string): Promise<string[]> {
@@ -328,15 +329,25 @@ async function callGemini(key: string, parts: unknown[]): Promise<any> {
     }
     if (tried.has(model)) continue;
     tried.add(model);
-    const r = await fetch(`${GEMINI_BASE}/models/${model}:generateContent`, {
+    // less "thinking" = faster answers and fewer free-tier limits; older models without this option get it without
+    const ask = (think: boolean) => fetch(`${GEMINI_BASE}/models/${model}:generateContent`, {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-goog-api-key": key },
+      signal: AbortSignal.timeout(100_000),
       body: JSON.stringify({
         contents: [{ role: "user", parts }],
-        generationConfig: { responseMimeType: "application/json", temperature: 0.2 },
+        generationConfig: { responseMimeType: "application/json", temperature: 0.2,
+          ...(think && !noThinkCfg.has(model) ? { thinkingConfig: { thinkingLevel: "low" } } : {}) },
       }),
     });
-    const body = await r.text();
+    let r: Response;
+    try { r = await ask(true); } catch (e) { lastErr = `${model}: ${String(e).slice(0, 120)}`; continue; }
+    let body = await r.text();
+    if (r.status === 400 && /thinking/i.test(body)) {
+      noThinkCfg.add(model);
+      try { r = await ask(false); } catch (e) { lastErr = `${model}: ${String(e).slice(0, 120)}`; continue; }
+      body = await r.text();
+    }
     if (r.ok) {
       goodModel = model;
       const data = JSON.parse(body);
