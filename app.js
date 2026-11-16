@@ -94,7 +94,7 @@ aiAddShots:"הוספת צילומי מסך",aiGo:"יצירת מתכון",aiWorki
 aiNeedInput:"הדבק קישור, טקסט או הוסף צילומי מסך.",aiDemo:"ייבוא עם AI זמין רק בגרסה המסונכרנת (Supabase).",
 aiSetup:"ייבוא עם AI עדיין לא הוגדר ב-Supabase (ראה README, שלב 6).",aiLinkWarn:"לא הצלחתי לפתוח את הקישור עצמו — המתכון נוצר מהטקסט/צילומי המסך.",aiLinkOnly:"האתר שיתף רק את הכותרת, בלי המתכון. העתק את טקסט הפוסט (עוד → העתקה) לתיבה למעלה, או הוסף צילומי מסך של המצרכים, ואז לחץ שוב על יצירת מתכון."}
 };
-const VERSION = "1.5.1";
+const VERSION = "1.5.2";
 
 /* =================== small utils =================== */
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},
@@ -360,7 +360,8 @@ window.addEventListener("offline",()=>{S.online=false;setStatus()});
 /* =================== recipe math =================== */
 function perServing(r){
   const sv=Math.max(1,num(r.servings)||1),ings=r.ingredients||[];
-  const sum=k=>ings.reduce((a,i)=>a+num(i[k]),0),has=k=>ings.some(i=>i[k]!=null&&i[k]!=="");
+  const sum=k=>ings.reduce((a,i)=>a+num(i[k]),0),withK=ings.filter(i=>num(i.kcal)>0);
+  const has=k=>withK.length>0&&withK.every(i=>i[k]!=null&&i[k]!=="");
   const ingK=sum("kcal");
   const kcal=num(r.kcalPerServing)||(ingK?ingK/sv:0);
   const m=k=>(r[k]!=null&&r[k]!=="")?num(r[k]):(has(k)?sum(k)/sv:0);
@@ -419,11 +420,13 @@ function searchFoods(q,limit=8,{mine=true,common=true}={}){
   const pool=[...(mine?S.products.map(p=>({...p,mine:true})):[]),...(common?commonFoods():[])];
   return pool.map(f=>[score(f),f]).filter(x=>x[0]<9).sort((a,b)=>a[0]-b[0]||(b[1].mine?1:0)-(a[1].mine?1:0)).slice(0,limit).map(x=>x[1]);
 }
-const foodSnap=f=>({kcal:num(f.kcal),protein:num(f.protein),carbs:num(f.carbs),fat:num(f.fat),serving_g:f.serving_g||null,
+const foodSnap=f=>({kcal:num(f.kcal),protein:numOrNull(f.protein),carbs:numOrNull(f.carbs),fat:numOrNull(f.fat),serving_g:f.serving_g||null,
   serving_name:f.serving_name||"",serving_alt:f.serving_alt||"",unit:f.unit||"g"});
 /* amount text -> grams, using the food's serving size for "2", "1 slice", "2 eggs" */
+const FRAC={"½":".5","¼":".25","¾":".75","⅓":".33","⅔":".67","⅛":".125"};
+const fixFrac=s=>String(s||"").replace(/(\d*)\s*([½¼¾⅓⅔⅛])/g,(m,d,f)=>String((+d||0)+(+FRAC[f])));
 function amountToGrams(text,food){
-  let s=String(text||"").trim().toLowerCase().replace(",",".");if(!s)return null;
+  let s=fixFrac(String(text||"").trim().toLowerCase()).replace(",",".");if(!s)return null;
   s=s.replace(/\bhalf\b|חצי/g,"0.5").replace(/\bquarter\b|רבע/g,"0.25");
   const frac=s.match(/(\d+)\s*\/\s*(\d+)/);let n;
   if(frac)n=num(frac[1])/num(frac[2]);else{const m=s.match(/\d+(\.\d+)?/);n=m?num(m[0]):(/^[^\d]+$/.test(s)?1:NaN)}
@@ -444,16 +447,28 @@ function amountToGrams(text,food){
 }
 /* ratio between two amount texts ("200 g"→"400 g" = 2, "1 cup"→"2 cups" = 2); null if not comparable */
 function qtyRatio(from,to){
+  from=fixFrac(from);to=fixFrac(to);
+  const gIn=t=>{const m=String(t||"").match(/(\d+(?:[.,]\d+)?)\s*(?:g|gr|gram|grams|גרם|גר|ג׳|ג'|ml|מ"ל|מל)(?![a-zא-ת])/i);return m?parseFloat(m[1].replace(",",".")):null};
+  const x0=gIn(from),x1=gIn(to);if(x0&&x1)return x1/x0;                      // grams written anywhere, e.g. "1 cup (200 g)"
   const g0=amountToGrams(from,{}),g1=amountToGrams(to,{});
   if(g0&&g1)return g1/g0;
   const num=t=>{let s=String(t||"").toLowerCase().replace(",",".").replace(/\bhalf\b|חצי/g,"0.5");const f=s.match(/(\d+)\s*\/\s*(\d+)/);if(f)return +f[1]/+f[2];const m=s.match(/\d+(\.\d+)?/);return m?+m[0]:null};
   const unit=t=>String(t||"").toLowerCase().replace(/[\d.,\/\s]+/g," ").trim().slice(0,3);
-  const a=num(from),b=num(to);if(a&&b&&unit(from)===unit(to))return b/a;
+  const a=num(from),b=num(to),ua=unit(from),ub=unit(to);
+  if(a&&b&&(ua===ub||!ua||!ub||ua.slice(0,2)===ub.slice(0,2)))return b/a;   // same unit, or one side has no unit ("2 cloves" → "4")
+  if(a&&b&&g0&&!g1&&!ub)return b/a;
+  const words={"אחד":1,"אחת":1,"שתי":2,"שני":2,"שתיים":2,"שניים":2,"שלוש":3,"שלושה":3,"ארבע":4,"ארבעה":4,"one":1,"two":2,"three":3,"four":4};
+  const wn=t=>{const w=String(t||"").toLowerCase().split(/\s+/).find(x=>words[x]);return w?words[w]:null};
+  // number words ("שתי כפות" → "4 כפות"): only when one side has no digits and the units match
+  const strip=t=>String(t||"").toLowerCase().split(/\s+/).filter(x=>!words[x]).join(" ");
+  const a2=a||wn(from),b2=b||wn(to),ua2=unit(strip(from)),ub2=unit(strip(to));
+  if((!a||!b)&&a2&&b2&&(ua2===ub2||ua2.slice(0,2)===ub2.slice(0,2)))return b2/a2;
   return null;
 }
 function foodNutrition(food,amount){
   const g=amountToGrams(amount,food);if(g==null)return null;const k=g/100;
-  return {grams:Math.round(g),kcal:Math.round(num(food.kcal)*k),protein:r1(num(food.protein)*k),carbs:r1(num(food.carbs)*k),fat:r1(num(food.fat)*k)};
+  const m=v=>v==null||v===""?null:r1(num(v)*k);
+  return {grams:Math.round(g),kcal:Math.round(num(food.kcal)*k),protein:m(food.protein),carbs:m(food.carbs),fat:m(food.fat)};
 }
 const defaultAmount=f=>f.serving_g&&f.serving_name?("1 "+f.serving_name):("100 "+(f.unit==="ml"?"ml":t("grams")));
 function suggestHTML(list){return list.length?`<div class="suggest">${list.map((f,i)=>`<button type="button" data-sug="${i}">${thumbHTML(f,30)}
@@ -663,7 +678,8 @@ function viewEdit(r){r=r||S.draft||{servings:1,ingredients:[{},{},{}],steps:[]};
 function rowState(row){if(!rowFood.has(row)){let d={};try{d=JSON.parse(row.dataset.ing||"{}")}catch(_){}rowFood.set(row,d)}return rowFood.get(row)}
 function recalcRow(row){const st=rowState(row),amt=row.querySelector(".in-amt").value;
   if(st.food){const n=foodNutrition(st.food,amt);
-    if(n){row.querySelector(".in-kcal").value=n.kcal;st.p=n.protein;st.c=n.carbs;st.f=n.fat;row.classList.add("auto")}return}
+    if(n){row.querySelector(".in-kcal").value=n.kcal;st.p=n.protein;st.c=n.carbs;st.f=n.fat;row.classList.add("auto");
+      st.base={amt,kcal:n.kcal,p:n.protein,c:n.carbs,f:n.fat};return}}   // remember as new starting point
   // not linked to a product: scale the original calories by the change in amount
   if(st.base&&st.base.kcal!=null){const k=qtyRatio(st.base.amt,amt);
     if(k){row.querySelector(".in-kcal").value=Math.round(st.base.kcal*k);
@@ -685,8 +701,10 @@ function updIngSum(){const f=$("#editForm");if(!f)return;
   const sv=Math.max(1,num(f.servings.value)||1);
   $("#ingSum").textContent=s?`${t("total")}: ${r0(s)} ${t("kcal")} · ${r0(s/sv)} ${t("kcal")} ${t("perServing")}`:"";
   $("#kcalIn").placeholder=s?`${r0(s/sv)} — ${t("calcFromIng")}`:"";
-  const tot={protein:0,carbs:0,fat:0},have={};
-  f.querySelectorAll(".ingrow").forEach(row=>{const st=rowState(row);[["protein","p"],["carbs","c"],["fat","f"]].forEach(([k,a])=>{if(st[a]!=null){tot[k]+=num(st[a]);have[k]=1}})});
+  const tot={protein:0,carbs:0,fat:0},have={protein:true,carbs:true,fat:true};let rowsWithKcal=0;
+  f.querySelectorAll(".ingrow").forEach(row=>{const st=rowState(row);if(!(num(row.querySelector(".in-kcal").value)>0))return;rowsWithKcal++;
+    [["protein","p"],["carbs","c"],["fat","f"]].forEach(([k,a])=>{if(st[a]!=null)tot[k]+=num(st[a]);else have[k]=false})});
+  if(!rowsWithKcal)have.protein=have.carbs=have.fat=false;
   ["protein","carbs","fat"].forEach(k=>{const el=f.elements.namedItem(k);if(el)el.placeholder=have[k]?String(r1(tot[k]/sv)):t(k)});
   // recipe-level numbers (e.g. from the AI) follow the ingredients and servings unless typed by hand
   const b=f._base;if(!b)return;
@@ -1346,7 +1364,8 @@ document.addEventListener("input",e=>{
     if(st.food){st.food=null;st.p=st.c=st.f=null;row.classList.remove("auto")}}
   if(el.hasAttribute&&el.hasAttribute("data-food"))openFoodSuggest(el);
   if(el.classList&&el.classList.contains("in-amt")){recalcRow(el.closest(".ingrow"))}
-  if(el.classList&&el.classList.contains("in-kcal")){const row=el.closest(".ingrow");row.classList.remove("auto")}
+  if(el.classList&&el.classList.contains("in-kcal")){const row=el.closest(".ingrow"),st=rowState(row);row.classList.remove("auto");
+    st.base={amt:row.querySelector(".in-amt").value,kcal:numOrNull(el.value),p:null,c:null,f:null};st.p=st.c=st.f=null}
   const ef=el.closest&&el.closest("#editForm");
   if(ef&&["protein","carbs","fat","kcalPerServing"].includes(el.name)){ef._manual=ef._manual||{};ef._manual[el.name]=true;return}
   if(ef)updIngSum()});
