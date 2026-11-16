@@ -233,13 +233,14 @@ Steps short and clear, one action each, at most 10. 1-4 tags.
 If the question is not about food or cooking, reply {"recipes": [], "reason": "short sentence in ${language}"}.`;
 }
 
-function findPrompt(lang: string, q: string, mine: unknown): string {
+function findPrompt(lang: string, q: string, mine: unknown, count: number): string {
   const language = lang === "he" ? "Hebrew" : "English";
-  return `The user is searching a nutrition app: "${q.replace(/"/g, "'")}"
-The search can be a name, a description, or nutrition values (e.g. "high protein yogurt", "dinner under 400 kcal with 30 g protein", "low carb snack").
+  return `The user asks a nutrition app: "${q.replace(/"/g, "'")}"
+It can be a cooking question ("how to cook brown lentils"), a name, a description, or nutrition values (e.g. "high protein yogurt", "dinner under 400 kcal with 30 g protein", "low carb snack").
+If it is a cooking question or asks for a specific dish, the NEW items are exactly ${count} different recipe${count > 1 ? "s" : ""} for it (different methods or flavours, simplest first), preferring the user's saved products when they fit.
 
 1) From the user's saved items below, list the ids that match the search (respect any value limits: products use values per 100 g, recipes per serving). Empty list if none.
-2) Suggest up to 4 NEW items that answer the search. Each is either:
+2) Otherwise suggest up to ${Math.max(count, 3)} NEW items that answer the search. Each is either:
    - "product": a single food or a packaged product you buy (e.g. Greek yogurt 0%, almonds, a protein bar brand). Values per 100 g (or 100 ml for drinks). Prefer products sold in Israel when the user writes Hebrew.
    - "recipe": a dish you cook from several ingredients.
    Decide the type by what the user asks for; mixing both is fine. Respect value limits in the search.
@@ -453,7 +454,8 @@ export async function handle(req: Request): Promise<Response> {
     };
     const ids = new Set([...mine.products, ...mine.recipes].map((x) => x.id));
     try {
-      const out = await callGemini(key, [{ text: findPrompt(lang, q, mine) }]);
+      const count = Math.min(3, Math.max(1, Number(body.count) || 3));
+      const out = await callGemini(key, [{ text: findPrompt(lang, q, mine, count) }]);
       const results = (Array.isArray(out?.results) ? out.results : []).filter((r: any) => r && r.name).slice(0, 6).map((r: any) => r.type === "product" ? {
         type: "product", name: String(r.name).slice(0, 200), brand: String(r.brand || ""), why: String(r.why || ""),
         unit: r.unit === "ml" ? "ml" : "g", serving_g: n(r.serving_g), serving_name: String(r.serving_name || ""),

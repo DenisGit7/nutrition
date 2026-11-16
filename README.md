@@ -150,7 +150,7 @@ the first screenshot or video frame, a Wikipedia photo for "Ask AI" recipes, or 
 **AI function:** Edge Functions → `import-recipe` → **Code** → replace with the new
 `supabase/functions/import-recipe/index.ts` → **Deploy** (the new code contains `findPrompt`). No database change; existing recipes and products are unchanged.
 
-New **✨ AI search: products & recipes** button (Recipes tab and Products tab): search by description or values
+1.8.1: the green **Ask AI** button (Recipes and Products tabs) now does both: cooking questions ("how to cook brown lentils" → 1–3 recipe options) and search by description or values
 ("high-protein yogurt", "dinner under 400 kcal with 30 g protein"). Shows matching saved items first, then new suggestions,
 each marked Product or Recipe with the matching Add button.
 
