@@ -1,7 +1,7 @@
 /* Nutrition service worker: makes the app installable and usable offline.
    App files: network first (so updates show up right away), cache as fallback.
    Libraries/fonts from CDNs: cache first. Supabase API calls: never cached. */
-const CACHE = "nutrition-v1.11.0";
+const CACHE = "nutrition-v1.11.1";
 const SHELL = ["./", "index.html", "styles.css", "app.js", "foods.js", "config.js", "manifest.webmanifest",
   "icons/icon-192.png", "icons/icon-512.png", "icons/apple-touch-icon.png"];
 
