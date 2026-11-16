@@ -145,6 +145,9 @@ the first screenshot or video frame, a Wikipedia photo for "Ask AI" recipes, or 
   Ingredients linked to your products keep the product's calories per 100 g; missing protein/carbs/fat are filled in.
 - Imported and "Ask AI" recipes now come with grams and macros for each ingredient.
 
+**If the AI says a model "is no longer available":** paste the latest `index.ts` (it finds a working Gemini model by itself),
+or as a quick fix add a secret `GEMINI_MODEL` with the model name Google suggests in the message (Edge Functions → Secrets).
+
 ---
 
 ## Adding recipes from a link (without AI import)

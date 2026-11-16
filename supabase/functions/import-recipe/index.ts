@@ -23,14 +23,32 @@ const CORS = {
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { ...CORS, "Content-Type": "application/json" } });
 
-// Tried in order; the first that answers wins. Free-tier model names change over time.
+// Tried in order; the first that answers wins. Google retires model names over time, so when these are gone
+// the function also follows Google's "use models/… instead" hint and asks Google which flash models exist.
 const MODELS = [
   Deno.env.get("GEMINI_MODEL"),
+  "gemini-3.8-flash",
   "gemini-3.6-flash",
   "gemini-3.5-flash",
   "gemini-3.5-flash-lite",
-  "gemini-2.5-flash",
 ].filter(Boolean) as string[];
+let goodModel = "";   // remembered while this function instance stays warm
+
+// newest "flash" models this key can use (stable before preview, full before lite)
+async function discoverModels(key: string): Promise<string[]> {
+  try {
+    const r = await fetch(`${GEMINI_BASE}/models?pageSize=200`, { headers: { "x-goog-api-key": key } });
+    if (!r.ok) return [];
+    const d = await r.json();
+    const names = (d.models || [])
+      .filter((m: any) => (m.supportedGenerationMethods || []).includes("generateContent"))
+      .map((m: any) => String(m.name || "").replace(/^models\//, ""))
+      .filter((n: string) => /^gemini-[\d.]+-flash/.test(n) && !/tts|image|live|audio|embed|thinking/i.test(n));
+    const ver = (n: string) => parseFloat((n.match(/^gemini-([\d.]+)/) || [])[1] || "0");
+    const rank = (n: string) => (/preview|exp/i.test(n) ? 2 : 0) + (/lite/i.test(n) ? 1 : 0);
+    return names.sort((a: string, b: string) => rank(a) - rank(b) || ver(b) - ver(a)).slice(0, 6);
+  } catch { return []; }
+}
 const GEMINI_BASE = Deno.env.get("GEMINI_BASE_URL") || "https://generativelanguage.googleapis.com/v1beta";
 
 const MAX_IMAGES = 12;          // screenshots or frames taken from a video
@@ -296,8 +314,20 @@ function ingMacros(i: any) {
 }
 
 async function callGemini(key: string, parts: unknown[]): Promise<any> {
-  let lastErr = "";
-  for (const model of MODELS) {
+  let lastErr = "", discovered = false;
+  const queue = [...new Set([goodModel, ...MODELS].filter(Boolean))];
+  const tried = new Set<string>();
+  while (true) {
+    let model = queue.shift();
+    if (!model) {
+      if (discovered) break;
+      discovered = true;
+      queue.push(...(await discoverModels(key)).filter((m) => !tried.has(m)));
+      model = queue.shift();
+      if (!model) break;
+    }
+    if (tried.has(model)) continue;
+    tried.add(model);
     const r = await fetch(`${GEMINI_BASE}/models/${model}:generateContent`, {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-goog-api-key": key },
@@ -308,6 +338,7 @@ async function callGemini(key: string, parts: unknown[]): Promise<any> {
     });
     const body = await r.text();
     if (r.ok) {
+      goodModel = model;
       const data = JSON.parse(body);
       const txt = (data?.candidates?.[0]?.content?.parts || []).map((p: any) => p.text || "").join("").trim();
       if (!txt) { lastErr = `${model}: empty answer`; continue; }
@@ -316,6 +347,9 @@ async function callGemini(key: string, parts: unknown[]): Promise<any> {
       catch { const m = clean.match(/\{[\s\S]*\}/); if (m) return JSON.parse(m[0]); lastErr = `${model}: unreadable answer`; continue; }
     }
     lastErr = `${model}: ${r.status} ${body.slice(0, 200)}`;
+    // Google often names the replacement: "Please update your code to use models/gemini-x-flash"
+    const hint = body.match(/use (?:models\/)?(gemini-[\w.-]+)/i);
+    if (hint && !tried.has(hint[1])) queue.unshift(hint[1].replace(/[.,]+$/, ""));
     // 404 = model name not available, 429 = free quota for this model used up, 5xx = busy → try next model.
     if (![400, 404, 429, 500, 503].includes(r.status)) break;
     if (r.status === 400 && !/model|not found|not supported/i.test(body)) break;
