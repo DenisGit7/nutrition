@@ -30,7 +30,7 @@ cloud:"Synced",local:"Demo mode — saved on this device only",offline:"Offline 
 loading:"Loading…",needName:"Please enter a name",prev:"Previous day",next:"Next day",todayBtn:"Back to today",total:"Total",
 toShop:"Add to shopping list",addItem:"Add an item…",shopEmpty:"Your shopping list is empty.",shopEmpty2:"Add items above, or add ingredients from a recipe.",
 fromRecipes:"Add from recipe",inCart:"In the cart",toBuy:"To buy",clearDone:"Clear checked",clearAll:"Clear all",clearAgain:"Tap again to clear",
-copy:"Copy list",copyCode:"Copy code",copied:"Copied",copyFail:"Couldn't copy",itemsAdded:"added to shopping list",chooseIng:"Choose ingredients",
+copy:"Copy list",copyCode:"Copy code",copied:"Copied",copyFail:"Couldn't copy",itemsAdded:"added to shopping list",chooseIng:"Choose ingredients",ingToProd:"Add ingredients to my products",ingToProdHint:"values per 100 g from the recipe; the AI fills in what is missing",alreadyMine:"already in my products",aiWillFill:"values will be filled in by the AI",savingProducts:"Saving products…",productsAdded:"products added",
 selectAll:"All",selectNone:"None",pickRecipe:"Pick a recipe",bought:"bought",of:"of",noIngs:"This recipe has no ingredients yet.",
 signIn:"Sign in",signUp:"Create account",email:"Email",password:"Password",yourName:"Your name",forgot:"Forgot password?",
 checkEmail:"Check your email to confirm your account, then sign in here.",resetSent:"Password reset email sent.",
@@ -74,7 +74,7 @@ cloud:"מסונכרן",local:"מצב הדגמה — נשמר במכשיר הזה
 loading:"טוען…",needName:"נא להזין שם",prev:"יום קודם",next:"יום הבא",todayBtn:"חזרה להיום",total:"סה״כ",
 toShop:"הוסף לרשימת קניות",addItem:"הוספת פריט…",shopEmpty:"רשימת הקניות ריקה.",shopEmpty2:"הוסף פריטים למעלה, או מצרכים ממתכון.",
 fromRecipes:"הוספה ממתכון",inCart:"בעגלה",toBuy:"לקנות",clearDone:"ניקוי מסומנים",clearAll:"ניקוי הכל",clearAgain:"לחץ שוב לניקוי",
-copy:"העתקת רשימה",copyCode:"העתקת קוד",copied:"הועתק",copyFail:"ההעתקה נכשלה",itemsAdded:"נוספו לרשימת הקניות",chooseIng:"בחירת מצרכים",
+copy:"העתקת רשימה",copyCode:"העתקת קוד",copied:"הועתק",copyFail:"ההעתקה נכשלה",itemsAdded:"נוספו לרשימת הקניות",chooseIng:"בחירת מצרכים",ingToProd:"הוספת המצרכים למוצרים שלי",ingToProdHint:"ערכים ל-100 גרם מהמתכון; ה-AI משלים את מה שחסר",alreadyMine:"כבר במוצרים שלי",aiWillFill:"הערכים יושלמו על ידי ה-AI",savingProducts:"שומר מוצרים…",productsAdded:"מוצרים נוספו",
 selectAll:"הכל",selectNone:"כלום",pickRecipe:"בחירת מתכון",bought:"נקנו",of:"מתוך",noIngs:"אין עדיין מצרכים במתכון הזה.",
 signIn:"כניסה",signUp:"הרשמה",email:"אימייל",password:"סיסמה",yourName:"השם שלך",forgot:"שכחת סיסמה?",
 checkEmail:"בדוק את האימייל כדי לאשר את החשבון, ואז היכנס כאן.",resetSent:"נשלח אימייל לאיפוס סיסמה.",
@@ -94,7 +94,7 @@ aiAddShots:"הוספת צילומי מסך",aiGo:"יצירת מתכון",aiWorki
 aiNeedInput:"הדבק קישור, טקסט או הוסף צילומי מסך.",aiDemo:"ייבוא עם AI זמין רק בגרסה המסונכרנת (Supabase).",
 aiSetup:"ייבוא עם AI עדיין לא הוגדר ב-Supabase (ראה README, שלב 6).",aiLinkWarn:"לא הצלחתי לפתוח את הקישור עצמו — המתכון נוצר מהטקסט/צילומי המסך.",aiLinkOnly:"האתר שיתף רק את הכותרת, בלי המתכון. העתק את טקסט הפוסט (עוד → העתקה) לתיבה למעלה, או הוסף צילומי מסך של המצרכים, ואז לחץ שוב על יצירת מתכון."}
 };
-const VERSION = "1.9.0";
+const VERSION = "1.9.1";
 
 /* =================== small utils =================== */
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},
@@ -630,6 +630,7 @@ function viewDetail(r){
     <div class="muted small" style="text-align:center;margin-top:10px">${t("perServing")}</div></div>
   <div class="grid2"><button class="btn primary" data-act="addToday">${ICON.plus}${t("addToday")}</button>
     <button class="btn ghost" data-act="toShop" ${ings.length?"":"disabled"}>${ICON.cart}${t("toShop")}</button></div>
+  ${ings.length?`<button class="btn ghost block" data-act="ingToProd">${ICON.plus}${t("ingToProd")}</button>`:""}
   ${ings.length?`<div class="card"><h2 class="sec">${t("ingredients")}<span class="n">${ings.length}</span></h2><ul class="ing">
     ${ings.map(i=>`<li><span class="dot"></span><span class="grow">${esc(i.name)}</span><span class="muted"><bdi>${esc(i.amount||"")}</bdi></span>${num(i.kcal)?`<span class="small" style="color:var(--kcal);min-width:44px;text-align:end;font-weight:600">${r0(num(i.kcal))}</span>`:""}</li>`).join("")}
   </ul></div>`:""}
@@ -917,6 +918,45 @@ function sheetShopIngs(r){
     $("#pc").onclick=closeSheet;
     $("#pa").onclick=async()=>{const list=ings.filter((_,k)=>sel[k]).map(i=>({name:i.name,amount:i.amount,recipeName:r.name}));
       closeSheet();const n=await addShopItems(list);toast(`${n} ${t("itemsAdded")}`)};
+  });
+}
+/* recipe ingredients → my products (values per 100 g from the ingredient line, the linked food, or the AI) */
+const isMyProduct=name=>{const n=norm(name);return !!n&&S.products.some(p=>norm(p.name)===n)};
+function ingPer100(i){const o={kcal:null,protein:null,carbs:null,fat:null,unit:"g",serving_g:null,serving_name:""};
+  if(i.food){Object.assign(o,{kcal:numOrNull(i.food.kcal),protein:numOrNull(i.food.protein),carbs:numOrNull(i.food.carbs),fat:numOrNull(i.food.fat),unit:i.food.unit||"g",serving_g:i.food.serving_g||null,serving_name:i.food.serving_name||""});return o}
+  const g=num(i.grams);if(g>0){const k=100/g,v=x=>x==null||x===""?null:r1(num(x)*k);o.kcal=v(i.kcal);o.protein=v(i.protein);o.carbs=v(i.carbs);o.fat=v(i.fat);
+    const u=unitKey(i.unit),q=num(i.qty);if(q>0&&u&&!WEIGHT_UNITS.has(u)){o.serving_g=r1(g/q);o.serving_name=String(i.unit||"")}}
+  return o}
+function sheetIngProducts(r){
+  const ings=(r.ingredients||[]).filter(i=>i.name&&i.name.trim());
+  const have=ings.map(i=>isMyProduct(i.name)),sel=ings.map((i,k)=>!have[k]&&!/^(water|מים)$/i.test(norm(i.name)));
+  const vals=ings.map(ingPer100);let busy=false;
+  const draw=()=>{$("#ipick").innerHTML=ings.map((i,k)=>{const v=vals[k];return `<div class="pickrow ${have[k]?"off":sel[k]?"":"off"}" data-k="${k}" ${have[k]?'style="pointer-events:none"':""}><div class="check">${ICON.check}</div>
+      <div class="grow"><span dir="auto">${esc(i.name)}</span><div class="muted small">${have[k]?t("alreadyMine"):v.kcal!=null?`${r0(v.kcal)} ${t("kcal")} · ${t("protein")[0]} ${v.protein!=null?r1(v.protein):"?"} / 100g`:t("aiWillFill")}</div></div></div>`}).join("");
+    const n=sel.filter(Boolean).length;$("#ipa").textContent=`${t("add")} (${n})`;$("#ipa").disabled=!n||busy};
+  openSheet(`<div class="stack"><h2 class="sec" style="font-size:19px;margin:0">${t("ingToProd")}</h2>
+    <div class="muted small">${esc(r.name)} · ${t("ingToProdHint")}</div>
+    <div id="ipick"></div><div id="ipMsg"></div>
+    <div class="grid2"><button class="btn ghost" id="ipc">${t("cancel")}</button><button class="btn primary" id="ipa"></button></div></div>`,()=>{
+    draw();
+    $("#ipick").onclick=e=>{const row=e.target.closest("[data-k]");if(!row||busy)return;const k=+row.dataset.k;if(have[k])return;sel[k]=!sel[k];draw()};
+    $("#ipc").onclick=()=>{if(!busy)closeSheet()};
+    $("#ipa").onclick=async()=>{const ks=ings.map((_,k)=>k).filter(k=>sel[k]);if(!ks.length)return;
+      busy=true;draw();$("#ipMsg").innerHTML=`<div class="muted small"><span class="spin"></span>${t("savingProducts")}</div>`;
+      // ask the AI for per-100 g values of anything incomplete
+      const need=ks.filter(k=>[vals[k].kcal,vals[k].protein,vals[k].carbs,vals[k].fat].some(x=>x==null));
+      if(need.length&&CLOUD){try{const res=await S.api.callFn({mode:"nutrition",lang,ingredients:need.map(k=>({name:ings[k].name,qty:100,unit:"g",grams:100}))});
+          (res&&res.ingredients||[]).forEach((o,j)=>{const v=vals[need[j]];if(!o)return;["kcal","protein","carbs","fat"].forEach(f=>{if(v[f]==null&&o[f]!=null)v[f]=r1(o[f])})})}
+        catch(e){toast(e.code==="outdated"?t("fnOutdated"):errMsg(e))}}
+      const made=[];
+      for(const k of ks){const i=ings[k],v=vals[k];if(isMyProduct(i.name))continue;
+        const p={id:uuid(),name:i.name.trim(),brand:"",barcode:"",category:"",unit:v.unit||"g",serving_g:v.serving_g,serving_name:v.serving_name||"",
+          kcal:v.kcal!=null?Math.round(v.kcal):null,protein:v.protein,carbs:v.carbs,fat:v.fat,sugar:null,fiber:null,source:"recipe",image:""};
+        S.products=[...S.products,p];made.push(p);await write("products",()=>S.api.saveProduct(p))}
+      // link the recipe's ingredients to the new products (so later amount changes use the product's values)
+      if(made.length){const rec={...r,ingredients:(r.ingredients||[]).map(i=>{if(i.food)return i;const p=made.find(x=>norm(x.name)===norm(i.name));return p?{...i,food:foodSnap(p)}:i})};
+        const ix=S.recipes.findIndex(x=>x.id===r.id);if(ix>=0)S.recipes[ix]=rec;await write("recipes",()=>S.api.saveRecipe(rec))}
+      saveCache();rerender();closeSheet();toast(`${made.length} ${t("productsAdded")}`)};
   });
 }
 function sheetPickRecipe(){
@@ -1445,6 +1485,7 @@ document.addEventListener("click",e=>{
     case "edit":go({view:"edit"});break;
     case "addToday":if(r)sheetAddRecipe(r);break;
     case "toShop":if(r)sheetShopIngs(r);break;
+    case "ingToProd":if(r)sheetIngProducts(r);break;
     case "del":if(!r)break;
       if(delArm===r.id){const id=r.id;S.recipes=S.recipes.filter(x=>x.id!==id);saveCache();go({view:"list",id:null});
         write("recipes",()=>S.api.deleteRecipe(id)).then(ok=>ok&&toast(t("deleted")))}
