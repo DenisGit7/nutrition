@@ -8,6 +8,7 @@
 //
 // Requests (POST, JSON), all with lang: "en" | "he":
 //   { mode:"recipe",    url?, text?, images?: [{mime,data(base64)}], audio?: {mime,data} }  -> { recipe }
+//   { mode:"nutrition", ingredients:[{name,qty,unit,grams?}] }  -> { ingredients:[{grams,kcal,protein,carbs,fat}] }
 //   { mode:"translate", recipe: {name, ingredients, steps, notes, tags} }                      -> { recipe }
 //   { mode:"product",   images?, text? }  (photo of a package / nutrition label)               -> { product }
 //   { mode:"suggest",   q, count?: 1-3, have?: [product names] }  (ask for recipe ideas)    -> { recipes }
@@ -164,7 +165,7 @@ Reply with ONLY a JSON object, no markdown, in exactly this shape:
   "servings": 2,
   "time": 25,
   "tags": ["breakfast", "quick"],
-  "ingredients": [{"name": "Eggs", "amount": "4", "kcal": 280}],
+  "ingredients": [{"name": "Eggs", "amount": "4", "grams": 200, "kcal": 286, "protein": 25, "carbs": 1.4, "fat": 19}],
   "protein": 14, "carbs": 12, "fat": 11,
   "steps": ["Short step", "Short step"],
   "notes": ""
@@ -173,7 +174,8 @@ Reply with ONLY a JSON object, no markdown, in exactly this shape:
 Rules:
 - Write name, ingredient names, amounts, tags, steps and notes in ${language}. Keep numbers as digits.
 - "amount" includes the unit (e.g. "200 g", "2 tbsp", "1 cup"). If no amount is given, estimate a sensible one and say so in notes.
-- "kcal" = your best estimate of calories for that ingredient line in that amount (number). Never leave it empty.
+- For every ingredient line give "grams" = realistic weight in grams of that amount (dry foods weigh less than water: 1/2 cup rolled oats ≈ 40 g, 1 cup flour ≈ 125 g, 1 tsp cinnamon ≈ 2.6 g; liquids 1 cup ≈ 240 g),
+  and "kcal", "protein", "carbs", "fat" for that line in that amount (numbers, from standard nutrition tables). Never leave them empty.
 - protein / carbs / fat = estimated grams PER SERVING (numbers). servings = how many portions the recipe makes (estimate if missing). time = total minutes or null.
 - Steps: short and clear, one action each, at most 10 steps.
 - 1 to 4 short tags (meal type, main ingredient, diet).
@@ -199,15 +201,26 @@ Reply with ONLY a JSON object:
   "summary": "one short sentence on what makes this variant different",
   "servings": 2, "time": 30,
   "tags": ["lunch", "vegan"],
-  "ingredients": [{"name": "Brown lentils", "amount": "1 cup (200 g)", "kcal": 680}],
+  "ingredients": [{"name": "Brown lentils", "amount": "1 cup", "grams": 190, "kcal": 670, "protein": 48, "carbs": 114, "fat": 2}],
   "protein": 18, "carbs": 45, "fat": 6,
   "steps": ["Short step", "Short step"],
   "notes": "useful tip (soaking, storage, substitutions) or empty"
 } ]}
 Rules: write everything in ${language}; numbers as digits. "amount" includes units, preferably grams in brackets for dry foods.
-"kcal" = estimated calories of that ingredient line; protein/carbs/fat = estimated grams PER SERVING.
+For every ingredient line: "grams" = realistic weight of that amount (1/2 cup rolled oats ≈ 40 g, 1 cup flour ≈ 125 g, liquids 1 cup ≈ 240 g), and "kcal", "protein", "carbs", "fat" for that line (from standard nutrition tables).
+Recipe-level protein/carbs/fat = grams PER SERVING.
 Steps short and clear, one action each, at most 10. 1-4 tags.
 If the question is not about food or cooking, reply {"recipes": [], "reason": "short sentence in ${language}"}.`;
+}
+
+function nutritionPrompt(list: unknown): string {
+  return `For each ingredient line below, give its realistic weight in grams and its nutrition for that amount, using standard nutrition tables (USDA-like values).
+Dry foods weigh less than water: 1/2 cup rolled oats ≈ 40 g, 1 cup flour ≈ 125 g, 1 tbsp honey ≈ 21 g, 1 tsp cinnamon ≈ 2.6 g; liquids 1 cup ≈ 240 g.
+If "grams" is given and is realistic for that amount, keep it; if it is clearly wrong (e.g. 1/2 cup oats given as 120 g), return the correct weight. Water, salt and plain spices can be ~0 kcal.
+Reply with ONLY a JSON object, same order and count as the input:
+{"ingredients": [{"grams": 40, "kcal": 152, "protein": 5.3, "carbs": 27, "fat": 2.6}]}
+
+${JSON.stringify(list)}`;
 }
 
 function productPrompt(lang: string): string {
@@ -275,6 +288,13 @@ async function offBarcode(code: string, lang: string) {
   return p.name ? [p] : [];
 }
 
+function ingMacros(i: any) {
+  const n = (v: any) => (v === undefined || v === null || v === "" || isNaN(Number(v)) ? undefined : Math.round(Number(v) * 10) / 10);
+  const o: Record<string, number> = {};
+  for (const k of ["grams", "protein", "carbs", "fat"]) { const v = n(i?.[k]); if (v !== undefined) o[k] = v; }
+  return o;
+}
+
 async function callGemini(key: string, parts: unknown[]): Promise<any> {
   let lastErr = "";
   for (const model of MODELS) {
@@ -338,6 +358,7 @@ export async function handle(req: Request): Promise<Response> {
         ingredients: (Array.isArray(r.ingredients) ? r.ingredients : []).map((i: any) => ({
           name: String(i?.name || "").trim(), amount: String(i?.amount ?? "").trim(),
           kcal: i?.kcal == null || i?.kcal === "" ? null : Math.round(Number(i.kcal)) || 0,
+          ...ingMacros(i),
         })).filter((i: any) => i.name),
         protein: Number(r.protein) || null, carbs: Number(r.carbs) || null, fat: Number(r.fat) || null,
         steps: (Array.isArray(r.steps) ? r.steps : []).map((x: any) => String(x).trim()).filter(Boolean),
@@ -345,6 +366,21 @@ export async function handle(req: Request): Promise<Response> {
       }));
       if (!list.length) return json({ error: "no_recipe", message: out?.reason || "No recipes found — try asking differently." }, 422);
       return json({ recipes: list });
+    } catch (e) { return aiError(e); }
+  }
+
+  // --- grams + nutrition for each ingredient of a recipe ---
+  if (mode === "nutrition") {
+    const list = (Array.isArray(body.ingredients) ? body.ingredients : []).slice(0, 60).map((i: any) => ({
+      name: String(i?.name || "").slice(0, 120), qty: i?.qty ?? null, unit: String(i?.unit || "").slice(0, 40),
+      grams: i?.grams == null || i?.grams === "" ? null : Number(i.grams),
+    }));
+    if (!list.length) return json({ error: "empty", message: "No ingredients." }, 422);
+    try {
+      const out = await callGemini(key, [{ text: nutritionPrompt(list) }]);
+      const arr = Array.isArray(out?.ingredients) ? out.ingredients : [];
+      const n = (v: any) => (v === undefined || v === null || v === "" || isNaN(Number(v)) ? null : Math.round(Number(v) * 10) / 10);
+      return json({ ingredients: list.map((_: any, k: number) => ({ grams: n(arr[k]?.grams), kcal: n(arr[k]?.kcal), protein: n(arr[k]?.protein), carbs: n(arr[k]?.carbs), fat: n(arr[k]?.fat) })) });
     } catch (e) { return aiError(e); }
   }
 
@@ -436,6 +472,7 @@ export async function handle(req: Request): Promise<Response> {
       ingredients: (Array.isArray(out.ingredients) ? out.ingredients : []).map((i: any) => ({
         name: String(i?.name || "").trim(), amount: String(i?.amount ?? "").trim(),
         kcal: i?.kcal == null || i?.kcal === "" ? null : Math.round(Number(i.kcal)) || 0,
+        ...ingMacros(i),
       })).filter((i: any) => i.name),
       protein: Number(out.protein) || null, carbs: Number(out.carbs) || null, fat: Number(out.fat) || null,
       steps: (Array.isArray(out.steps) ? out.steps : []).map((s: any) => String(s).trim()).filter(Boolean),

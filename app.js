@@ -22,7 +22,7 @@ noRecipes:"No recipes yet. Tap + to add one, or import a recipe Claude made for 
 kcal:"kcal",perServing:"per serving",servings:"Servings",protein:"Protein",carbs:"Carbs",fat:"Fat",time:"Time (min)",min:"min",
 ingredients:"Ingredients",steps:"Steps",notes:"Notes",source:"Source",edit:"Edit",del:"Delete",delAgain:"Tap again to delete",
 save:"Save",cancel:"Cancel",newRecipe:"New recipe",editRecipe:"Edit recipe",name:"Name",ingName:"Ingredient",amount:"Amount",
-addIng:"+ Add ingredient",stepsHint:"one step per line",tags:"Tags (comma separated)",calcFromIng:"from ingredients",
+addIng:"+ Add ingredient",recalcAI:"Recalculate calories with AI",recalcing:"Calculating…",recalcNone:"Nothing to recalculate — all ingredients use your products' numbers",recalcDone:"Updated {n} ingredients",stepsHint:"one step per line",tags:"Tags (comma separated)",calcFromIng:"from ingredients",
 kcalServing:"Calories per serving",macrosServing:"Macros per serving (g)",addToday:"Add to today",added:"Added",saved:"Saved",deleted:"Deleted",
 goal:"Goal",left:"left",over:"over",eaten:"eaten",quickAdd:"Log food",whatAte:"What did you eat?",nothing:"Nothing logged yet for this day.",
 setGoal:"Daily calorie goal",fromRecipe:"From recipe",add:"Add",
@@ -66,7 +66,7 @@ noRecipes:"אין עדיין מתכונים. לחץ + כדי להוסיף, או 
 kcal:"קק״ל",perServing:"למנה",servings:"מנות",protein:"חלבון",carbs:"פחמימות",fat:"שומן",time:"זמן (דק׳)",min:"דק׳",
 ingredients:"מצרכים",steps:"אופן הכנה",notes:"הערות",source:"מקור",edit:"עריכה",del:"מחיקה",delAgain:"לחץ שוב למחיקה",
 save:"שמירה",cancel:"ביטול",newRecipe:"מתכון חדש",editRecipe:"עריכת מתכון",name:"שם",ingName:"מצרך",amount:"כמות",
-addIng:"+ הוספת מצרך",stepsHint:"שלב אחד בכל שורה",tags:"תגיות (מופרדות בפסיק)",calcFromIng:"מחושב מהמצרכים",
+addIng:"+ הוספת מצרך",recalcAI:"חישוב קלוריות מחדש עם AI",recalcing:"מחשב…",recalcNone:"אין מה לחשב — כל המצרכים מקושרים למוצרים שלך",recalcDone:"עודכנו {n} מצרכים",stepsHint:"שלב אחד בכל שורה",tags:"תגיות (מופרדות בפסיק)",calcFromIng:"מחושב מהמצרכים",
 kcalServing:"קלוריות למנה",macrosServing:"ערכים למנה (גרם)",addToday:"הוסף להיום",added:"נוסף",saved:"נשמר",deleted:"נמחק",
 goal:"יעד",left:"נותרו",over:"מעל",eaten:"נאכלו",quickAdd:"רישום אוכל",whatAte:"מה אכלת?",nothing:"עדיין לא נרשם כלום ביום הזה.",
 setGoal:"יעד קלוריות יומי",fromRecipe:"ממתכון",add:"הוסף",
@@ -94,7 +94,7 @@ aiAddShots:"הוספת צילומי מסך",aiGo:"יצירת מתכון",aiWorki
 aiNeedInput:"הדבק קישור, טקסט או הוסף צילומי מסך.",aiDemo:"ייבוא עם AI זמין רק בגרסה המסונכרנת (Supabase).",
 aiSetup:"ייבוא עם AI עדיין לא הוגדר ב-Supabase (ראה README, שלב 6).",aiLinkWarn:"לא הצלחתי לפתוח את הקישור עצמו — המתכון נוצר מהטקסט/צילומי המסך.",aiLinkOnly:"האתר שיתף רק את הכותרת, בלי המתכון. העתק את טקסט הפוסט (עוד → העתקה) לתיבה למעלה, או הוסף צילומי מסך של המצרכים, ואז לחץ שוב על יצירת מתכון."}
 };
-const VERSION = "1.6.0";
+const VERSION = "1.7.0";
 
 /* =================== small utils =================== */
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},
@@ -646,22 +646,24 @@ const WEIGHT_UNITS=new Set(["g","gr","gram","grams","גרם","גר","ג","kg","k
 const PIECE_UNITS=new Set(["piece","pieces","pcs","unit","units","יחידה","יחידות","serving","servings","מנה","מנות"]);
 const unitKey=u=>String(u||"").trim().toLowerCase().replace(/[.״"׳']/g,"").split(/\s+/)[0]||"";
 const sameUnit=(a,b)=>{a=unitKey(a);b=unitKey(b);return a===b||(a.length>=3&&b.length>=3&&a.slice(0,3)===b.slice(0,3))};
+/* only real weights are converted (g, kg, ml, l) and a product's own serving; cups/spoons need grams typed in (or ✨ AI) */
 function unitFactor(u,food){const k=unitKey(u);
-  if(k in UNIT_G)return UNIT_G[k];
-  if(food&&food.serving_g&&(!k||PIECE_UNITS.has(k)||sameUnit(k,food.serving_name)||sameUnit(k,food.serving_alt)))return food.serving_g;
+  if(WEIGHT_UNITS.has(k))return UNIT_G[k];
+  if(food&&food.serving_g&&k&&(sameUnit(k,food.serving_name)||sameUnit(k,food.serving_alt)))return food.serving_g;
+  if(food&&food.serving_g&&(!k||PIECE_UNITS.has(k)))return food.serving_g;
   return null}
 const parseQty=v=>{const s=fixFrac(String(v||"")).replace(",",".").replace(/חצי|half/i,"0.5");const f=s.match(/(\d+)\s*\/\s*(\d+)/);if(f)return +f[1]/+f[2];
   const m=s.match(/\d+(\.\d+)?/);if(m)return +m[0];const w={"אחד":1,"אחת":1,"שתי":2,"שני":2,"שתיים":2,"שלוש":3,"ארבע":4,one:1,two:2,three:3,four:4};
   const x=s.toLowerCase().split(/\s+/).find(z=>w[z]);return x?w[x]:null};
 const fmtQty=q=>q==null||q===""?"":String(Math.round(q*100)/100);
-function parseAmount(text){
+function parseAmount(text,name){
   const s=fixFrac(String(text||"")).trim();if(!s)return {qty:null,unit:"",grams:null};
   const gm=s.match(/\((?:~|כ-?)?\s*(\d+(?:[.,]\d+)?)\s*(?:g|gr|gram|grams|גרם|גר|ג׳|ג'|ml|מ"ל|מל)\s*\)/i);
   const rest=s.replace(/\(.*?\)/g," ").trim();
   let qty=parseQty(rest);
   const unit=rest.replace(/^\s*(\d+(?:[.,]\d+)?(?:\s*\/\s*\d+)?|חצי|half|אחד|אחת|שתי|שני|שתיים|שלוש|ארבע|one|two|three|four)\s*/i,"").trim();
   if(qty==null&&unit)qty=1;
-  const f=unitFactor(unit,null);
+  const f=unitFactor(unit,null,name);
   const grams=gm?parseFloat(gm[1].replace(",",".")):(f!=null&&qty!=null?Math.round(qty*f*10)/10:null);
   return {qty,unit,grams};
 }
@@ -670,7 +672,8 @@ function composeAmount(qty,unit,grams){
   if(grams&&!WEIGHT_UNITS.has(unitKey(u)))out+=(out?" ":"")+`(${fmtQty(grams)} ${t("grams")})`;
   return out}
 function ingRow(i={}){
-  const a=(i.qty!=null||i.unit)?{qty:i.qty,unit:i.unit||"",grams:i.grams??null}:parseAmount(i.amount);
+  const a=(i.qty!=null||i.unit)?{qty:i.qty,unit:i.unit||"",grams:i.grams??null}:parseAmount(i.amount,i.name);
+  if(i.grams!=null&&i.grams!=="")a.grams=num(i.grams);
   return `<div class="ingrow v2 ${i.food?"auto":""}" data-ing='${esc(JSON.stringify({p:i.protein??null,c:i.carbs??null,f:i.fat??null,food:i.food||null}))}'>
   <div class="ing-top"><input type="text" dir="auto" class="in-name" data-food placeholder="${t("ingName")}" value="${esc(i.name||"")}" autocomplete="off">
     <button class="x" type="button" data-act="rmIng" aria-label="remove">×</button></div>
@@ -700,6 +703,7 @@ function viewEdit(r){r=r||S.draft||{servings:1,ingredients:[{},{},{}],steps:[]};
     <div id="ings">${(r.ingredients&&r.ingredients.length?r.ingredients:[{}]).map(ingRow).join("")}</div>
     <datalist id="unitList">${(UNIT_LIST[lang]||UNIT_LIST.en).map(u=>`<option value="${esc(u)}">`).join("")}</datalist>
     <button type="button" class="btn block" data-act="addIng">${t("addIng")}</button>
+    ${CLOUD?`<button type="button" class="btn block ghost" style="margin-top:8px" data-act="aiNutr">✨ ${t("recalcAI")}</button>`:""}
     <div class="muted small" style="margin-top:8px" id="ingSum"></div></div>
   <div class="card"><h2 class="sec">${t("kcalServing")}</h2>
     <input type="number" step="any" inputmode="decimal" name="kcalPerServing" value="${esc(r.kcalPerServing??"")}" id="kcalIn">
@@ -720,11 +724,13 @@ function rowState(row){if(!rowFood.has(row)){let d={};try{d=JSON.parse(row.datas
 function rowVals(row){return {qEl:row.querySelector(".in-qty"),uEl:row.querySelector(".in-unit"),gEl:row.querySelector(".in-g"),kEl:row.querySelector(".in-kcal")}}
 /* src: "qty" | "unit" | "g" | "init" — what the user just changed */
 function recalcRow(row,src="qty"){
-  const st=rowState(row),{qEl,uEl,gEl,kEl}=rowVals(row),q=parseQty(qEl.value),u=uEl.value;
+  const st=rowState(row),{qEl,uEl,gEl,kEl}=rowVals(row),q=parseQty(qEl.value),u=uEl.value,nm=row.querySelector(".in-name").value;
   // 1) grams
-  if(src==="g"){const g=numOrNull(gEl.value),f=unitFactor(u,st.food);
+  if(src==="g"){const g=numOrNull(gEl.value),f=unitFactor(u,st.food,nm);
     if(g!=null&&f&&WEIGHT_UNITS.has(unitKey(u)))qEl.value=fmtQty(g/f)}       // weight units: keep qty in step with grams
-  else{const f=unitFactor(u,st.food);
+  else{const f=unitFactor(u,st.food,nm);
+    if(src==="unit"&&f==null&&st.base&&!sameUnit(u,st.base.unit)){   // e.g. cup → tbsp: the old grams no longer apply, type the new weight
+      gEl.value="";kEl.value="";st.p=st.c=st.f=null;st.base={qty:q,unit:u,grams:null,kcal:null,p:null,c:null,f:null};return}
     if(q!=null&&f!=null)gEl.value=fmtQty(q*f);
     else if(src!=="init"&&q!=null&&st.base&&st.base.grams&&st.base.qty&&sameUnit(u,st.base.unit))gEl.value=fmtQty(st.base.grams*q/st.base.qty)}
   // 2) calories
@@ -1148,7 +1154,7 @@ async function translateRecipe(r,btn){
     const tr=res.recipe||{};
     const rec={...r,name:tr.name||r.name,notes:tr.notes??r.notes,tags:tr.tags||r.tags,steps:tr.steps||r.steps,
       ingredients:(r.ingredients||[]).map((i,k)=>{const ta=(tr.ingredients&&tr.ingredients[k]&&tr.ingredients[k].amount!=null)?tr.ingredients[k].amount:i.amount;
-        const pa=parseAmount(ta);const o={...i,name:(tr.ingredients&&tr.ingredients[k]&&tr.ingredients[k].name)||i.name,amount:ta};
+        const pa=parseAmount(ta,i.name);const o={...i,name:(tr.ingredients&&tr.ingredients[k]&&tr.ingredients[k].name)||i.name,amount:ta};
         if(i.qty!=null||i.unit){o.qty=pa.qty??i.qty;o.unit=pa.unit||i.unit;o.amount=composeAmount(o.qty,o.unit,i.grams)}return o})};
     const i=S.recipes.findIndex(x=>x.id===r.id);if(i>=0)S.recipes[i]=rec;saveCache();rerender();
     const ok=await write("recipes",()=>S.api.saveRecipe(rec));if(ok)toast(t("translated"));
@@ -1321,7 +1327,7 @@ function normalizeRecipe(o){
   if(!o||typeof o!=="object")return null;
   const name=String(o.name||o.title||"").trim();if(!name)return null;
   let ings=o.ingredients||[];if(typeof ings==="string")ings=ings.split("\n");
-  ings=ings.map(i=>typeof i==="string"?((m=>m?{name:m[1].trim(),amount:m[2].trim(),kcal:null}:{name:i.trim(),amount:"",kcal:null})(i.match(/^(.*?)\s+[-–—:]\s*(.+)$/))):{name:String(i.name||i.item||"").trim(),amount:String(i.amount??i.qty??i.quantity??"").trim(),kcal:numOrNull(i.kcal??i.calories)}).filter(i=>i.name);
+  ings=ings.map(i=>typeof i==="string"?((m=>m?{name:m[1].trim(),amount:m[2].trim(),kcal:null}:{name:i.trim(),amount:"",kcal:null})(i.match(/^(.*?)\s+[-–—:]\s*(.+)$/))):((x=>{["grams","protein","carbs","fat"].forEach(k=>{const v=numOrNull(i[k]);if(v!=null)x[k]=v});return x})({name:String(i.name||i.item||"").trim(),amount:String(i.amount??i.qty??i.quantity??"").trim(),kcal:numOrNull(i.kcal??i.calories)}))).filter(i=>i.name);
   let steps=o.steps||o.instructions||[];if(typeof steps==="string")steps=steps.split("\n");
   steps=steps.map(s=>String(typeof s==="object"?(s.text||""):s).trim()).filter(Boolean);
   let tags=o.tags||[];if(typeof tags==="string")tags=tags.split(",");
@@ -1374,6 +1380,7 @@ document.addEventListener("click",e=>{
         write("recipes",()=>S.api.deleteRecipe(id)).then(ok=>ok&&toast(t("deleted")))}
       else{delArm=r.id;render();setTimeout(()=>{if(delArm===r.id){delArm=null;if(route.view==="detail")render()}},3000)}
       break;
+    case "aiNutr":recalcWithAI(a);break;
     case "addIng":$("#ings").insertAdjacentHTML("beforeend",ingRow());$("#ings").lastElementChild.querySelector("input").focus();break;
     case "rmIng":a.closest(".ingrow").remove();updIngSum();break;
     case "cancel":go({view:route.id?"detail":"list"});break;
@@ -1441,13 +1448,41 @@ document.addEventListener("foodpick",e=>{const el=e.target,food=e.detail;
     recalcRow(row,"qty");updIngSum();qEl.focus();qEl.select&&qEl.select()}
   else if(el.id==="shopIn"){el.value=food.name+" - ";el.focus();try{el.setSelectionRange(el.value.length,el.value.length)}catch(_){}}
 });
+/* ask the AI for realistic grams + calories + macros of every ingredient not linked to a product */
+async function recalcWithAI(btn){const f=$("#editForm");if(!f)return;
+  const isW=r=>WEIGHT_UNITS.has(unitKey(rowVals(r).uEl.value));
+  const noMacros=fd=>fd.protein==null||fd.carbs==null||fd.fat==null;
+  // every unlinked row; linked rows only if measured in cups/spoons/pieces (grams to check) or the product lacks protein/carbs/fat
+  const rows=[...f.querySelectorAll(".ingrow")].filter(r=>{const fd=rowState(r).food;return r.querySelector(".in-name").value.trim()&&(!fd||!isW(r)||noMacros(fd))});
+  if(!rows.length){toast(t("recalcNone"));return}
+  btn.disabled=true;const old=btn.innerHTML;btn.innerHTML=`<span class="spin"></span>${t("recalcing")}`;
+  try{const res=await S.api.callFn({mode:"nutrition",lang,ingredients:rows.map(r=>{const {qEl,uEl,gEl}=rowVals(r);
+      return {name:r.querySelector(".in-name").value.trim(),qty:parseQty(qEl.value),unit:uEl.value.trim(),grams:numOrNull(gEl.value)}})});
+    const out=res&&res.ingredients||[];let n=0;
+    rows.forEach((r,k)=>{const o=out[k];if(!o||o.kcal==null)return;const st=rowState(r),{qEl,uEl,gEl,kEl}=rowVals(r);
+      if(st.food){  // your product: keep its calories per 100 g; take realistic grams for cups/spoons, fill missing protein/carbs/fat
+        if(o.grams!=null&&(!isW(r)||!numOrNull(gEl.value)))gEl.value=fmtQty(o.grams);
+        const g=numOrNull(gEl.value);if(!g)return;const per=v=>v==null||!o.grams?null:r1(v*100/o.grams);
+        st.food={...st.food,protein:st.food.protein??per(o.protein),carbs:st.food.carbs??per(o.carbs),fat:st.food.fat??per(o.fat)};
+        recalcRow(r,"g");n++;return}
+      // grams typed in g/kg/ml stay as they are (AI numbers are scaled to them); cups/spoons/pieces take the AI's realistic weight
+      const myG=isW(r)?numOrNull(gEl.value):null,sc=myG&&o.grams?myG/o.grams:1,m=v=>v==null?null:r1(v*sc);
+      if(!myG&&o.grams!=null)gEl.value=fmtQty(o.grams);kEl.value=Math.round(num(o.kcal)*sc);
+      st.p=m(o.protein);st.c=m(o.carbs);st.f=m(o.fat);r.classList.remove("auto");
+      st.base={qty:parseQty(qEl.value),unit:uEl.value,grams:numOrNull(gEl.value),kcal:numOrNull(kEl.value),p:st.p,c:st.c,f:st.f};n++});
+    // per-serving numbers now come straight from the ingredients
+    let s=0;f.querySelectorAll(".in-kcal").forEach(i=>s+=num(i.value));const sv=Math.max(1,num(f.servings.value)||1);
+    f.kcalPerServing.value=s?Math.round(s/sv):"";["protein","carbs","fat"].forEach(k=>f.elements.namedItem(k).value="");
+    captureBaseline();updIngSum();toast(t("recalcDone").replace("{n}",n));
+  }catch(e){toast(e.code==="setup"?t("aiSetup"):errMsg(e))}
+  btn.disabled=false;btn.innerHTML=old}
 /* link ingredients whose name matches one of your products (e.g. after AI import) */
 function autoLinkRows(){const f=$("#editForm");if(!f)return;let changed=false;
   f.querySelectorAll(".ingrow").forEach(row=>{const st=rowState(row);if(st.food)return;const nm=norm(row.querySelector(".in-name").value);if(!nm)return;
     const mine=S.products.find(p=>norm(p.name)===nm);const com=!mine&&commonFoods().find(c=>norm(c.name)===nm||norm(c.alt)===nm);
     const food=mine||com;if(!food)return;const kcalEl=row.querySelector(".in-kcal");
     if(mine||!kcalEl.value.trim()){st.food=foodSnap(food);const {qEl,uEl,gEl}=rowVals(row);
-      const canWeigh=numOrNull(gEl.value)||(parseQty(qEl.value)!=null&&unitFactor(uEl.value,st.food)!=null);
+      const canWeigh=numOrNull(gEl.value)||(parseQty(qEl.value)!=null&&unitFactor(uEl.value,st.food,row.querySelector(".in-name").value)!=null);
       if(canWeigh){recalcRow(row,"init");changed=true}else if(!mine)st.food=null}});
   if(changed)updIngSum()}
 document.addEventListener("submit",e=>{

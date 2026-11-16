@@ -134,6 +134,17 @@ then **Add** a recipe straight to your list or **Edit first**.
 Recipes now have a picture of the dish: from the link (recipe site / Instagram / Facebook preview, YouTube thumbnail),
 the first screenshot or video frame, a Wikipedia photo for "Ask AI" recipes, or your own photo / "Find picture online" in the editor.
 
+## Updating to 1.7.0 (accurate calories) — do once
+
+**AI function:** Edge Functions → `import-recipe` → **Code** → replace with the new
+`supabase/functions/import-recipe/index.ts` → **Deploy** (check the new code contains `nutritionPrompt`). No database change.
+
+- Grams are the source of truth: only g / kg / ml / l and a product's own serving are converted automatically.
+  For cups, spoons and pieces, type the grams — or tap **✨ Recalculate calories with AI**.
+- **✨ Recalculate calories with AI** (recipe editor) gives every ingredient realistic grams, calories, protein, carbs and fat.
+  Ingredients linked to your products keep the product's calories per 100 g; missing protein/carbs/fat are filled in.
+- Imported and "Ask AI" recipes now come with grams and macros for each ingredient.
+
 ---
 
 ## Adding recipes from a link (without AI import)
