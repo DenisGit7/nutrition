@@ -44,7 +44,8 @@ create table if not exists public.recipes (
   created_by       uuid default auth.uid() references auth.users(id) on delete set null,
   created_at       timestamptz not null default now(),
   updated_at       timestamptz not null default now(),
-  cooked_g   numeric
+  cooked_g   numeric,
+  cooked_weighed boolean not null default false
 );
 
 -- Shared with the household
@@ -299,3 +300,6 @@ create policy "product images delete" on storage.objects for delete to authentic
 
 -- ===== included from 004_recipe_images.sql (v1.5.0) =====
 alter table public.recipes add column if not exists image text;
+
+-- 009 (1.14): cooked weight typed by the user (otherwise calculated from cooking yields)
+alter table public.recipes add column if not exists cooked_weighed boolean not null default false;

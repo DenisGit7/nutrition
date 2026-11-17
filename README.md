@@ -208,3 +208,14 @@ paste → **Import**. You can edit everything afterwards.
 | `supabase/schema.sql` | database tables + security rules (run once) |
 
 Without `config.js` filled in, the app runs in **demo mode** (saved on that device only).
+
+## Updating to 1.14.0 (automatic cooked weights) — do once
+
+**Database:** SQL Editor → New query → paste all of `supabase/009_cooked_weighed.sql` → **Run**.
+
+Cooked weights are now calculated automatically from standard cooking yields (`yields.js`, based on USDA:
+dry rice ×2.8, pasta ×2.4, oats ×5.5, lentils ×3, mung beans ×3.3, chicken ×0.72 …), assuming normal home cooking.
+Water the grains/legumes absorb is counted, extra water is drained/evaporated (kept in soups, partly in stews).
+Existing recipes switch to the automatic value, and food-log entries logged by cooked grams are recounted once.
+A weight you type yourself (weighed pot) always wins and is marked as weighed (synced after running 009).
+Dry products (rice, pasta, lentils, quinoa …) get a **Dry / Cooked** switch when logging by grams.
