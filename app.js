@@ -24,7 +24,7 @@ ingredients:"Ingredients",steps:"Steps",notes:"Notes",source:"Source",edit:"Edit
 save:"Save",cancel:"Cancel",newRecipe:"New recipe",editRecipe:"Edit recipe",name:"Name",ingName:"Ingredient",amount:"Amount",
 addIng:"+ Add ingredient",recalcAI:"Recalculate calories with AI",recalcing:"Calculating…",recalcNone:"Nothing to recalculate — all ingredients use your products' numbers",recalcDone:"Updated {n} ingredients",stepsHint:"one step per line",tags:"Tags (comma separated)",calcFromIng:"from ingredients",
 kcalServing:"Calories per serving",macrosServing:"Macros per serving (g)",addToday:"Add to today",added:"Added",saved:"Saved",deleted:"Deleted",
-goal:"Goal",left:"left",over:"over",eaten:"eaten",quickAdd:"Log food",whatAte:"What did you eat?",sortBy:"Sort",sortAdded:"As added",sortCat:"By category",chooseCat:"Category",cat_veg:"Vegetables",cat_fruit:"Fruit",cat_dairy:"Dairy & eggs",cat_meat:"Meat & fish",cat_bakery:"Bakery",cat_grains:"Rice, pasta & legumes",cat_pantry:"Pantry",cat_frozen:"Frozen",cat_snacks:"Snacks & sweets",cat_drinks:"Drinks",cat_home:"Home & cleaning",cat_other:"Other",addMeal:"Add meal",mealName:"Meal name",everyDay:"Show every day",everyDayMeals:"Your every-day meals",mealEx1:"Snack 2",mealEx2:"Pre-workout",mealEx3:"Post-workout",mealEx4:"Late snack",needDbMeals2:"Saved on this device only — run 007_custom_meals.sql in Supabase to sync your meals",cookedW:"Cooked weight of the whole dish (g)",cookedWShort:"Cooked weight",calculating:"Calculating…",needKcal:"Type the calories, or pick the food again",per100:"Per 100 g",rawCol:"Raw",cookedCol:"Cooked",noCookedYet:"cooked weight not set yet",cookedWPh:"e.g. 1200",cookedWHint:"Leave empty: calculated automatically from standard cooking yields. Or weigh the finished dish (pot minus the empty pot) and type it.",estimate:"Estimate",cookedSet:"Cooked weight ≈ {g} g",cookedWord:"cooked",dryW:"Dry",cookedBtn:"Cooked",ckHint:"{g} g cooked ≈ {d} g dry (normal cooking, ×{y})",autoPh:"Auto: {g} g",cookedAutoHint:"Calculated automatically from standard cooking yields (normal home cooking). Weighed the pot? Type the real weight — it is saved in the recipe.",needDbWeighed:"Run 009_cooked_weighed.sql in Supabase so weighed cooked weights sync between devices",rawW:"raw ingredients",cookedWLogHint:"Grams count as cooked food. Weighed the pot? Type the real weight — it is saved in the recipe.",cookedWMissing:"Type the cooked weight of the whole dish, or switch to servings.",estimatingCooked:"Estimating the cooked weight…",needDbCooked:"Run 006_recipe_cooked_weight.sql in Supabase to save cooked weights in recipes",meal_breakfast:"Breakfast",meal_lunch:"Lunch",meal_dinner:"Dinner",meal_snack:"Snack",editEntry:"Edit meal entry",editAmountHint:"Changing the amount updates calories, protein, carbs and fat.",needDbMeals:"Saved without the meal — run 005_food_log_meals.sql in Supabase to keep meals",logSearch:"Search your recipes and products…",byGrams:"Grams",byServings:"Servings",servingsWord:"servings",servingWord:"serving",change:"Change",needDishW:"Type the cooked weight of the whole dish to count by grams, or switch to servings.",nothing:"Nothing logged yet for this day.",
+goal:"Goal",left:"left",over:"over",eaten:"eaten",quickAdd:"Log food",whatAte:"What did you eat?",sortBy:"Sort",sortAdded:"As added",sortCat:"By category",chooseCat:"Category",cat_veg:"Vegetables",cat_fruit:"Fruit",cat_dairy:"Dairy & eggs",cat_meat:"Meat & fish",cat_bakery:"Bakery",cat_grains:"Rice, pasta & legumes",cat_pantry:"Pantry",cat_frozen:"Frozen",cat_snacks:"Snacks & sweets",cat_drinks:"Drinks",cat_home:"Home & cleaning",cat_other:"Other",addMeal:"Add meal",mealName:"Meal name",everyDay:"Show every day",everyDayMeals:"Your every-day meals",mealEx1:"Snack 2",mealEx2:"Pre-workout",mealEx3:"Post-workout",mealEx4:"Late snack",needDbMeals2:"Saved on this device only — run 007_custom_meals.sql in Supabase to sync your meals",cookedW:"Cooked weight of the whole dish (g)",cookedWShort:"Cooked weight",calculating:"Calculating…",needKcal:"Type the calories, or pick the food again",per100:"Per 100 g",rawCol:"Raw",cookedCol:"Cooked",noCookedYet:"cooked weight not set yet",cookedWPh:"e.g. 1200",cookedWHint:"Leave empty: calculated automatically from standard cooking yields. Or weigh the finished dish (pot minus the empty pot) and type it.",estimate:"Estimate",cookedSet:"Cooked weight ≈ {g} g",cookedWord:"cooked",dryW:"Dry",cookedBtn:"Cooked",ckHint:"{g} g cooked ≈ {d} g dry (normal cooking, ×{y})",autoPh:"Auto: {g} g",cookedAutoHint:"Calculated automatically from standard cooking yields (normal home cooking). Weighed the pot? Type the real weight — it is saved in the recipe.",needDbWeighed:"Run 009_cooked_weighed.sql in Supabase so weighed cooked weights sync between devices",rawW:"raw ingredients",cookedWLogHint:"Grams count as cooked food. Weighed the pot? Type the real weight — it is saved in the recipe.",cookedWMissing:"Type the cooked weight of the whole dish, or switch to servings.",estimatingCooked:"Estimating the cooked weight…",needDbCooked:"Run 006_recipe_cooked_weight.sql in Supabase to save cooked weights in recipes",meal_breakfast:"Breakfast",meal_lunch:"Lunch",meal_dinner:"Dinner",meal_snack:"Snack",movedTo:"Moved to {m}",dragHint:"Tip: hold an item (or drag its icon) to move it to another meal",editEntry:"Edit meal entry",editAmountHint:"Changing the amount updates calories, protein, carbs and fat.",needDbMeals:"Saved without the meal — run 005_food_log_meals.sql in Supabase to keep meals",logSearch:"Search your recipes and products…",byGrams:"Grams",byServings:"Servings",servingsWord:"servings",servingWord:"serving",change:"Change",needDishW:"Type the cooked weight of the whole dish to count by grams, or switch to servings.",nothing:"Nothing logged yet for this day.",
 setGoal:"Daily calorie goal",fromRecipe:"From recipe",add:"Add",
 cloud:"Synced",local:"Demo mode — saved on this device only",offline:"Offline — showing saved copy",
 loading:"Loading…",needName:"Please enter a name",prev:"Previous day",next:"Next day",todayBtn:"Back to today",total:"Total",
@@ -68,7 +68,7 @@ ingredients:"מצרכים",steps:"אופן הכנה",notes:"הערות",source:"
 save:"שמירה",cancel:"ביטול",newRecipe:"מתכון חדש",editRecipe:"עריכת מתכון",name:"שם",ingName:"מצרך",amount:"כמות",
 addIng:"+ הוספת מצרך",recalcAI:"חישוב קלוריות מחדש עם AI",recalcing:"מחשב…",recalcNone:"אין מה לחשב — כל המצרכים מקושרים למוצרים שלך",recalcDone:"עודכנו {n} מצרכים",stepsHint:"שלב אחד בכל שורה",tags:"תגיות (מופרדות בפסיק)",calcFromIng:"מחושב מהמצרכים",
 kcalServing:"קלוריות למנה",macrosServing:"ערכים למנה (גרם)",addToday:"הוסף להיום",added:"נוסף",saved:"נשמר",deleted:"נמחק",
-goal:"יעד",left:"נותרו",over:"מעל",eaten:"נאכלו",quickAdd:"רישום אוכל",whatAte:"מה אכלת?",sortBy:"מיון",sortAdded:"לפי הוספה",sortCat:"לפי קטגוריה",chooseCat:"קטגוריה",cat_veg:"ירקות",cat_fruit:"פירות",cat_dairy:"מוצרי חלב וביצים",cat_meat:"בשר ודגים",cat_bakery:"מאפייה",cat_grains:"אורז, פסטה וקטניות",cat_pantry:"מזווה",cat_frozen:"קפואים",cat_snacks:"חטיפים ומתוקים",cat_drinks:"משקאות",cat_home:"בית וניקיון",cat_other:"אחר",addMeal:"הוספת ארוחה",mealName:"שם הארוחה",everyDay:"להציג כל יום",everyDayMeals:"הארוחות הקבועות שלך",mealEx1:"נשנוש 2",mealEx2:"לפני אימון",mealEx3:"אחרי אימון",mealEx4:"נשנוש לילה",needDbMeals2:"נשמר רק במכשיר הזה — הרץ את 007_custom_meals.sql ב-Supabase כדי לסנכרן ארוחות",cookedW:"משקל כל המנה המבושלת (גרם)",cookedWShort:"משקל מבושל",calculating:"מחשב…",needKcal:"הקלד את הקלוריות, או בחר את המאכל שוב",per100:"ל-100 גרם",rawCol:"לא מבושל",cookedCol:"מבושל",noCookedYet:"משקל מבושל עוד לא הוגדר",cookedWPh:"למשל 1200",cookedWHint:"השאר ריק: מחושב אוטומטית לפי מקדמי בישול סטנדרטיים. או שקול את המנה המוכנה (הסיר פחות הסיר הריק) והקלד.",estimate:"הערכה",cookedSet:"משקל מבושל ≈ {g} גרם",cookedWord:"מבושל",dryW:"יבש",cookedBtn:"מבושל",ckHint:"{g} גרם מבושל ≈ {d} גרם יבש (בישול רגיל, ×{y})",autoPh:"אוטומטי: {g} גרם",cookedAutoHint:"מחושב אוטומטית לפי מקדמי בישול סטנדרטיים (בישול ביתי רגיל). שקלת את הסיר? הקלד את המשקל האמיתי — הוא יישמר במתכון.",needDbWeighed:"הרץ את 009_cooked_weighed.sql ב-Supabase כדי שמשקל שנשקל יסונכרן בין המכשירים",rawW:"מצרכים לא מבושלים",cookedWLogHint:"הגרמים נספרים כאוכל מבושל. שקלת את הסיר? הקלד את המשקל האמיתי — הוא יישמר במתכון.",cookedWMissing:"הקלד את משקל כל המנה המבושלת, או עבור למנות.",estimatingCooked:"מעריך את המשקל המבושל…",needDbCooked:"הרץ את 006_recipe_cooked_weight.sql ב-Supabase כדי לשמור משקל מבושל במתכונים",meal_breakfast:"בוקר",meal_lunch:"צהריים",meal_dinner:"ערב",meal_snack:"נשנוש",editEntry:"עריכת רישום",editAmountHint:"שינוי הכמות מעדכן קלוריות, חלבון, פחמימות ושומן.",needDbMeals:"נשמר בלי הארוחה — הרץ את 005_food_log_meals.sql ב-Supabase כדי לשמור ארוחות",logSearch:"חיפוש במתכונים ובמוצרים שלך…",byGrams:"גרמים",byServings:"מנות",servingsWord:"מנות",servingWord:"מנה",change:"החלפה",needDishW:"הקלד את משקל כל המנה המבושלת כדי לחשב לפי גרמים, או עבור למנות.",nothing:"עדיין לא נרשם כלום ביום הזה.",
+goal:"יעד",left:"נותרו",over:"מעל",eaten:"נאכלו",quickAdd:"רישום אוכל",whatAte:"מה אכלת?",sortBy:"מיון",sortAdded:"לפי הוספה",sortCat:"לפי קטגוריה",chooseCat:"קטגוריה",cat_veg:"ירקות",cat_fruit:"פירות",cat_dairy:"מוצרי חלב וביצים",cat_meat:"בשר ודגים",cat_bakery:"מאפייה",cat_grains:"אורז, פסטה וקטניות",cat_pantry:"מזווה",cat_frozen:"קפואים",cat_snacks:"חטיפים ומתוקים",cat_drinks:"משקאות",cat_home:"בית וניקיון",cat_other:"אחר",addMeal:"הוספת ארוחה",mealName:"שם הארוחה",everyDay:"להציג כל יום",everyDayMeals:"הארוחות הקבועות שלך",mealEx1:"נשנוש 2",mealEx2:"לפני אימון",mealEx3:"אחרי אימון",mealEx4:"נשנוש לילה",needDbMeals2:"נשמר רק במכשיר הזה — הרץ את 007_custom_meals.sql ב-Supabase כדי לסנכרן ארוחות",cookedW:"משקל כל המנה המבושלת (גרם)",cookedWShort:"משקל מבושל",calculating:"מחשב…",needKcal:"הקלד את הקלוריות, או בחר את המאכל שוב",per100:"ל-100 גרם",rawCol:"לא מבושל",cookedCol:"מבושל",noCookedYet:"משקל מבושל עוד לא הוגדר",cookedWPh:"למשל 1200",cookedWHint:"השאר ריק: מחושב אוטומטית לפי מקדמי בישול סטנדרטיים. או שקול את המנה המוכנה (הסיר פחות הסיר הריק) והקלד.",estimate:"הערכה",cookedSet:"משקל מבושל ≈ {g} גרם",cookedWord:"מבושל",dryW:"יבש",cookedBtn:"מבושל",ckHint:"{g} גרם מבושל ≈ {d} גרם יבש (בישול רגיל, ×{y})",autoPh:"אוטומטי: {g} גרם",cookedAutoHint:"מחושב אוטומטית לפי מקדמי בישול סטנדרטיים (בישול ביתי רגיל). שקלת את הסיר? הקלד את המשקל האמיתי — הוא יישמר במתכון.",needDbWeighed:"הרץ את 009_cooked_weighed.sql ב-Supabase כדי שמשקל שנשקל יסונכרן בין המכשירים",rawW:"מצרכים לא מבושלים",cookedWLogHint:"הגרמים נספרים כאוכל מבושל. שקלת את הסיר? הקלד את המשקל האמיתי — הוא יישמר במתכון.",cookedWMissing:"הקלד את משקל כל המנה המבושלת, או עבור למנות.",estimatingCooked:"מעריך את המשקל המבושל…",needDbCooked:"הרץ את 006_recipe_cooked_weight.sql ב-Supabase כדי לשמור משקל מבושל במתכונים",meal_breakfast:"בוקר",meal_lunch:"צהריים",meal_dinner:"ערב",meal_snack:"נשנוש",movedTo:"הועבר ל{m}",dragHint:"טיפ: לחיצה ארוכה על פריט (או גרירת הסמל שלו) מעבירה אותו לארוחה אחרת",editEntry:"עריכת רישום",editAmountHint:"שינוי הכמות מעדכן קלוריות, חלבון, פחמימות ושומן.",needDbMeals:"נשמר בלי הארוחה — הרץ את 005_food_log_meals.sql ב-Supabase כדי לשמור ארוחות",logSearch:"חיפוש במתכונים ובמוצרים שלך…",byGrams:"גרמים",byServings:"מנות",servingsWord:"מנות",servingWord:"מנה",change:"החלפה",needDishW:"הקלד את משקל כל המנה המבושלת כדי לחשב לפי גרמים, או עבור למנות.",nothing:"עדיין לא נרשם כלום ביום הזה.",
 setGoal:"יעד קלוריות יומי",fromRecipe:"ממתכון",add:"הוסף",
 cloud:"מסונכרן",local:"מצב הדגמה — נשמר במכשיר הזה בלבד",offline:"אין חיבור — מוצג עותק שמור",
 loading:"טוען…",needName:"נא להזין שם",prev:"יום קודם",next:"יום הבא",todayBtn:"חזרה להיום",total:"סה״כ",
@@ -94,7 +94,7 @@ aiAddShots:"הוספת צילומי מסך",aiGo:"יצירת מתכון",aiWorki
 aiNeedInput:"הדבק קישור, טקסט או הוסף צילומי מסך.",aiDemo:"ייבוא עם AI זמין רק בגרסה המסונכרנת (Supabase).",
 aiSetup:"ייבוא עם AI עדיין לא הוגדר ב-Supabase (ראה README, שלב 6).",aiLinkWarn:"לא הצלחתי לפתוח את הקישור עצמו — המתכון נוצר מהטקסט/צילומי המסך.",aiLinkOnly:"האתר שיתף רק את הכותרת, בלי המתכון. העתק את טקסט הפוסט (עוד → העתקה) לתיבה למעלה, או הוסף צילומי מסך של המצרכים, ואז לחץ שוב על יצירת מתכון."}
 };
-const VERSION = "1.14.0";
+const VERSION = "1.15.0";
 
 /* =================== small utils =================== */
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},
@@ -525,6 +525,7 @@ function go(r){route={...route,...r};delArm=null;clearArm=false;
   if(r.tab&&["today","recipes","shopping","products"].includes(r.tab)){LS.set("nt.tab",r.tab);if(location.hash!=="#"+r.tab){try{history.replaceState(null,"","#"+r.tab)}catch(e){}}}
   render();window.scrollTo(0,0)}
 function rerender(){ // re-render unless the user is typing in a form we'd destroy
+  if(mealDrag&&mealDrag.on){mealDrag.pending=true;return}
   if(route.view==="edit"&&route.tab==="recipes"){applyChrome();setStatus();return}
   if(route.tab==="settings"&&document.activeElement&&document.activeElement.closest&&document.activeElement.closest("#view input")){applyChrome();return}
   render()}
@@ -835,12 +836,12 @@ function viewToday(){
   </div>
   ${dayMeals(curDate).map(m=>{const list=es.filter(e=>mealOf(e)===m),k=list.reduce((a,e)=>a+num(e.kcal),0),pr=list.reduce((a,e)=>a+num(e.protein),0);
     const shut=mealClosed().includes(m);
-    return `<div class="card mealcard ${list.length?"":"nomeal"} ${shut?"shut":""}"><div class="mealhead" data-act="toggleMeal" data-meal="${esc(m)}" role="button" aria-expanded="${!shut}">
+    return `<div class="card mealcard ${list.length?"":"nomeal"} ${shut?"shut":""}" data-mealbox="${esc(m)}" style="--mc:${mealColor(m)}"><div class="mealhead" data-act="toggleMeal" data-meal="${esc(m)}" role="button" aria-expanded="${!shut}">
       <span class="chev">${shut?"›":"⌄"}</span><span class="mic">${mealIcon(m)}</span><b class="grow mname" dir="auto">${esc(mealLabel(m))}${shut&&list.length?`<span class="muted small" style="font-weight:500"> · ${list.length}</span>`:""}</b>
       <span class="mealk"><b>${r0(k)}</b> ${t("kcal")}</span>
       <button class="iconbtn sm" data-act="logMeal" data-meal="${esc(m)}" aria-label="${t("add")}">${ICON.plus}</button></div>
     ${shut||!list.length?"":`<div class="entry mhcols"><span class="grow"></span><span class="nc p">${t("protein")[0]}</span><span class="nc c">${t("carbs")[0]}</span><span class="nc f">${t("fat")[0]}</span><span class="nk">${t("kcal")}</span><span class="xsp"></span></div>`}
-    ${shut?"":list.map(e=>{const am=amountText(e),g=v=>{const x=num(v);return x>=10?r0(x):r1(x)};return `<div class="entry" data-act="editEntry" data-id="${esc(e.id)}" style="cursor:pointer"><div class="ic" style="background:${grad(e.name)}">${esc(initial(e.name))}</div>
+    ${shut?"":list.map(e=>{const am=amountText(e),g=v=>{const x=num(v);return x>=10?r0(x):r1(x)};return `<div class="entry" data-act="editEntry" data-drag="${esc(e.id)}" data-id="${esc(e.id)}" style="cursor:pointer"><div class="ic" data-grip="1" style="background:${grad(e.name)}">${esc(initial(e.name))}</div>
       <div class="grow" style="min-width:0"><div class="ename" dir="auto">${esc(e.name)}</div>
       <div class="muted small">${am?esc(am):(e.servings&&e.servings!=1?esc(e.servings)+" ×":"")}</div></div>
       <span class="nc p">${g(e.protein)}</span><span class="nc c">${g(e.carbs)}</span><span class="nc f">${g(e.fat)}</span>
@@ -849,6 +850,7 @@ function viewToday(){
     ${shut||!list.length?"":(()=>{const sum=k=>list.reduce((a,e)=>a+num(e[k]),0),g=x=>x>=10?r0(x):r1(x);
       return `<div class="entry mtotal"><span class="grow">${t("total")}</span><span class="nc p">${g(sum("protein"))}</span><span class="nc c">${g(sum("carbs"))}</span><span class="nc f">${g(sum("fat"))}</span><b class="nk">${r0(sum("kcal"))}</b><span class="xsp"></span></div>`})()}</div>`}).join("")}
   <button class="btn ghost block" data-act="addMeal">${ICON.plus}${t("addMeal")}</button>
+  ${es.length&&dayMeals(curDate).length>1?`<div class="muted small" style="text-align:center;margin-top:-4px">${t("dragHint")}</div>`:""}
   </div>`;
 }
 
@@ -969,6 +971,54 @@ function viewSettings(){
   </div>`;
 }
 
+/* ---------- drag a logged item to another meal (v1.15) ---------- */
+// Mouse: drag the row. Touch: hold ~0.4 s (or drag the round icon right away). Works with collapsed and empty meals.
+let mealDrag=null;
+function moveEntryToMeal(id,meal){
+  const day=curDate,e=(S.log[day]||[]).find(x=>x.id===id);if(!e||mealOf(e)===meal)return;
+  const upd={...e,meal};S.log[day]=S.log[day].map(x=>x.id===id?upd:x);render();
+  toast(t("movedTo").replace("{m}",mealLabel(meal)));
+  S.api.warn="";write("log",()=>S.api.updateLog(upd)).then(()=>{if(S.api.warn)setTimeout(()=>toast(S.api.warn),2100)})}
+(function(){
+  const HOLD=420,SLOP=8;
+  const boxAt=(x,y)=>{for(const el of document.elementsFromPoint(x,y)){if(el.closest("#tabs,.fab,#fab"))continue;const m=el.closest("[data-mealbox]");if(m)return m}return null};
+  function start(){const d=mealDrag;d.on=true;navigator.vibrate&&navigator.vibrate(15);
+    const r=d.row.getBoundingClientRect(),g=d.row.cloneNode(true);g.className="entry dragghost";g.removeAttribute("data-act");
+    g.style.width=r.width+"px";g.style.left=r.left+"px";g.style.top=r.top+"px";d.dx=d.x0-r.left;d.dy=d.y0-r.top;
+    document.body.appendChild(g);d.ghost=g;d.row.classList.add("dragsrc");document.body.classList.add("dragging");
+    d.from=d.row.closest("[data-mealbox]");document.querySelectorAll("[data-mealbox]").forEach(b=>b.classList.toggle("dropok",b!==d.from))}
+  function move(x,y){const d=mealDrag;d.ghost.style.left=(x-d.dx)+"px";d.ghost.style.top=(y-d.dy)+"px";
+    const b=boxAt(x,y);if(b!==d.over){d.over&&d.over.classList.remove("droptarget");d.over=b&&b!==d.from?b:null;d.over&&d.over.classList.add("droptarget")}
+    const h=innerHeight,edge=70;d.vy=y<edge?-Math.ceil((edge-y)/6):y>h-edge?Math.ceil((y-(h-edge))/6):0;
+    if(d.vy&&!d.raf){const tick=()=>{if(!mealDrag||!mealDrag.on||!mealDrag.vy){if(mealDrag)mealDrag.raf=0;return}scrollBy(0,mealDrag.vy);mealDrag.raf=requestAnimationFrame(tick)};d.raf=requestAnimationFrame(tick)}}
+  function end(drop){const d=mealDrag;if(!d)return;clearTimeout(d.timer);mealDrag=null;
+    if(!d.on)return;
+    d.ghost&&d.ghost.remove();d.row.classList.remove("dragsrc");document.body.classList.remove("dragging");
+    document.querySelectorAll("[data-mealbox]").forEach(b=>b.classList.remove("dropok","droptarget"));
+    blockClick=Date.now();
+    if(drop&&d.over&&document.body.contains(d.row))moveEntryToMeal(d.id,d.over.dataset.mealbox);
+    else if(d.pending)render()}
+  let blockClick=0;
+  document.addEventListener("click",e=>{if(Date.now()-blockClick<400){e.preventDefault();e.stopPropagation()}},true);
+  document.addEventListener("pointerdown",e=>{
+    if(mealDrag||route.tab!=="today"||(e.pointerType==="mouse"&&e.button!==0))return;
+    const row=e.target.closest&&e.target.closest("[data-drag]");if(!row||e.target.closest(".x"))return;
+    const grip=!!e.target.closest("[data-grip]");
+    mealDrag={id:row.dataset.drag,row,x0:e.clientX,y0:e.clientY,pid:e.pointerId,on:false,touch:e.pointerType!=="mouse"};
+    if(grip&&mealDrag.touch){e.preventDefault();start()}
+    else if(mealDrag.touch)mealDrag.timer=setTimeout(()=>{if(mealDrag&&!mealDrag.on)start()},HOLD)});
+  document.addEventListener("pointermove",e=>{const d=mealDrag;if(!d||e.pointerId!==d.pid)return;
+    if(!d.on){const far=Math.hypot(e.clientX-d.x0,e.clientY-d.y0)>SLOP;if(!far)return;
+      if(d.touch){end(false);return}  // finger moved before the hold: it's a scroll
+      start()}
+    e.preventDefault();move(e.clientX,e.clientY)},{passive:false});
+  document.addEventListener("touchmove",e=>{if(mealDrag&&mealDrag.on)e.preventDefault()},{passive:false});
+  document.addEventListener("pointerup",e=>{if(mealDrag&&e.pointerId===mealDrag.pid)end(true)});
+  document.addEventListener("pointercancel",e=>{if(mealDrag&&e.pointerId===mealDrag.pid)end(false)});
+  document.addEventListener("contextmenu",e=>{if(mealDrag||(e.target.closest&&e.target.closest("[data-drag]")))e.preventDefault()});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&mealDrag)end(false)});
+})();
+
 /* =================== sheets =================== */
 function openSheet(html,bind){$("#sheet").innerHTML=`<div class="grab"></div>`+html;$("#sheetBg").classList.add("on");bind&&bind()}
 function closeSheet(){$("#sheetBg").classList.remove("on")}
@@ -988,6 +1038,8 @@ const mealNow=()=>mealByHour(new Date().getHours());
 const mealOf=e=>e.meal&&String(e.meal).trim()?e.meal:(e.createdAt?mealByHour(new Date(e.createdAt).getHours()):"snack");
 const mealLabel=m=>MEALS.includes(m)?t("meal_"+m):m;
 const mealIcon=m=>MEAL_IC[m]||"🍴";
+const MEAL_COL={breakfast:"#e3a21a",lunch:"#3fa66b",dinner:"#5a6fd8",snack:"#d4578f"},MEAL_PAL=["#15a1b5","#9a5bd1","#e0702a","#7f9f1d","#c2504c","#3d8fd1"];
+const mealColor=m=>MEAL_COL[m]||MEAL_PAL[[...String(m)].reduce((a,c)=>(a*31+c.charCodeAt(0))>>>0,7)%MEAL_PAL.length];
 const customMeals=()=>(Array.isArray(S.settings&&S.settings.meals)?S.settings.meals:[]).filter(Boolean);
 const mealClosed=()=>LS.get("nt.mealClosed",[]);
 const dayExtra={};  // meals added for one day only (until something is logged in them)

@@ -323,3 +323,24 @@ img.avatar{display:block}
 .catbtn span{font-size:22px}
 .catbtn.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,var(--card));font-weight:600}
 .seg.nowrap{width:auto;flex:none}.seg.nowrap button{white-space:nowrap;padding-inline:14px}
+
+/* v1.15 colored meals + drag between meals */
+.mealcard{--mc:var(--accent);background:color-mix(in srgb,var(--mc) 9%,var(--card));border-color:color-mix(in srgb,var(--mc) 30%,var(--line));border-inline-start:5px solid var(--mc);transition:background .15s,transform .15s,box-shadow .15s}
+[data-theme="dark"] .mealcard{background:color-mix(in srgb,var(--mc) 13%,var(--card))}
+.mealcard .entry{border-bottom-color:color-mix(in srgb,var(--mc) 18%,var(--line))}
+.mealcard .mealhead + .entry,.mealcard .entry.mhcols + .entry{border-top-color:color-mix(in srgb,var(--mc) 25%,var(--line))}
+.mealcard .entry.mtotal{border-top-color:color-mix(in srgb,var(--mc) 35%,var(--line))}
+.mealhead .mic{width:30px;height:30px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--mc) 22%,transparent);font-size:16px;flex:none}
+.mealhead .mname{color:color-mix(in srgb,var(--mc) 55%,var(--ink))}
+.mealcard .entry[data-drag]{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.mealcard .entry [data-grip]{touch-action:none;cursor:grab}
+.mealcard.dropok{outline:2px dashed color-mix(in srgb,var(--mc) 60%,transparent);outline-offset:2px}
+.mealcard.droptarget{background:color-mix(in srgb,var(--mc) 26%,var(--card));transform:scale(1.015);box-shadow:0 8px 24px color-mix(in srgb,var(--mc) 30%,transparent)}
+.entry.dragsrc{opacity:.3}
+.entry.dragghost{position:fixed;z-index:1000;pointer-events:none;margin:0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px 10px;box-shadow:0 14px 34px rgba(0,0,0,.28);opacity:.95;gap:8px}
+.entry.dragghost .x{display:none}
+.entry.dragghost .nc{width:30px;text-align:center;font-size:12.5px;font-weight:600}
+.entry.dragghost .nk{width:36px;text-align:end}
+.entry.dragghost .ic{width:32px;height:32px;border-radius:10px}
+.entry.dragghost .ename{font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.dragging{cursor:grabbing;-webkit-user-select:none;user-select:none}
