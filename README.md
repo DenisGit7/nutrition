@@ -183,6 +183,12 @@ before 1.11 (counted as raw) are recalculated once as cooked grams.
 Shopping tab → **Sort: As added / By category**. Categories come from the item name (EN/HE), your product's category, or the AI;
 tap the category icon on an item to change it (remembered for that name on this device).
 
+## Updating to 1.15.2 (your grams stay)
+
+Grams in a recipe are never replaced: not when you open the recipe, and not by "Recalculate calories with AI",
+which now computes calories for exactly the grams you entered (it only fills in grams that are empty).
+Optional: paste the new `index.ts` → **Deploy** so the AI is also told to use your grams as given.
+
 ## Updating to 1.15.1 (faster "Recalculate calories with AI")
 
 **AI function:** paste the new `index.ts` → **Deploy** (contains `thinkingLevel: "minimal"`). No database change.
