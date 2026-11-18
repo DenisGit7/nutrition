@@ -183,6 +183,12 @@ before 1.11 (counted as raw) are recalculated once as cooked grams.
 Shopping tab → **Sort: As added / By category**. Categories come from the item name (EN/HE), your product's category, or the AI;
 tap the category icon on an item to change it (remembered for that name on this device).
 
+## Updating to 1.15.1 (faster "Recalculate calories with AI")
+
+**AI function:** paste the new `index.ts` → **Deploy** (contains `thinkingLevel: "minimal"`). No database change.
+The app part updates by itself. Recalculating now sends only the lines you changed (all lines if nothing changed),
+the AI answers with minimal "thinking", and grams or calories you typed by hand are no longer replaced.
+
 **If the AI says a model "is no longer available":** paste the latest `index.ts` (it finds a working Gemini model by itself),
 or as a quick fix add a secret `GEMINI_MODEL` with the model name Google suggests in the message (Edge Functions → Secrets).
 

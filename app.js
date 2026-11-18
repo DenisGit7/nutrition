@@ -705,7 +705,7 @@ function composeAmount(qty,unit,grams){
 function ingRow(i={}){
   const a=(i.qty!=null||i.unit)?{qty:i.qty,unit:i.unit||"",grams:i.grams??null}:parseAmount(i.amount,i.name);
   if(i.grams!=null&&i.grams!=="")a.grams=num(i.grams);
-  return `<div class="ingrow v2 ${i.food?"auto":""}" data-ing='${esc(JSON.stringify({p:i.protein??null,c:i.carbs??null,f:i.fat??null,food:i.food||null}))}'>
+  return `<div class="ingrow v2 ${i.food?"auto":""}" data-ing='${esc(JSON.stringify({p:i.protein??null,c:i.carbs??null,f:i.fat??null,food:i.food||null,userG:!!i.gramsByHand,userK:!!i.kcalByHand}))}'>
   <div class="ing-top"><input type="text" dir="auto" class="in-name" data-food placeholder="${t("ingName")}" value="${esc(i.name||"")}" autocomplete="off">
     <button class="x" type="button" data-act="rmIng" aria-label="remove">×</button></div>
   <div class="ing-cells">
@@ -764,7 +764,7 @@ function recalcRow(row,src="qty"){
     if(g!=null&&f&&WEIGHT_UNITS.has(unitKey(u)))qEl.value=fmtQty(g/f)}       // weight units: keep qty in step with grams
   else{const f=unitFactor(u,st.food,nm);
     if(src==="unit"&&f==null&&st.base&&!sameUnit(u,st.base.unit)){   // e.g. cup → tbsp: the old grams no longer apply, type the new weight
-      gEl.value="";kEl.value="";st.p=st.c=st.f=null;st.base={qty:q,unit:u,grams:null,kcal:null,p:null,c:null,f:null};return}
+      gEl.value="";kEl.value="";st.p=st.c=st.f=null;st.userG=st.userK=false;st.base={qty:q,unit:u,grams:null,kcal:null,p:null,c:null,f:null};return}
     if(q!=null&&f!=null)gEl.value=fmtQty(q*f);
     else if(src!=="init"&&q!=null&&st.base&&st.base.grams&&st.base.qty&&sameUnit(u,st.base.unit))gEl.value=fmtQty(st.base.grams*q/st.base.qty)}
   // 2) calories
@@ -778,10 +778,12 @@ function recalcRow(row,src="qty"){
     if(k!=null){kEl.value=Math.round(st.base.kcal*k);
       st.p=st.base.p!=null?r1(st.base.p*k):st.p;st.c=st.base.c!=null?r1(st.base.c*k):st.c;st.f=st.base.f!=null?r1(st.base.f*k):st.f}}
 }
+/* what a row says right now — to spot rows changed since the form opened / the last AI pass, or while the AI was busy */
+function rowSig(row){const {qEl,uEl,gEl,kEl}=rowVals(row);return [row.querySelector(".in-name").value.trim(),qEl.value.trim(),uEl.value.trim(),gEl.value.trim(),kEl.value.trim()].join("|")}
 /* remember each row's starting values and the recipe's starting per-serving numbers */
 function captureBaseline(){const f=$("#editForm");if(!f)return;
   let tot=0;f.querySelectorAll(".ingrow").forEach(row=>{const st=rowState(row),{qEl,uEl,gEl,kEl}=rowVals(row),kc=numOrNull(kEl.value);
-    st.base={qty:parseQty(qEl.value),unit:uEl.value,grams:numOrNull(gEl.value),kcal:kc,p:st.p,c:st.c,f:st.f};tot+=num(kc)});
+    st.base={qty:parseQty(qEl.value),unit:uEl.value,grams:numOrNull(gEl.value),kcal:kc,p:st.p,c:st.c,f:st.f};st.sig=rowSig(row);tot+=num(kc)});
   f._base={tot,serv:Math.max(1,num(f.servings.value)||1),kps:numOrNull(f.kcalPerServing.value),
     protein:numOrNull(f.protein.value),carbs:numOrNull(f.carbs.value),fat:numOrNull(f.fat.value)};f._manual={}}
 function closeSuggest(){document.querySelectorAll(".suggest").forEach(x=>x.remove())}
@@ -1827,14 +1829,14 @@ document.addEventListener("click",e=>{
 });
 document.addEventListener("input",e=>{
   const el=e.target;
-  if(el.classList&&el.classList.contains("in-name")){const row=el.closest(".ingrow");const st=rowState(row);
+  if(el.classList&&el.classList.contains("in-name")){const row=el.closest(".ingrow");const st=rowState(row);st.userG=st.userK=false;
     if(st.food){st.food=null;st.p=st.c=st.f=null;row.classList.remove("auto")}}
   if(el.hasAttribute&&el.hasAttribute("data-food"))openFoodSuggest(el);
   if(el.classList&&el.classList.contains("in-qty"))recalcRow(el.closest(".ingrow"),"qty");
   if(el.classList&&el.classList.contains("in-unit"))recalcRow(el.closest(".ingrow"),"unit");
-  if(el.classList&&el.classList.contains("in-g"))recalcRow(el.closest(".ingrow"),"g");
+  if(el.classList&&el.classList.contains("in-g")){const row=el.closest(".ingrow");rowState(row).userG=!!el.value.trim();recalcRow(row,"g")}
   if(el.classList&&el.classList.contains("in-kcal")){const row=el.closest(".ingrow"),st=rowState(row),{qEl,uEl,gEl}=rowVals(row);row.classList.remove("auto");
-    st.food=null;st.base={qty:parseQty(qEl.value),unit:uEl.value,grams:numOrNull(gEl.value),kcal:numOrNull(el.value),p:null,c:null,f:null};st.p=st.c=st.f=null}
+    st.food=null;st.userK=!!el.value.trim();st.base={qty:parseQty(qEl.value),unit:uEl.value,grams:numOrNull(gEl.value),kcal:numOrNull(el.value),p:null,c:null,f:null};st.p=st.c=st.f=null}
   const ef=el.closest&&el.closest("#editForm");
   if(ef&&["protein","carbs","fat","kcalPerServing"].includes(el.name)){ef._manual=ef._manual||{};ef._manual[el.name]=true;return}
   if(ef)updIngSum()});
@@ -1846,7 +1848,7 @@ function foodListFor(el){const q=el.value.trim();
   return searchFoods(q,8)}
 function openFoodSuggest(el){showSuggest(el,foodListFor(el),food=>el.dispatchEvent(new CustomEvent("foodpick",{detail:food,bubbles:true})))}
 document.addEventListener("foodpick",e=>{const el=e.target,food=e.detail;
-  if(el.classList.contains("in-name")){const row=el.closest(".ingrow"),st=rowState(row);el.value=food.name;st.food=foodSnap(food);
+  if(el.classList.contains("in-name")){const row=el.closest(".ingrow"),st=rowState(row);el.value=food.name;st.food=foodSnap(food);st.userG=st.userK=false;
     const {qEl,uEl}=rowVals(row);
     if(!qEl.value.trim()){if(food.serving_g&&food.serving_name){qEl.value="1";uEl.value=food.serving_name}else{qEl.value="100";uEl.value=food.unit==="ml"?(lang==="he"?"מ״ל":"ml"):(lang==="he"?"גרם":"g")}}
     recalcRow(row,"qty");updIngSum();qEl.focus();qEl.select&&qEl.select()}
@@ -1857,29 +1859,42 @@ async function recalcWithAI(btn){const f=$("#editForm");if(!f)return;
   const isW=r=>WEIGHT_UNITS.has(unitKey(rowVals(r).uEl.value));
   const noMacros=fd=>fd.protein==null||fd.carbs==null||fd.fat==null;
   // every unlinked row; linked rows only if measured in cups/spoons/pieces (grams to check) or the product lacks protein/carbs/fat
-  const rows=[...f.querySelectorAll(".ingrow")].filter(r=>{const fd=rowState(r).food;return r.querySelector(".in-name").value.trim()&&(!fd||!isW(r)||noMacros(fd))});
+  const all=[...f.querySelectorAll(".ingrow")].filter(r=>{const fd=rowState(r).food;return r.querySelector(".in-name").value.trim()&&(!fd||!isW(r)||noMacros(fd))});
+  // after editing a few lines, only those lines (and lines without calories yet) go to the AI — a much shorter, faster request.
+  // Nothing changed → recalculate everything, as before.
+  const changed=all.filter(r=>rowSig(r)!==rowState(r).sig||!rowVals(r).kEl.value.trim());
+  const rows=changed.length?changed:all;
   if(!rows.length){toast(t("recalcNone"));return}
   btn.disabled=true;const old=btn.innerHTML;btn.innerHTML=`<span class="spin"></span>${t("recalcing")}`;
+  const sent=rows.map(rowSig);   // what each line said when we asked
   try{const res=await S.api.callFn({mode:"nutrition",lang,ingredients:rows.map(r=>{const {qEl,uEl,gEl}=rowVals(r);
       return {name:r.querySelector(".in-name").value.trim(),qty:parseQty(qEl.value),unit:uEl.value.trim(),grams:numOrNull(gEl.value)}})});
-    const out=res&&res.ingredients||[];let n=0;
-    rows.forEach((r,k)=>{const o=out[k];if(!o||o.kcal==null)return;const st=rowState(r),{qEl,uEl,gEl,kEl}=rowVals(r);
+    if($("#editForm")!==f)return;   // the form was closed or replaced meanwhile
+    const out=res&&res.ingredients||[];let n=0;const keep=[];
+    rows.forEach((r,k)=>{const o=out[k];if(!o||o.kcal==null)return;
+      if(!f.contains(r)||rowSig(r)!==sent[k]){keep.push(r);return}   // removed or edited while the AI was busy: what you typed wins
+      const st=rowState(r),{qEl,uEl,gEl,kEl}=rowVals(r);
       if(st.food){  // your product: keep its calories per 100 g; take realistic grams for cups/spoons, fill missing protein/carbs/fat
-        if(o.grams!=null&&(!isW(r)||!numOrNull(gEl.value)))gEl.value=fmtQty(o.grams);
+        if(o.grams!=null&&!st.userG&&(!isW(r)||!numOrNull(gEl.value)))gEl.value=fmtQty(o.grams);
         const g=numOrNull(gEl.value);if(!g)return;const per=v=>v==null||!o.grams?null:r1(v*100/o.grams);
         st.food={...st.food,protein:st.food.protein??per(o.protein),carbs:st.food.carbs??per(o.carbs),fat:st.food.fat??per(o.fat)};
         recalcRow(r,"g");n++;return}
-      // grams typed in g/kg/ml stay as they are (AI numbers are scaled to them); cups/spoons/pieces take the AI's realistic weight
-      const myG=isW(r)?numOrNull(gEl.value):null,sc=myG&&o.grams?myG/o.grams:1,m=v=>v==null?null:r1(v*sc);
-      if(!myG&&o.grams!=null)gEl.value=fmtQty(o.grams);kEl.value=Math.round(num(o.kcal)*sc);
+      // grams in g/kg/ml, or typed by hand, stay as they are (AI numbers are scaled to them); other cups/spoons/pieces take the AI's realistic weight
+      const myG=isW(r)||st.userG?numOrNull(gEl.value):null,sc=myG&&o.grams?myG/o.grams:1,m=v=>v==null?null:r1(v*sc);
+      if(!myG&&o.grams!=null)gEl.value=fmtQty(o.grams);
+      if(!(st.userK&&numOrNull(kEl.value)!=null))kEl.value=Math.round(num(o.kcal)*sc);   // calories typed by hand stay
       st.p=m(o.protein);st.c=m(o.carbs);st.f=m(o.fat);r.classList.remove("auto");
       st.base={qty:parseQty(qEl.value),unit:uEl.value,grams:numOrNull(gEl.value),kcal:numOrNull(kEl.value),p:st.p,c:st.c,f:st.f};n++});
-    // per-serving numbers now come straight from the ingredients
+    // per-serving numbers now come straight from the ingredients (unless typed by hand)
+    const man=f._manual||{};
     let s=0;f.querySelectorAll(".in-kcal").forEach(i=>s+=num(i.value));const sv=Math.max(1,num(f.servings.value)||1);
-    f.kcalPerServing.value=s?Math.round(s/sv):"";["protein","carbs","fat"].forEach(k=>f.elements.namedItem(k).value="");
-    captureBaseline();updIngSum();toast(t("recalcDone").replace("{n}",n));
+    if(!man.kcalPerServing)f.kcalPerServing.value=s?Math.round(s/sv):"";
+    ["protein","carbs","fat"].forEach(k=>{if(!man[k])f.elements.namedItem(k).value=""});
+    // lines edited while waiting stay "changed", so the next recalculation picks them up
+    const marks=keep.map(r=>{const st=rowState(r);return [st,st.sig,st.userG,st.userK]});
+    captureBaseline();marks.forEach(([st,sig,g,k])=>{st.sig=sig;st.userG=g;st.userK=k});f._manual=man;updIngSum();toast(t("recalcDone").replace("{n}",n));
   }catch(e){toast(e.code==="setup"?t("aiSetup"):errMsg(e))}
-  btn.disabled=false;btn.innerHTML=old}
+  finally{btn.disabled=false;btn.innerHTML=old}}
 /* link ingredients whose name matches one of your products (e.g. after AI import) */
 function autoLinkRows(){const f=$("#editForm");if(!f)return;let changed=false;
   f.querySelectorAll(".ingrow").forEach(row=>{const st=rowState(row);if(st.food)return;const nm=norm(row.querySelector(".in-name").value);if(!nm)return;
@@ -1887,7 +1902,7 @@ function autoLinkRows(){const f=$("#editForm");if(!f)return;let changed=false;
     const food=mine||com;if(!food)return;const kcalEl=row.querySelector(".in-kcal");
     if(mine||!kcalEl.value.trim()){st.food=foodSnap(food);const {qEl,uEl,gEl}=rowVals(row);
       const canWeigh=numOrNull(gEl.value)||(parseQty(qEl.value)!=null&&unitFactor(uEl.value,st.food,row.querySelector(".in-name").value)!=null);
-      if(canWeigh){recalcRow(row,"init");changed=true}else if(!mine)st.food=null}});
+      if(canWeigh){recalcRow(row,"init");st.sig=rowSig(row);changed=true}else if(!mine)st.food=null}});
   if(changed)updIngSum()}
 document.addEventListener("submit",e=>{
   const id=e.target.id;
@@ -1917,6 +1932,7 @@ document.addEventListener("submit",e=>{
   const ings=[...f.querySelectorAll(".ingrow")].map(row=>{const st=rowState(row);
     const {qEl,uEl,gEl,kEl}=rowVals(row),qty=parseQty(qEl.value),unit=uEl.value.trim(),grams=numOrNull(gEl.value);
     const o={name:row.querySelector(".in-name").value.trim(),qty,unit,grams,amount:composeAmount(qty,unit,grams),kcal:numOrNull(kEl.value)};
+    if(st.userG&&grams!=null)o.gramsByHand=true;if(st.userK&&o.kcal!=null)o.kcalByHand=true;   // typed by hand: AI recalculation leaves them alone
     if(st.food){o.food=st.food;if(st.p!=null)o.protein=st.p;if(st.c!=null)o.carbs=st.c;if(st.f!=null)o.fat=st.f}
     else{if(st.p!=null)o.protein=st.p;if(st.c!=null)o.carbs=st.c;if(st.f!=null)o.fat=st.f}
     return o}).filter(i=>i.name);

@@ -36,7 +36,17 @@ const MODELS = [
   "gemini-3.5-flash-lite",
 ].filter(Boolean) as string[];
 let goodModel = "";
-const noThinkCfg = new Set<string>();   // remembered while this function instance stays warm
+// thinking settings a model refused ("minimal" / "low" / "budget0"), remembered while this function instance stays warm
+const noThinkCfg = new Map<string, Set<string>>();
+const refused = (model: string) => noThinkCfg.get(model) || noThinkCfg.set(model, new Set()).get(model)!;
+// how much the model may "think" before answering. Simple lookups (nutrition, categories) need almost none,
+// and thinking is most of the wait, so they ask for the least. Never fall back to "no setting at all":
+// for Gemini 3 that means the default (high) thinking, which is the slowest option.
+const THINK: Record<string, unknown> = {
+  minimal: { thinkingLevel: "minimal" },
+  low: { thinkingLevel: "low" },
+  budget0: { thinkingBudget: 0 },   // Gemini 2.5-style models
+}
 
 // newest "flash" models this key can use (stable before preview, full before lite)
 async function discoverModels(key: string): Promise<string[]> {
@@ -367,7 +377,7 @@ function ingMacros(i: any) {
   return o;
 }
 
-async function callGemini(key: string, parts: unknown[]): Promise<any> {
+async function callGemini(key: string, parts: unknown[], opts: { quick?: boolean } = {}): Promise<any> {
   let lastErr = "", discovered = false;
   const queue = [...new Set([goodModel, ...MODELS].filter(Boolean))];
   const tried = new Set<string>();
@@ -382,25 +392,27 @@ async function callGemini(key: string, parts: unknown[]): Promise<any> {
     }
     if (tried.has(model)) continue;
     tried.add(model);
-    // less "thinking" = faster answers and fewer free-tier limits; older models without this option get it without
-    const ask = (think: boolean) => fetch(`${GEMINI_BASE}/models/${model}:generateContent`, {
+    // less "thinking" = faster answers and fewer free-tier limits; models that refuse a setting get the next one
+    const ask = (think: string) => fetch(`${GEMINI_BASE}/models/${model}:generateContent`, {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-goog-api-key": key },
-      signal: AbortSignal.timeout(100_000),
+      signal: AbortSignal.timeout(opts.quick ? 45_000 : 100_000),
       body: JSON.stringify({
         contents: [{ role: "user", parts }],
         generationConfig: { responseMimeType: "application/json", temperature: 0.2,
-          ...(think && !noThinkCfg.has(model) ? { thinkingConfig: { thinkingLevel: "low" } } : {}) },
+          ...(think ? { thinkingConfig: THINK[think] } : {}) },
       }),
     });
-    let r: Response;
-    try { r = await ask(true); } catch (e) { lastErr = `${model}: ${String(e).slice(0, 120)}`; continue; }
-    let body = await r.text();
-    if (r.status === 400 && /thinking/i.test(body)) {
-      noThinkCfg.add(model);
-      try { r = await ask(false); } catch (e) { lastErr = `${model}: ${String(e).slice(0, 120)}`; continue; }
+    const bad = refused(model);
+    const options = [...(opts.quick ? ["minimal"] : []), "low", "budget0"].filter((o) => !bad.has(o));
+    let r: Response | null = null, body = "", failed = false;
+    for (const think of [...options, ""]) {
+      try { r = await ask(think); } catch (e) { lastErr = `${model}: ${String(e).slice(0, 120)}`; failed = true; break; }
       body = await r.text();
+      if (think && r.status === 400 && /thinking/i.test(body)) { bad.add(think); continue; }
+      break;
     }
+    if (failed || !r) continue;
     if (r.ok) {
       goodModel = model;
       const data = JSON.parse(body);
@@ -509,7 +521,7 @@ export async function handle(req: Request): Promise<Response> {
     const list = (Array.isArray(body.items) ? body.items : []).slice(0, 80).map((x: any) => String(x || "").slice(0, 80));
     if (!list.length) return json({ categories: [] });
     try {
-      const out = await callGemini(key, [{ text: categorizePrompt(list) }]);
+      const out = await callGemini(key, [{ text: categorizePrompt(list) }], { quick: true });
       const arr = Array.isArray(out?.categories) ? out.categories : [];
       return json({ categories: list.map((_: any, k: number) => SHOP_CATS.includes(String(arr[k])) ? String(arr[k]) : "other") });
     } catch (e) { return aiError(e); }
@@ -539,7 +551,7 @@ export async function handle(req: Request): Promise<Response> {
     }));
     if (!list.length) return json({ error: "empty", message: "No ingredients." }, 422);
     try {
-      const out = await callGemini(key, [{ text: nutritionPrompt(list) }]);
+      const out = await callGemini(key, [{ text: nutritionPrompt(list) }], { quick: true });
       const arr = Array.isArray(out?.ingredients) ? out.ingredients : [];
       const n = (v: any) => (v === undefined || v === null || v === "" || isNaN(Number(v)) ? null : Math.round(Number(v) * 10) / 10);
       return json({ ingredients: list.map((_: any, k: number) => ({ grams: n(arr[k]?.grams), kcal: n(arr[k]?.kcal), protein: n(arr[k]?.protein), carbs: n(arr[k]?.carbs), fat: n(arr[k]?.fat) })) });
