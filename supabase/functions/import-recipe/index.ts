@@ -298,7 +298,7 @@ ${JSON.stringify(list)}`;
 function nutritionPrompt(list: unknown): string {
   return `For each ingredient line below, give its realistic weight in grams and its nutrition for that amount, using standard nutrition tables (USDA-like values).
 Dry foods weigh less than water: 1/2 cup rolled oats ≈ 40 g, 1 cup flour ≈ 125 g, 1 tbsp honey ≈ 21 g, 1 tsp cinnamon ≈ 2.6 g; liquids 1 cup ≈ 240 g.
-If "grams" is given and is realistic for that amount, keep it; if it is clearly wrong (e.g. 1/2 cup oats given as 120 g), return the correct weight. Water, salt and plain spices can be ~0 kcal.
+If "grams" is given, that is the real weight the cook uses: return exactly that weight and the nutrition for it. Only when "grams" is null, estimate the weight. Water, salt and plain spices can be ~0 kcal.
 Reply with ONLY a JSON object, same order and count as the input:
 {"ingredients": [{"grams": 40, "kcal": 152, "protein": 5.3, "carbs": 27, "fat": 2.6}]}
 

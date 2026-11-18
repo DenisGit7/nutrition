@@ -765,8 +765,11 @@ function recalcRow(row,src="qty"){
   else{const f=unitFactor(u,st.food,nm);
     if(src==="unit"&&f==null&&st.base&&!sameUnit(u,st.base.unit)){   // e.g. cup → tbsp: the old grams no longer apply, type the new weight
       gEl.value="";kEl.value="";st.p=st.c=st.f=null;st.userG=st.userK=false;st.base={qty:q,unit:u,grams:null,kcal:null,p:null,c:null,f:null};return}
-    if(q!=null&&f!=null)gEl.value=fmtQty(q*f);
-    else if(src!=="init"&&q!=null&&st.base&&st.base.grams&&st.base.qty&&sameUnit(u,st.base.unit))gEl.value=fmtQty(st.base.grams*q/st.base.qty)}
+    const scaled=src!=="init"&&q!=null&&st.base&&st.base.grams&&st.base.qty&&sameUnit(u,st.base.unit)?st.base.grams*q/st.base.qty:null;
+    if(src==="init"&&numOrNull(gEl.value)!=null){}                       // opening the form: the saved grams stay
+    else if(st.userG&&scaled!=null&&!WEIGHT_UNITS.has(unitKey(u)))gEl.value=fmtQty(scaled)   // your own grams per cup/piece: follow the quantity
+    else if(q!=null&&f!=null)gEl.value=fmtQty(q*f);
+    else if(scaled!=null)gEl.value=fmtQty(scaled)}
   // 2) calories
   const g=numOrNull(gEl.value);
   if(st.food&&g){const k=g/100,m=v=>v==null||v===""?null:r1(num(v)*k);
@@ -1875,12 +1878,12 @@ async function recalcWithAI(btn){const f=$("#editForm");if(!f)return;
       if(!f.contains(r)||rowSig(r)!==sent[k]){keep.push(r);return}   // removed or edited while the AI was busy: what you typed wins
       const st=rowState(r),{qEl,uEl,gEl,kEl}=rowVals(r);
       if(st.food){  // your product: keep its calories per 100 g; take realistic grams for cups/spoons, fill missing protein/carbs/fat
-        if(o.grams!=null&&!st.userG&&(!isW(r)||!numOrNull(gEl.value)))gEl.value=fmtQty(o.grams);
+        if(o.grams!=null&&!numOrNull(gEl.value))gEl.value=fmtQty(o.grams);   // grams in the form are yours: kept
         const g=numOrNull(gEl.value);if(!g)return;const per=v=>v==null||!o.grams?null:r1(v*100/o.grams);
         st.food={...st.food,protein:st.food.protein??per(o.protein),carbs:st.food.carbs??per(o.carbs),fat:st.food.fat??per(o.fat)};
         recalcRow(r,"g");n++;return}
-      // grams in g/kg/ml, or typed by hand, stay as they are (AI numbers are scaled to them); other cups/spoons/pieces take the AI's realistic weight
-      const myG=isW(r)||st.userG?numOrNull(gEl.value):null,sc=myG&&o.grams?myG/o.grams:1,m=v=>v==null?null:r1(v*sc);
+      // grams in the form stay as they are (AI numbers are scaled to them); only empty grams take the AI's realistic weight
+      const myG=numOrNull(gEl.value),sc=myG&&o.grams?myG/o.grams:1,m=v=>v==null?null:r1(v*sc);
       if(!myG&&o.grams!=null)gEl.value=fmtQty(o.grams);
       if(!(st.userK&&numOrNull(kEl.value)!=null))kEl.value=Math.round(num(o.kcal)*sc);   // calories typed by hand stay
       st.p=m(o.protein);st.c=m(o.carbs);st.f=m(o.fat);r.classList.remove("auto");
